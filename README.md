@@ -4,4 +4,5 @@
 Analizing, projecting and implementing diferent structures in secondary storage, using a [Steam Videogames Dataset](https://www.kaggle.com/datasets/fronkongames/steam-games-dataset/data?select=games.csv).
 
 **Authors:** Arthur Oliveira Santos, Catarina França de Moura Castro
+
 **Professor:** Hayala Nepomuceno Curto
