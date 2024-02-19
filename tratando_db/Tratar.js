@@ -70,11 +70,11 @@ let contador = 0;
 
 for (let i = 0; i < 10000000; i++) {
     if (db[i]) {
-        str += `${contador++},${i},${db[i].name},${db[i].price},${db[i].short_description},[${NewDivision(db[i].publishers)}],[${NewDivision(db[i].genres)}],${NewData(db[i].release_date)}\n`
+        str += `${contador++},${i},${db[i].name},${db[i].price},"${db[i].short_description}",[${NewDivision(db[i].publishers)}],[${NewDivision(db[i].genres)}],${NewData(db[i].release_date)}\n`
     }
 }
 
-fs.writeFile('dados.csv', str, (err) => {
+fs.writeFile('games.csv', str, (err) => {
     if (err) {
         console.error('Erro ao escrever o arquivo:', err);
     } else {
