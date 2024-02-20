@@ -3,7 +3,7 @@ const fs = require('fs');
 
 // String padrao para ser madada para o arquivo CSV
 
-let str = "id,steamID,name,price,short_descritiption,genres[],publishers[],release_date\n";
+let str = "id,steamID,name,price,(short_descritiption),genres[],publishers[],release_date\n";
 
 // Trata a data do Json
 function NewData (data){
@@ -69,12 +69,12 @@ function NewDivision (data){
 let contador = 0;
 
 for (let i = 0; i < 10000000; i++) {
-    if (db[i]) {
-        str += `${contador++},${i},${db[i].name},${db[i].price},"${db[i].short_description}",[${NewDivision(db[i].publishers)}],[${NewDivision(db[i].genres)}],${NewData(db[i].release_date)}\n`
+    if (db[i] && db[i].short_description.length > 1 && db[i].publishers.length > 0 && db[i].genres.length > 0) {
+        str += `${contador++},${i},${db[i].name},${db[i].price},(${db[i].short_description}),[${NewDivision(db[i].publishers)}],[${NewDivision(db[i].genres)}],${NewData(db[i].release_date)}\n`
     }
 }
 
-fs.writeFile('games.csv', str, (err) => {
+fs.writeFile('./tratando_db/games.csv', str, (err) => {
     if (err) {
         console.error('Erro ao escrever o arquivo:', err);
     } else {
