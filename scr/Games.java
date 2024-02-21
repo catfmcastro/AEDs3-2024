@@ -1,6 +1,5 @@
 package scr;
 
-import java.util.Date;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -10,10 +9,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class Games {
-    private int id, steamID;
+    private int id, steamID, release_date;
     private float price;
     private String name, short_description, genres, publishers;
-    private Date release_date;
 
     public Games() {
         this.id = -1;
@@ -23,12 +21,11 @@ public class Games {
         this.short_description = "N";
         this.genres = "N";
         this.publishers = "N";
-        // Date nova = new Date();
-        // this.release_date = nova;
+        this.release_date = -1;
     }
 
     public Games(int id, int steamID, float price, String name, String short_description, String genres,
-            String publishers, Date release_date) {
+            String publishers, int release_date) {
         this.id = id;
         this.steamID = steamID;
         this.price = price;
@@ -39,41 +36,54 @@ public class Games {
         this.release_date = release_date;
     }
 
+    // Transforma o valor em horas para data em String
+    private static String reTrasnformDate(int data) {
+        // Um ano tem 8766 h
+        // Um mês tem 730 h
+        // Um dia tem 24 h
+
+        String year, month, day;
+        year = Integer.toString((data / 8760) + 1900);
+        month = Integer.toString((data % 8760) / 730);
+        day = Integer.toString(((data % 8760) % 730) / 24);
+
+        return day + "/" + month + "/" + year;
+    }
+
     public void printScren() {
         System.out.println("Id: " + this.id + " - " + "SteamID: " + this.steamID + " - " + "Preço: R$" + this.price
                 + "\n" + "Nome: " + this.name + "\n" + "Descrição: " + this.short_description + "\n" + "Gêneros: "
                 + this.genres + "\n" + "Publicador: " + this.publishers + "\n" + "Data de Lançamento: "
-                + this.release_date + "\n");
+                + reTrasnformDate(this.release_date) + "\n");
     }
 
-    public void writeBytes() throws IOException {
-        FileOutputStream arq = new FileOutputStream("./scr/db/games.db");
+    public byte[] createbyteArray () throws IOException{
         ByteArrayOutputStream by = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(by);
-        dos.writeInt(this.id);
-        dos.writeInt(this.steamID);
-        dos.writeFloat(this.price);
-        dos.writeUTF(this.name);
-        dos.writeUTF(this.short_description);
-        dos.writeUTF(this.genres);
-        dos.writeUTF(this.publishers);
-        by.toByteArray();
-        System.out.println("Salvado com Sucesso");
+        dos.writeInt(id);
+        dos.writeInt(steamID);
+        dos.writeUTF(name);
+        dos.writeDouble(price);
+        dos.writeUTF(short_description);
+        dos.writeUTF(genres);
+        dos.writeUTF(publishers);
+        dos.writeInt(release_date);
+
         dos.close();
+        return by.toByteArray();
     }
 
-    public void readBytes() throws IOException {
-        FileInputStream arq = new FileInputStream("./scr/db/games.db");
-        DataInputStream dos = new DataInputStream(arq);
-
+    public void readBytes(byte by[]) throws IOException {
+        ByteArrayInputStream vet = new ByteArrayInputStream(by);
+        DataInputStream dos = new DataInputStream(vet);
         this.id = dos.readInt();
         this.steamID = dos.readInt();
-        this.price = dos.readFloat();
         this.name = dos.readUTF();
+        this.price = dos.readFloat();
         this.short_description = dos.readUTF();
         this.genres = dos.readUTF();
         this.publishers = dos.readUTF();
-
+        this.release_date = dos.readInt();
         dos.close();
     }
 

@@ -1,9 +1,9 @@
-const db = require("./teste.json");
+const db = require("../teste.json");
 const fs = require('fs');
 
 // String padrao para ser madada para o arquivo CSV
 
-let str = "id,steamID,name,price,(short_descritiption),genres[],publishers[],release_date\n";
+let str = "id./;steamID./;name./;price./;short_descritiption./;genres./;publishers./;release_date\n";
 
 // Trata a data do Json
 function NewData (data){
@@ -66,11 +66,13 @@ function NewDivision (data){
     return resp
 }
 
+// Contador para ser usado como ID no BD
+
 let contador = 0;
 
 for (let i = 0; i < 10000000; i++) {
     if (db[i] && db[i].short_description.length > 1 && db[i].publishers.length > 0 && db[i].genres.length > 0) {
-        str += `${contador++},${i},${db[i].name},${db[i].price},(${db[i].short_description}),[${NewDivision(db[i].publishers)}],[${NewDivision(db[i].genres)}],${NewData(db[i].release_date)}\n`
+        str += `${contador++}./;${i}./;${db[i].name}./;${db[i].price}./;${db[i].short_description}./;${NewDivision(db[i].publishers)}./;${NewDivision(db[i].genres)}./;${NewData(db[i].release_date)}\n`
     }
 }
 
