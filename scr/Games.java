@@ -4,8 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class Games {
@@ -24,8 +22,7 @@ public class Games {
         this.release_date = -1;
     }
 
-    public Games(int id, int steamID, float price, String name, String short_description, String genres,
-            String publishers, int release_date) {
+    public Games(int id, int steamID, float price, String name, String short_description, String genres, String publishers, int release_date) {
         this.id = id;
         this.steamID = steamID;
         this.price = price;
@@ -68,8 +65,8 @@ public class Games {
         dos.writeUTF(genres);
         dos.writeUTF(publishers);
         dos.writeInt(release_date);
-
         dos.close();
+
         return by.toByteArray();
     }
 
