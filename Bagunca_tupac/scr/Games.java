@@ -9,7 +9,8 @@ import java.io.IOException;
 public class Games {
     private int id, steamID, release_date;
     private float price;
-    private String name, short_description, genres, publishers;
+    private String name, short_description, genres, publishers, supports_linux;
+    private boolean grave;
 
     public Games() {
         this.id = -1;
@@ -20,9 +21,12 @@ public class Games {
         this.genres = "N";
         this.publishers = "N";
         this.release_date = -1;
+        this.supports_linux = "N";
+        this.grave = false;
     }
 
-    public Games(int id, int steamID, float price, String name, String short_description, String genres, String publishers, int release_date) {
+    public Games(boolean grave, int id, int steamID, float price, String name, String short_description, String genres, String publishers, String supports_linux, int release_date) {
+        this.grave = grave;
         this.id = id;
         this.steamID = steamID;
         this.price = price;
@@ -30,6 +34,7 @@ public class Games {
         this.short_description = short_description;
         this.genres = genres;
         this.publishers = publishers;
+        this.supports_linux = supports_linux;
         this.release_date = release_date;
     }
 
@@ -51,12 +56,16 @@ public class Games {
         System.out.println("Id: " + this.id + " - " + "SteamID: " + this.steamID + " - " + "Preço: R$" + this.price
                 + "\n" + "Nome: " + this.name + "\n" + "Descrição: " + this.short_description + "\n" + "Gêneros: "
                 + this.genres + "\n" + "Publicador: " + this.publishers + "\n" + "Data de Lançamento: "
-                + reTrasnformDate(this.release_date) + "\n");
+                + reTrasnformDate(this.release_date) + "\n" + "Grave: " + this.grave + "\n" + "Suporte Linux: " + this.supports_linux + "\n");
     }
 
     public byte[] createbyteArray () throws IOException{
+
+        // grave,id,steamID,name,price,short_descritiption,genres,publishers,supports_linux,release_date
+
         ByteArrayOutputStream by = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(by);
+        dos.writeBoolean(grave);
         dos.writeInt(id);
         dos.writeInt(steamID);
         dos.writeUTF(name);
@@ -64,6 +73,7 @@ public class Games {
         dos.writeUTF(short_description);
         dos.writeUTF(genres);
         dos.writeUTF(publishers);
+        dos.writeUTF(supports_linux);
         dos.writeInt(release_date);
         dos.close();
 
@@ -73,6 +83,7 @@ public class Games {
     public void readBytes(byte by[]) throws IOException {
         ByteArrayInputStream vet = new ByteArrayInputStream(by);
         DataInputStream dos = new DataInputStream(vet);
+        this.grave = dos.readBoolean();
         this.id = dos.readInt();
         this.steamID = dos.readInt();
         this.name = dos.readUTF();
@@ -80,6 +91,7 @@ public class Games {
         this.short_description = dos.readUTF();
         this.genres = dos.readUTF();
         this.publishers = dos.readUTF();
+        this.supports_linux = dos.readUTF();
         this.release_date = dos.readInt();
         dos.close();
     }

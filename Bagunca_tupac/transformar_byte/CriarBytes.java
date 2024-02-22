@@ -11,6 +11,7 @@ public class CriarBytes {
 
     // Transformar uma data em horas a partir de 1900
     public static int trasnformDate(String data) {
+
         // Um ano tem 8766 h
         // Um mês tem 730 h
         // Um dia tem 24 h
@@ -24,7 +25,7 @@ public class CriarBytes {
 
         return year + month + day;
     }
-
+    
     public static void main(String[] args) {
 
         RandomAccessFile raf, write;
@@ -36,21 +37,24 @@ public class CriarBytes {
             raf.readLine(); // Não estou usando raf.seek devido a algum espaço nulo no arquivo que não sei onde está
             String str;
 
+            write.writeLong(10); // Reserva um espaço no inicio do arquivo como um long int para inserir a posição do final do arquivo
+
             while ((str = raf.readLine()) != null) {
                 String vet[] = str.split("./;"); // Separando em vetor a string
-                Games tmp = new Games(Integer.parseInt(vet[0]), Integer.parseInt(vet[1]), Float.parseFloat(vet[3]),
-                        vet[2], vet[4], vet[5], vet[6], trasnformDate(vet[7])); // Salva o valor em um game temporario
+                Games tmp = new Games(false, Integer.parseInt(vet[0]), Integer.parseInt(vet[1]), Float.parseFloat(vet[3]), vet[2], vet[4], vet[5], vet[6], vet[7], trasnformDate(vet[8])); // Salva o valor em um game temporario
                 byte aux[] = tmp.createbyteArray(); // Insere no arquivo DB
                 write.write(aux.length); // Coloca o tamanho antes do vetor de dados de byte
                 write.write(aux); // Insere o vetor de dados de byte
             }
 
-            write.close();
+            long pointer = write.getFilePointer(); // Pega a ultima posicao do arquivo
+            write.seek(0); // Posiciona novamente no inicio do arquivo
+            write.writeLong(pointer); // Escreve a ultima posicao na frente
+            
+            write.close(); 
             raf.close();
         } catch (Exception e) {
             System.out.println(e);
         }
-
     }
-
 }
