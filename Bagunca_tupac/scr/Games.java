@@ -59,14 +59,15 @@ public class Games {
                 + reTrasnformDate(this.release_date) + "\n" + "Grave: " + this.grave + "\n" + "Suporte Linux: " + this.supports_linux + "\n");
     }
 
+    // Pega so dados já salvos do game e trasnforma em um vetor de bits que é retornado para ser inserido no arquivo
     public byte[] createbyteArray () throws IOException{
 
         // grave,id,steamID,name,price,short_descritiption,genres,publishers,supports_linux,release_date
 
         ByteArrayOutputStream by = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(by);
-        dos.writeBoolean(grave);
         dos.writeInt(id);
+        dos.writeBoolean(grave);
         dos.writeInt(steamID);
         dos.writeUTF(name);
         dos.writeDouble(price);
