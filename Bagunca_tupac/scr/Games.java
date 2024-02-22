@@ -10,7 +10,7 @@ public class Games {
     private int id, steamID, release_date;
     private float price;
     private String name, short_description, genres, publishers, supports_linux;
-    private boolean grave;
+    private boolean grave; // Saber se está ou nao usavel o dado
 
     public Games() {
         this.id = -1;
