@@ -83,7 +83,8 @@ public class CRUD {
         return var; // (4)
     }
 
-    public boolean Update (){
+    // Esqueleto da função para fazer update de um novo jogo já recebendo o id dele
+    public boolean Update (int ID){
 
         // Posiciona o ponteiro no inicio do arquivo - (1)
         // Procura pelo ID correto - (2)
@@ -100,6 +101,7 @@ public class CRUD {
         return var;
     }
 
+    // Esqueleto da função para deletar um jogo já recebendo o id dele
     public Games Delete (int ID){
         // Posiciona o ponteiro no inicio do arquivo - (1)
         // Procura pelo ID desejado - (2)
