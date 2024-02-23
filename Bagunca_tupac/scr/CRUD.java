@@ -36,7 +36,7 @@ public class CRUD {
             System.out.println("Erro create " + e);
             var = false;
         }
-        return false;
+        return var;
     }
     
     // Esqueleto da função para achar um novo jogo já recebendo o id dele
