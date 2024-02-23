@@ -26,8 +26,8 @@ public class Games {
     }
 
     public Games(boolean grave, int id, int steamID, float price, String name, String short_description, String genres, String publishers, String supports_linux, int release_date) {
-        this.grave = grave;
         this.id = id;
+        this.grave = grave;
         this.steamID = steamID;
         this.price = price;
         this.name = name;
