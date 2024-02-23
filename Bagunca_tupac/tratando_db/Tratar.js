@@ -3,7 +3,7 @@ const fs = require('fs');
 
 // String padrao para ser madada para o arquivo CSV
 
-let str = "id./;steamID./;name./;price./;short_descritiption./;genres./;publishers./;release_date\n";
+let str = "id./;steamID./;name./;price./;short_descritiption./;genres./;publishers./;roda_linux./;release_date\n";
 
 // Trata a data do Json
 function NewData (data){
@@ -66,17 +66,23 @@ function NewDivision (data){
     return resp
 }
 
-// Contador para ser usado como ID no BD
+// Função que recebe um boolean e transforma em string Sim ou Nao
+function booleanReturn (data){
+    return data ? "Sim" : "Nao";
+}
 
+// Contador para ser usado como ID no BD
 let contador = 0;
 
 for (let i = 0; i < 10000000; i++) {
+    // Faz o tratamento para apenas utilizar os dados que não são nulos e coloca todos em uma string str para ser inserido no csv
     if (db[i] && db[i].short_description.length > 1 && db[i].publishers.length > 0 && db[i].genres.length > 0) {
-        str += `${contador++}./;${i}./;${db[i].name}./;${db[i].price}./;${db[i].short_description}./;${NewDivision(db[i].publishers)}./;${NewDivision(db[i].genres)}./;${NewData(db[i].release_date)}\n`
+        str += `${contador++}./;${i}./;${db[i].name}./;${db[i].price}./;${db[i].short_description}./;${NewDivision(db[i].publishers)}./;${NewDivision(db[i].genres)}./;${booleanReturn(db[i].linux)}./;${NewData(db[i].release_date)}\n`
     }
 }
 
-fs.writeFile('./tratando_db/games.csv', str, (err) => {
+// Inserção no CSV
+fs.writeFile('./Bagunca_tupac/transformar_byte/games_tobyte.csv', str, (err) => {
     if (err) {
         console.error('Erro ao escrever o arquivo:', err);
     } else {
