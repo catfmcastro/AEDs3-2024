@@ -64,17 +64,8 @@ public class Games {
     return day + "/" + month + "/" + year;
   }
 
+  // Formata objeto em String
   public String toString() {
-    // System.out.println("Id: " + this.id + " - " + "SteamID: " + this.steamID + "
-    // - " + "Preço: R$" + this.price
-    // + "\n" + "Nome: " + this.name + "\n" + "Descrição: " + this.short_description
-    // + "\n" + "Gêneros: "
-    // + this.genres + "\n" + "Publicador: " + this.publishers + "\n" + "Data de
-    // Lançamento: "
-    // + hoursToDate(this.release_date) + "\n" + "Grave: " + this.grave + "\n" +
-    // "Suporte Linux: "
-    // + this.supports_linux + "\n");
-
     return (
       "Id: " +
       this.id +
