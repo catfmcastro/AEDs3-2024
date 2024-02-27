@@ -45,7 +45,7 @@ public class App {
     RandomAccessFile raf, write;
     try {
       // Acessando o arquivo
-      raf = new RandomAccessFile("./src/games.csv", "r");
+      raf = new RandomAccessFile("./db/games.csv", "r");
       write = new RandomAccessFile("./out/games.db", "rw");
       raf.readLine(); // ! raf.seek nao funciona por causa de algum espaço nulo
 
