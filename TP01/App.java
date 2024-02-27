@@ -10,8 +10,9 @@
 import java.io.RandomAccessFile;
 import java.util.Random;
 import java.util.Scanner;
-import src.CRUD;
-import src.Games;
+
+import Controller.Crud;
+import Model.Games;
 
 public class App {
 
