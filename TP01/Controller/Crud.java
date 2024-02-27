@@ -1,16 +1,17 @@
-package src;
+package Controller;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import src.Games;
 
-public class CRUD {
+import Model.Games;
+
+public class Crud {
 
   private long finalPosition;
   private int maxId; // Ultimo jogo do arquivo, antes do fim
   RandomAccessFile raf = new RandomAccessFile("./db/games.db", "rw");
 
-  public CRUD() throws IOException {
+  public Crud() throws IOException {
     finalPosition = raf.readLong(); // guarda a da ultima posição do arquivo
     maxId = 59431;
   }

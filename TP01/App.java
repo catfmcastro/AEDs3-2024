@@ -10,8 +10,9 @@
 import java.io.RandomAccessFile;
 import java.util.Random;
 import java.util.Scanner;
-import src.CRUD;
-import src.Games;
+
+import Controller.Crud;
+import Model.Games;
 
 public class App {
 
@@ -44,7 +45,7 @@ public class App {
     RandomAccessFile raf, write;
     try {
       // Acessando o arquivo
-      raf = new RandomAccessFile("./src/games.csv", "r");
+      raf = new RandomAccessFile("./db/games.csv", "r");
       write = new RandomAccessFile("./out/games.db", "rw");
       raf.readLine(); // ! raf.seek nao funciona por causa de algum espaço nulo
 
@@ -99,7 +100,6 @@ public class App {
       );
 
       appLabel();
-
       int in = sc.nextInt();
 
       while (in != 5) {
@@ -107,6 +107,10 @@ public class App {
           System.out.println("\nexecutar create\n\n");
         } else if (in == 2) {
           System.out.println("\nexecutar read\n\n");
+
+          System.out.println("\nInsira o ID do game que deseja ver: ");
+          int inId = sc.nextInt();
+          
         } else if (in == 3) {
           System.out.println("\nexecutar update\n\n");
         } else if (in == 4) {
