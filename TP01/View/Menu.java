@@ -64,10 +64,12 @@ public class Menu extends Actions {
           break;
         case 3:
           Scanner sc = new Scanner(System.in);
-
+          Games tmp = new Games();
           System.out.print("\nInsira o ID do game que deseja buscar: ");
           int searchId = sc.nextInt();
-          this.readGame(searchId);
+          System.out.println("chamada da função...");
+          tmp = this.readGame(searchId);
+          tmp.toString();
           sc.close();
           this.executeMenu();
           break;
