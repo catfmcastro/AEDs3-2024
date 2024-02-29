@@ -59,6 +59,7 @@ public class CRUD {
         long pos = 8;
 
         try {
+            raf.seek(pos);
             for(int i = 0; i < maxId; i++){
                 int tam = raf.readInt();
                 tempVet = new byte[tam];
@@ -77,46 +78,20 @@ public class CRUD {
     }
 
     // Esqueleto da função para fazer update de um novo jogo já recebendo o id dele
-    public boolean Update(int ID) {
+    public void update(int ID) {
 
         // Posiciona o ponteiro no inicio do arquivo - (1)
         // Procura pelo ID correto - (2)
         // Compara os tamanhos para ver se vai ou nao de vasco - (3)
         // retorna se foi feito com sucesso ou nao - (4)
 
-        boolean var = false;
-        try {
-            var = true;
-        } catch (Exception e) {
-            System.out.println("Erro " + e);
-        }
-
-        return var;
     }
 
     // Esqueleto da função para deletar um jogo já recebendo o id dele
-    public Games Delete(int ID) {
+    public void Delete(int ID) {
         // Posiciona o ponteiro no inicio do arquivo - (1)
         // Procura pelo ID desejado - (2)
         // Ao encontrar atualiza o dado para true - (3)
         // Retorna o game removido (4)
-
-        Games var = new Games();
-        int pos = 8;
-        try {
-            raf.seek(pos);
-            for (int i = 0; i < ID; i++) {
-                pos += raf.readInt();
-                raf.seek(pos);
-            }
-            raf.readInt(); // ler o tamanho do vetor de byte
-            raf.readInt(); // ler o ID
-            raf.writeBoolean(true); // mudar o boolean, MAS precisa dos IFs pra ver se ele já nao estava deletado
-
-        } catch (Exception e) {
-            System.out.println("Erro " + e);
-        }
-
-        return var; // (4)
     }
 }
