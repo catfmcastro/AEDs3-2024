@@ -1,90 +1,61 @@
 package scr;
 
 import scr.Games;
+
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class CRUD {
+
     private long finalPosition; // Ponteiro que marca o final do arquivo
     private int maxId; // Ultimo jogo do arquivo antes do fim
-    RandomAccessFile raf = new RandomAccessFile("./db/games.db", "rw"); // Acesso ao BD de leitura e escrita
-
-    public CRUD () throws IOException{
+    RandomAccessFile raf = new RandomAccessFile("./Bagunca_tupac/scr/db/games.db", "rw"); // Arquivo BD
+    
+    public CRUD() throws IOException {
         finalPosition = raf.readLong(); // Ao ser criado ele lê do arquivo e guarda o local da ultima posição
         maxId = 59431;
     }
 
-    // Esqueleto da função para criar um novo jogo já recebendo o jogo criado para passar ao bd
-    public boolean Create (Games tmp){
-
-        // Posicionar ponteiro no final - (1)
-        // Criar o jogador - (2)
-        // Escrever no bd o jogador - (3)
-        // Atualizar o ponteiro para o final do arquivo - (4)
-        // Aumentar o maxID (5)
-
-        boolean var = false;
+    // Esqueleto da função para criar um novo jogo já recebendo o jogo criado
+    public void create(Games tmp) {
         try {
-            raf.seek(finalPosition); // (1)
-            byte aux[] = tmp.createbyteArray(); // (2)
-            raf.write(aux.length); // (3)
-            raf.write(aux); // (3)
-            finalPosition+=aux.length + 4 ; // (4), mais 4 é para pegar o inteiro que diz quantos bytes se devem ler 
-            maxId++; // (5)
-            var = true;
-        } catch (Exception e) {
-            System.out.println("Erro create " + e);
-            var = false;
+            System.out.println("Posicao antes: " + finalPosition);
+            maxId++;
+            raf.seek(finalPosition);
+            byte[] aux = tmp.createbyteArray();
+            raf.writeInt(aux.length);
+            raf.write(aux);
+            finalPosition += aux.length;
+            System.out.println("Posicao depois: " + finalPosition);
+        } catch (IOException e) {
+            System.out.println("Erro create");
         }
-        return var;
     }
-    
+
     // Esqueleto da função para achar um novo jogo já recebendo o id dele
-    public Games Read (int ID){
-        
-        // Mover o ponteiro para o incio do arquivo - (1)
-        // Ir lendo até chegar no ID procurado - (2)
-        // Verificar se ele é valido ou nao - (3)
-        // Retornar os dados do jogador encontrado - (4)
-
-        Games var = new Games(); // Jogo que deve ser retornado mesmo se nao encontrar
-        int pos = 8; // Pula o longint e já vai para o primeiro registro
+    public void read(int ID) {
         try {
-            raf.seek(pos); // (1)
-            for (int i = 0; i < ID; i++) { // (2)
-                pos += raf.readInt();
-                raf.seek(pos);
-            }
-            int tamGame = raf.readInt(); // tamanho do vetor de bytes a ser criado caso o dado encontrado nao tenha sido apagado ou sofrido update
-            if(!raf.readBoolean()){ // (3) - se for válido ele retorna o game, caso contrário ele volta a procurar
-                byte tmp[] = new byte[tamGame];
-                raf.seek(pos);
-                var.readBytes(tmp);
-            } else{ // Procurando se existe outro game com mesmo id disponivel
-                pos+=tamGame; 
-                raf.seek(pos);
-                for (int i = ID; i < maxId; i++) {
-                    if(raf.readInt() == ID && !raf.readBoolean()){ // Se for o id desejado retorna o game
-                        raf.seek(pos);
-                        tamGame = raf.readInt();
-                        byte tmp[] = new byte[tamGame];
-                        var.readBytes(tmp);
-                        break;
-                    }else{ // Se não muda a posição do ponteiro e vai mechendo
-                        pos+= raf.readInt();
-                    }
-                }
-            }
-            
-        } catch (Exception e) {
-            System.out.println("Erro read " + e);
-        }
+            raf.seek(0);
 
-        return var; // (4)
+            System.out.println("-------------");
+            Games novo = new Games();
+
+            raf.seek(0);
+            raf.readLong();
+            byte[] bi = new byte[raf.readInt()];
+            raf.read(bi);
+            novo.readByteArray(bi);
+            novo.printScreen();
+        } catch (Exception e) {
+            System.out.println("Erro read: " + e.getMessage());
+        }
     }
 
     // Esqueleto da função para fazer update de um novo jogo já recebendo o id dele
-    public boolean Update (int ID){
+    public boolean Update(int ID) {
 
         // Posiciona o ponteiro no inicio do arquivo - (1)
         // Procura pelo ID correto - (2)
@@ -102,29 +73,28 @@ public class CRUD {
     }
 
     // Esqueleto da função para deletar um jogo já recebendo o id dele
-    public Games Delete (int ID){
+    public Games Delete(int ID) {
         // Posiciona o ponteiro no inicio do arquivo - (1)
         // Procura pelo ID desejado - (2)
         // Ao encontrar atualiza o dado para true - (3)
         // Retorna o game removido (4)
-        
+
         Games var = new Games();
         int pos = 8;
         try {
             raf.seek(pos);
             for (int i = 0; i < ID; i++) {
-                pos+= raf.readInt();
+                pos += raf.readInt();
                 raf.seek(pos);
             }
             raf.readInt(); // ler o tamanho do vetor de byte
             raf.readInt(); // ler o ID
             raf.writeBoolean(true); // mudar o boolean, MAS precisa dos IFs pra ver se ele já nao estava deletado
-              
+
         } catch (Exception e) {
             System.out.println("Erro " + e);
         }
 
         return var; // (4)
     }
-
 }
