@@ -6,8 +6,6 @@ public class App {
         try {
             CRUD crud = new CRUD();
             Games teste = new Games(false, 10, 10, 10, "opa", "opa", "opa", "opa", "sim", 0);
-            // crud.create(teste);
-            // crud.create(teste);
             crud.read(10);
             
         } catch (Exception e) {

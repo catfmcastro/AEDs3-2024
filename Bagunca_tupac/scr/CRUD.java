@@ -19,12 +19,6 @@ public class CRUD {
         maxId = 59431;
     }
 
-    private static boolean checkID(int ID, int id) {
-        if (ID == id)
-            return true;
-        return false;
-    }
-
     // Esqueleto da função para criar um novo jogo já recebendo o jogo criado
     public void create(Games tmp) {
         try {
@@ -44,29 +38,17 @@ public class CRUD {
     // Esqueleto da função para achar um novo jogo já recebendo o id dele
     public void read(int ID) {
         try {
-            // FileInputStream file = new FileInputStream("./Bagunca_tupac/scr/db/games.db");
-            // DataInputStream dos = new DataInputStream(file);
-            // System.out.println(dos.readLong());
-            // System.out.println(dos.readInt());
-            // System.out.println(dos.readBoolean());
-            // System.out.println(dos.readInt());
-            // System.out.println(dos.readInt());
+            raf.seek(0);
 
             System.out.println("-------------");
+            Games novo = new Games();
 
-            raf.seek(17345499);
-            
-            System.out.println(raf.readInt());
-            System.out.println(raf.readBoolean());
-            System.out.println(raf.readInt());
-            System.out.println(raf.readInt());
-            System.out.println(raf.readUTF());
-            System.out.println(raf.readDouble());
-            System.out.println(raf.readUTF());
-            System.out.println(raf.readUTF());
-            System.out.println(raf.readUTF());
-            System.out.println(raf.readUTF());
-            System.out.println(raf.readInt());
+            raf.seek(0);
+            raf.readLong();
+            byte[] bi = new byte[raf.readInt()];
+            raf.read(bi);
+            novo.readByteArray(bi);
+            novo.printScreen();
         } catch (Exception e) {
             System.out.println("Erro read: " + e.getMessage());
         }

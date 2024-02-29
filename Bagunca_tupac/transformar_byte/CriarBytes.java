@@ -44,7 +44,7 @@ public class CriarBytes {
                 String vet[] = str.split("./;"); // Separando em vetor a string
                 Games tmp = new Games(false, Integer.parseInt(vet[0]), Integer.parseInt(vet[1]), Float.parseFloat(vet[3]), vet[2], vet[4], vet[5], vet[6], vet[7], trasnformDate(vet[8])); // Salva o valor em um game temporario
                 byte aux[] = tmp.createbyteArray(); // Insere no arquivo DB
-                write.write(aux.length); // Coloca o tamanho antes do vetor de dados de byte
+                write.writeInt(aux.length); // Coloca o tamanho antes do vetor de dados de byte
                 write.write(aux); // Insere o vetor de dados de byte
             }
 

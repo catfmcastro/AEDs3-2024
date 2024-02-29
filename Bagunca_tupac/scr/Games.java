@@ -5,12 +5,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 public class Games {
     private int id, steamID, release_date;
     private double price;
     private String name, short_description, genres, publishers, supports_linux;
     private boolean grave; // Saber se está ou nao usavel o dado
+    private DecimalFormat dt = new DecimalFormat("R$ 0.00");
 
     public Games() {
         this.id = -1;
@@ -25,7 +27,8 @@ public class Games {
         this.grave = false;
     }
 
-    public Games(boolean grave, int id, int steamID, float price, String name, String short_description, String genres, String publishers, String supports_linux, int release_date) {
+    public Games(boolean grave, int id, int steamID, float price, String name, String short_description, String genres,
+            String publishers, String supports_linux, int release_date) {
         this.id = id;
         this.grave = grave;
         this.steamID = steamID;
@@ -53,14 +56,17 @@ public class Games {
     }
 
     public void printScreen() {
-        System.out.println("Id: " + this.id + " - " + "SteamID: " + this.steamID + " - " + "Preço: R$" + this.price
+        System.out.println("Id: " + this.id + " - " + "SteamID: " + this.steamID + " - " + "Preço: "
+                + dt.format(this.price)
                 + "\n" + "Nome: " + this.name + "\n" + "Descrição: " + this.short_description + "\n" + "Gêneros: "
                 + this.genres + "\n" + "Publicador: " + this.publishers + "\n" + "Data de Lançamento: "
-                + disTransformDate(this.release_date) + "\n" + "Grave: " + this.grave + "\n" + "Suporte Linux: " + this.supports_linux + "\n");
+                + disTransformDate(this.release_date) + "\n" + "Grave: " + this.grave + "\n" + "Suporte Linux: "
+                + this.supports_linux + "\n");
     }
 
-    // Pega so dados já salvos do game e trasnforma em um vetor de bits que é retornado para ser inserido no arquivo
-    public byte[] createbyteArray () throws IOException{
+    // Pega so dados já salvos do game e trasnforma em um vetor de bits que é
+    // retornado para ser inserido no arquivo
+    public byte[] createbyteArray() throws IOException {
 
         // grave,id,steamID,name,price,short_descritiption,genres,publishers,supports_linux,release_date
 
