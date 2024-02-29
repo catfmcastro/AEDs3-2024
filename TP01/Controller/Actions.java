@@ -1,19 +1,30 @@
 package Controller;
 
+import Model.Games;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import Model.Games;
-
-public class Crud {
+public class Actions {
 
   private long finalPosition;
   private int maxId; // Ultimo jogo do arquivo, antes do fim
   RandomAccessFile raf = new RandomAccessFile("./db/games.db", "rw");
 
-  public Crud() throws IOException {
+  public Actions() throws IOException {
     finalPosition = raf.readLong(); // guarda a da ultima posição do arquivo
     maxId = 59431;
+  }
+
+  public void openFile() throws IOException {
+    RandomAccessFile raf = new RandomAccessFile("./db/games.db", "rw");
+  }
+
+  public void closeFile() throws IOException {
+    try {
+      raf.close();
+    } catch (Exception e) {
+      System.out.println("Erro ao fechar arquivo .db: " + e);
+    }
   }
 
   // Esqueleto da função para criar um novo jogo já recebendo o jogo criado para

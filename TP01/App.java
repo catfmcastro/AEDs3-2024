@@ -7,12 +7,14 @@
  * AEDs III
  */
 
+import Controller.Actions;
+import Model.Games;
+import View.Menu;
+
 import java.io.RandomAccessFile;
 import java.util.Random;
 import java.util.Scanner;
 
-import Controller.Crud;
-import Model.Games;
 
 public class App {
 
@@ -89,6 +91,7 @@ public class App {
 
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
+    Menu menu = new Menu();
 
     // * Método para a construção do arquivo binário
     //buildBinaryFile();
@@ -99,7 +102,8 @@ public class App {
         "Olá! Seja bem-vindo(a) ao Arquivo Binário da Cat e do Tupac (A.B.C.T)"
       );
 
-      appLabel();
+      menu.selectOption();
+
       int in = sc.nextInt();
 
       while (in != 5) {
