@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Games {
     private int id, steamID, release_date;
-    private float price;
+    private double price;
     private String name, short_description, genres, publishers, supports_linux;
     private boolean grave; // Saber se está ou nao usavel o dado
 
@@ -39,7 +39,7 @@ public class Games {
     }
 
     // Transforma o valor em horas para data em String
-    private static String reTrasnformDate(int data) {
+    private static String disTransformDate(int data) {
         // Um ano tem 8766 h
         // Um mês tem 730 h
         // Um dia tem 24 h
@@ -52,11 +52,11 @@ public class Games {
         return day + "/" + month + "/" + year;
     }
 
-    public void printScren() {
+    public void printScreen() {
         System.out.println("Id: " + this.id + " - " + "SteamID: " + this.steamID + " - " + "Preço: R$" + this.price
                 + "\n" + "Nome: " + this.name + "\n" + "Descrição: " + this.short_description + "\n" + "Gêneros: "
                 + this.genres + "\n" + "Publicador: " + this.publishers + "\n" + "Data de Lançamento: "
-                + reTrasnformDate(this.release_date) + "\n" + "Grave: " + this.grave + "\n" + "Suporte Linux: " + this.supports_linux + "\n");
+                + disTransformDate(this.release_date) + "\n" + "Grave: " + this.grave + "\n" + "Suporte Linux: " + this.supports_linux + "\n");
     }
 
     // Pega so dados já salvos do game e trasnforma em um vetor de bits que é retornado para ser inserido no arquivo
@@ -66,8 +66,8 @@ public class Games {
 
         ByteArrayOutputStream by = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(by);
-        dos.writeInt(id);
         dos.writeBoolean(grave);
+        dos.writeInt(id);
         dos.writeInt(steamID);
         dos.writeUTF(name);
         dos.writeDouble(price);
@@ -81,20 +81,23 @@ public class Games {
         return by.toByteArray();
     }
 
-    public void readBytes(byte by[]) throws IOException {
+    public void readByteArray(byte by[]) {
         ByteArrayInputStream vet = new ByteArrayInputStream(by);
         DataInputStream dos = new DataInputStream(vet);
-        this.grave = dos.readBoolean();
-        this.id = dos.readInt();
-        this.steamID = dos.readInt();
-        this.name = dos.readUTF();
-        this.price = dos.readFloat();
-        this.short_description = dos.readUTF();
-        this.genres = dos.readUTF();
-        this.publishers = dos.readUTF();
-        this.supports_linux = dos.readUTF();
-        this.release_date = dos.readInt();
-        dos.close();
+        try {
+            this.grave = dos.readBoolean();
+            this.id = dos.readInt();
+            this.steamID = dos.readInt();
+            this.name = dos.readUTF();
+            this.price = dos.readDouble();
+            this.short_description = dos.readUTF();
+            this.genres = dos.readUTF();
+            this.publishers = dos.readUTF();
+            this.supports_linux = dos.readUTF();
+            this.release_date = dos.readInt();
+            dos.close();
+        } catch (Exception e) {
+            System.out.println("Erro readByte: " + e.getMessage());
+        }
     }
-
 }
