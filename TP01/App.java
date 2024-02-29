@@ -97,30 +97,6 @@ public class App {
       );
 
       menu.executeMenu();
-      // int in = sc.nextInt();
-
-      // while (in != 5) {
-      //   if (in == 1) {
-      //     System.out.println("\nexecutar create\n\n");
-      //   } else if (in == 2) {
-      //     System.out.println("\nexecutar read\n\n");
-
-      //     System.out.println("\nInsira o ID do game que deseja ver: ");
-      //     int inId = sc.nextInt();
-
-      //   } else if (in == 3) {
-      //     System.out.println("\nexecutar update\n\n");
-      //   } else if (in == 4) {
-      //     System.out.println("\nexecutar delete\n\n");
-      //   }
-
-      //   appLabel();
-      //   in = sc.nextInt();
-      // }
-
-      // System.out.println("\n\nObrigado, até mais!");
-
-      // arq.close();
     } catch (Exception e) {
       System.out.println("Erro ao abrir/manipular o arquivo binário" + e);
     }

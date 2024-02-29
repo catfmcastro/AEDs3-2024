@@ -53,24 +53,29 @@ public class Menu extends Actions {
       switch (this.selected) {
         case 1:
           //todo load data
-          System.out.println("\nload data\n\n");
+          System.out.println("\nload data\n");
           this.loadData();
+          this.executeMenu();
           break;
         case 2:
           //todo create game
           System.out.println("\ncreate\n\n");
+          this.executeMenu();
           break;
         case 3:
           //todo view game
           System.out.println("\nview\n\n");
+          this.executeMenu();
           break;
         case 4:
           //todo edit game
           System.out.println("\nedit\n\n");
+          this.executeMenu();
           break;
         case 5:
           //todo delete game
           System.out.println("\ndelete\n\n");
+          this.executeMenu();
           break;
         case 6:
           //todo leave
