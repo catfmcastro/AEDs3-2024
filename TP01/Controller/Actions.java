@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.Games;
-
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -124,12 +123,15 @@ public class Actions {
       file.seek(pos);
       for (int i = 0; i < maxId; i++) {
         int size = file.readByte(); // lê o tamanho do registro
+
         byte[] arr = new byte[size];
-        file.read(arr);
+        file.read(arr); // lê o registro que ocupa o tamanho "size"
+
         if (isGameValid(arr, searchId)) {
           tmp.fromByteArray(arr);
           return tmp;
         }
+        pos += size + 4;
       }
     } catch (Exception e) {
       System.err.println("Erro na função Read: " + e);
@@ -139,15 +141,17 @@ public class Actions {
   }
 
   // Checa se o game é válido ou não, quanto a lápide
-  public boolean isGameValid (byte arr[], int id) {
+  public boolean isGameValid(byte arr[], int id) {
     boolean resp = false;
     ByteArrayInputStream by = new ByteArrayInputStream(arr);
     DataInputStream dis = new DataInputStream(by);
 
     try {
-      if(!dis.readBoolean() && dis.readInt() == id) {
-        resp = true;
-      }
+      dis.readBoolean();
+      System.out.println("inciando checagem do game de id " + dis.readInt());
+      // if(!dis.readBoolean() && dis.readInt() == id) {
+      //   resp = true;
+      // }
     } catch (Exception e) {
       System.err.println("Erro na checagem de validade do Game: " + e);
     }

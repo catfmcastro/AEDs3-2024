@@ -92,7 +92,7 @@ public class Menu extends Actions {
           break;
       }
     } catch (Exception e) {
-      System.err.println("Erro ao fechar o arquivo: " + e);
+      System.err.println("Erro na função executeMenu: " + e);
     }
   }
 }
