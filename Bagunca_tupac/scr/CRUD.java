@@ -2,6 +2,9 @@ package scr;
 
 import scr.Games;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInput;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
@@ -10,7 +13,7 @@ public class CRUD {
     private long finalPosition; // Ponteiro que marca o final do arquivo
     private int maxId; // Ultimo jogo do arquivo antes do fim
     RandomAccessFile raf = new RandomAccessFile("./Bagunca_tupac/scr/db/games.db", "rw"); // Arquivo BD
-    
+
     public CRUD() throws IOException {
         finalPosition = raf.readLong(); // Ao ser criado ele lê do arquivo e guarda o local da ultima posição
         maxId = 59431;
@@ -32,22 +35,44 @@ public class CRUD {
         }
     }
 
-    // Esqueleto da função para achar um novo jogo já recebendo o id dele
-    public void read(int ID) {
+    private boolean isID(byte array[], int ID) {
+        ByteArrayInputStream var = new ByteArrayInputStream(array);
+        DataInputStream dos = new DataInputStream(var);
+
         try {
-            raf.seek(0);
+            if (!dos.readBoolean() && dos.readInt() == ID) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Erro checkID: " + e.getMessage());
+            return false;
+        }
+    }
 
-            System.out.println("-------------");
-            Games novo = new Games();
+    // Esqueleto da função para achar um novo jogo já recebendo o id dele
+    public Games read(int ID) {
 
-            raf.seek(0);
-            raf.readLong();
-            byte[] bi = new byte[raf.readInt()];
-            raf.read(bi);
-            novo.readByteArray(bi);
-            novo.printScreen();
+        Games aux = new Games();
+        byte[] tempVet;
+        long pos = 8;
+
+        try {
+            for(int i = 0; i < maxId; i++){
+                int tam = raf.readInt();
+                tempVet = new byte[tam];
+                raf.read(tempVet);
+                if(isID(tempVet, ID)){
+                    aux.readByteArray(tempVet);
+                    return aux;
+                }
+                pos += tam + 4;
+            }
+            return aux;
         } catch (Exception e) {
             System.out.println("Erro read: " + e.getMessage());
+            return aux;
         }
     }
 

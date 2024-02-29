@@ -5,11 +5,10 @@ public class App {
     public static void main(String[] args) {
         try {
             CRUD crud = new CRUD();
-            crud.read(10);
-            
+            Games tmp = crud.read(0);
+            tmp.printScreen();            
         } catch (Exception e) {
             System.out.println("Erro: " + e);
         }
-
     }
 }
