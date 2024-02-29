@@ -64,6 +64,22 @@ public class Games {
                 + this.supports_linux + "\n");
     }
 
+    public boolean isID (byte[] array, int ID){
+        ByteArrayInputStream vet = new ByteArrayInputStream(array);
+        DataInputStream dos = new DataInputStream(vet);
+
+        try {
+            if(!dos.readBoolean() && dos.readInt() == ID){
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Erro compare: " + e.getMessage());
+            return false;
+        }
+    }
+
     // Pega so dados já salvos do game e trasnforma em um vetor de bits que é
     // retornado para ser inserido no arquivo
     public byte[] createbyteArray() throws IOException {
