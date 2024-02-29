@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Games {
 
@@ -38,7 +39,7 @@ public class Games {
     String short_description,
     String genres,
     String publishers,
-    char supports_linux[],
+    String supports_linux,
     int release_date
   ) {
     this.id = id;
@@ -50,9 +51,17 @@ public class Games {
     this.genres = genres;
     this.publishers = publishers;
     for (int i = 0; i < 3; i++) {
-      this.supports_linux[i] = supports_linux[i];
+      this.supports_linux[i] = supports_linux.charAt(i);
     }
     this.release_date = release_date;
+  }
+
+  public int getId() {
+    return this.id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 
   // Transforma o valor em horas para data em String
@@ -115,8 +124,29 @@ public class Games {
     );
   }
 
+  // TODO Input de game novo pelo user
+  public Games inputNewGame() {
+    Games tmp = new Games();
+    Scanner sc = new Scanner(System.in);
+    //boolean confirm = false;
+
+    System.out.println("Insira as informações solicitadas.");
+
+    System.out.println("\nNome do game: ");
+    String name = sc.next();
+    this.name = name;
+
+    // System.out.println("\nData de lançamento: ");
+    // String release_date = sc.next();
+    // this.release_date = release_date;
+
+    sc.close();
+
+    return tmp;
+  }
+
   // Converte dados do objeto para array de bytes
-  public byte[] makeByteArray() throws IOException {
+  public byte[] byteParse() throws IOException {
     // grave,id,steamID,name,price,short_descritiption,genres,publishers,supports_linux,release_date
 
     ByteArrayOutputStream by = new ByteArrayOutputStream();
