@@ -5,13 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
-// todo extends Actions
 public class Menu extends Actions {
 
   private int selected;
   private Scanner sc;
 
-  public Menu() throws IOException {
+  public Menu() {
     this.selected = 0;
     sc = new Scanner(System.in);
   }
@@ -43,31 +42,46 @@ public class Menu extends Actions {
       selected = 0;
       this.openFile();
       this.selectOption();
-      //this.executeOption
+      this.executeOption();
     } catch (Exception e) {
-      System.err.println("Erro: " + e);
+      System.err.println("Erro ao executar Menu: " + e);
     }
   }
 
   public void executeOption() throws FileNotFoundException {
-    switch (this.selected) {
-      case 1:
-        //todo load data
-        break;
-      case 2:
-        //todo create game
-        break;
-      case 3:
-        //todo 
-        break;
-      case 4:
-        break;
-      case 5:
-        break;
-      case 6:
-        break;
-      default:
-        break;
+    try {
+      switch (this.selected) {
+        case 1:
+          //todo load data
+          System.out.println("\nload data\n\n");
+          this.loadData();
+          break;
+        case 2:
+          //todo create game
+          System.out.println("\ncreate\n\n");
+          break;
+        case 3:
+          //todo view game
+          System.out.println("\nview\n\n");
+          break;
+        case 4:
+          //todo edit game
+          System.out.println("\nedit\n\n");
+          break;
+        case 5:
+          //todo delete game
+          System.out.println("\ndelete\n\n");
+          break;
+        case 6:
+          //todo leave
+          System.out.println("\nleave\n\n");
+          this.closeFile();
+          break;
+        default:
+          break;
+      }
+    } catch (Exception e) {
+      System.err.println("Erro ao fechar o arquivo: " + e);
     }
   }
 }

@@ -102,32 +102,32 @@ public class App {
         "Olá! Seja bem-vindo(a) ao Arquivo Binário da Cat e do Tupac (A.B.C.T)"
       );
 
-      menu.selectOption();
+      menu.executeMenu();
 
-      int in = sc.nextInt();
+      // int in = sc.nextInt();
 
-      while (in != 5) {
-        if (in == 1) {
-          System.out.println("\nexecutar create\n\n");
-        } else if (in == 2) {
-          System.out.println("\nexecutar read\n\n");
+      // while (in != 5) {
+      //   if (in == 1) {
+      //     System.out.println("\nexecutar create\n\n");
+      //   } else if (in == 2) {
+      //     System.out.println("\nexecutar read\n\n");
 
-          System.out.println("\nInsira o ID do game que deseja ver: ");
-          int inId = sc.nextInt();
+      //     System.out.println("\nInsira o ID do game que deseja ver: ");
+      //     int inId = sc.nextInt();
           
-        } else if (in == 3) {
-          System.out.println("\nexecutar update\n\n");
-        } else if (in == 4) {
-          System.out.println("\nexecutar delete\n\n");
-        }
+      //   } else if (in == 3) {
+      //     System.out.println("\nexecutar update\n\n");
+      //   } else if (in == 4) {
+      //     System.out.println("\nexecutar delete\n\n");
+      //   }
 
-        appLabel();
-        in = sc.nextInt();
-      }
+      //   appLabel();
+      //   in = sc.nextInt();
+      // }
 
-      System.out.println("\n\nObrigado, até mais!");
+      // System.out.println("\n\nObrigado, até mais!");
 
-      arq.close();
+      // arq.close();
     } catch (Exception e) {
       System.out.println("Erro ao abrir/manipular o arquivo binário" + e);
     }
