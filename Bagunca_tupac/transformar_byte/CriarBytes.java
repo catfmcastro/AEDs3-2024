@@ -39,6 +39,7 @@ public class CriarBytes {
 
             write.writeLong(10); // Reserva um espaço no inicio do arquivo como um long int para inserir a posição do final do arquivo
 
+            System.out.println("iniciando load...");
             while ((str = raf.readLine()) != null) {
                 String vet[] = str.split("./;"); // Separando em vetor a string
                 Games tmp = new Games(false, Integer.parseInt(vet[0]), Integer.parseInt(vet[1]), Float.parseFloat(vet[3]), vet[2], vet[4], vet[5], vet[6], vet[7], trasnformDate(vet[8])); // Salva o valor em um game temporario
@@ -53,6 +54,7 @@ public class CriarBytes {
             
             write.close(); 
             raf.close();
+            System.out.println("load finalizado com sucesso");
         } catch (Exception e) {
             System.out.println(e);
         }

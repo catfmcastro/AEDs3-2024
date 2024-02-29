@@ -7,12 +7,12 @@
  * AEDs III
  */
 
+import Controller.Actions;
+import Model.Games;
+import View.Menu;
 import java.io.RandomAccessFile;
 import java.util.Random;
 import java.util.Scanner;
-
-import Controller.Crud;
-import Model.Games;
 
 public class App {
 
@@ -69,7 +69,7 @@ public class App {
           dateToHours(vet[8])
         );
 
-        byte aux[] = tmp.toByteArray(); // Insere no arquivo binário
+        byte aux[] = tmp.makeByteArray(); // Insere no arquivo binário
         write.write(aux.length); // Add o tamanho de cada vetor antes dos dados
         write.write(aux); // Insere o vetor de bytes
       }
@@ -89,41 +89,38 @@ public class App {
 
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
-
-    // * Método para a construção do arquivo binário
-    //buildBinaryFile();
+    Menu menu = new Menu();
 
     try {
-      RandomAccessFile arq = new RandomAccessFile("./out/games.db", "rw");
       System.out.println(
         "Olá! Seja bem-vindo(a) ao Arquivo Binário da Cat e do Tupac (A.B.C.T)"
       );
 
-      appLabel();
-      int in = sc.nextInt();
+      menu.executeMenu();
+      // int in = sc.nextInt();
 
-      while (in != 5) {
-        if (in == 1) {
-          System.out.println("\nexecutar create\n\n");
-        } else if (in == 2) {
-          System.out.println("\nexecutar read\n\n");
+      // while (in != 5) {
+      //   if (in == 1) {
+      //     System.out.println("\nexecutar create\n\n");
+      //   } else if (in == 2) {
+      //     System.out.println("\nexecutar read\n\n");
 
-          System.out.println("\nInsira o ID do game que deseja ver: ");
-          int inId = sc.nextInt();
-          
-        } else if (in == 3) {
-          System.out.println("\nexecutar update\n\n");
-        } else if (in == 4) {
-          System.out.println("\nexecutar delete\n\n");
-        }
+      //     System.out.println("\nInsira o ID do game que deseja ver: ");
+      //     int inId = sc.nextInt();
 
-        appLabel();
-        in = sc.nextInt();
-      }
+      //   } else if (in == 3) {
+      //     System.out.println("\nexecutar update\n\n");
+      //   } else if (in == 4) {
+      //     System.out.println("\nexecutar delete\n\n");
+      //   }
 
-      System.out.println("\n\nObrigado, até mais!");
+      //   appLabel();
+      //   in = sc.nextInt();
+      // }
 
-      arq.close();
+      // System.out.println("\n\nObrigado, até mais!");
+
+      // arq.close();
     } catch (Exception e) {
       System.out.println("Erro ao abrir/manipular o arquivo binário" + e);
     }

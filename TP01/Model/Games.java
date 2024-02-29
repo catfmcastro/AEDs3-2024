@@ -101,7 +101,7 @@ public class Games {
   }
 
   // Converte dados do objeto para array de bytes
-  public byte[] toByteArray() throws IOException {
+  public byte[] makeByteArray() throws IOException {
     // grave,id,steamID,name,price,short_descritiption,genres,publishers,supports_linux,release_date
 
     ByteArrayOutputStream by = new ByteArrayOutputStream();
