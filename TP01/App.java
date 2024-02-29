@@ -10,11 +10,9 @@
 import Controller.Actions;
 import Model.Games;
 import View.Menu;
-
 import java.io.RandomAccessFile;
 import java.util.Random;
 import java.util.Scanner;
-
 
 public class App {
 
@@ -71,7 +69,7 @@ public class App {
           dateToHours(vet[8])
         );
 
-        byte aux[] = tmp.toByteArray(); // Insere no arquivo binário
+        byte aux[] = tmp.makeByteArray(); // Insere no arquivo binário
         write.write(aux.length); // Add o tamanho de cada vetor antes dos dados
         write.write(aux); // Insere o vetor de bytes
       }
@@ -93,17 +91,12 @@ public class App {
     Scanner sc = new Scanner(System.in);
     Menu menu = new Menu();
 
-    // * Método para a construção do arquivo binário
-    //buildBinaryFile();
-
     try {
-      RandomAccessFile arq = new RandomAccessFile("./out/games.db", "rw");
       System.out.println(
         "Olá! Seja bem-vindo(a) ao Arquivo Binário da Cat e do Tupac (A.B.C.T)"
       );
 
       menu.executeMenu();
-
       // int in = sc.nextInt();
 
       // while (in != 5) {
@@ -114,7 +107,7 @@ public class App {
 
       //     System.out.println("\nInsira o ID do game que deseja ver: ");
       //     int inId = sc.nextInt();
-          
+
       //   } else if (in == 3) {
       //     System.out.println("\nexecutar update\n\n");
       //   } else if (in == 4) {

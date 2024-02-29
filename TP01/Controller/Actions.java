@@ -13,7 +13,7 @@ public class Actions {
 
   public void openFile() throws IOException {
     try {
-      file = new RandomAccessFile("./db/games.db", "rw");
+      file = new RandomAccessFile("./TP01/out/games.db", "rw");
       finalPosition = file.readLong(); // guarda a da ultima posição do arquivo
       maxId = 59431;
     } catch (Exception e) {
@@ -47,10 +47,10 @@ public class Actions {
 
   // Carrega info. do .csv para o .db
   public void loadData() {
-    RandomAccessFile raf, write;
+    RandomAccessFile raf;
     try {
       // Acessando o arquivo
-      raf = new RandomAccessFile("./db/games.csv", "r");
+      raf = new RandomAccessFile("./TP01/db/games.csv", "r");
       //write = new RandomAccessFile("./out/games.db", "rw");
       raf.readLine(); // ! raf.seek nao funciona por causa de algum espaço nulo
 
@@ -78,10 +78,9 @@ public class Actions {
           dateToHours(vet[8])
         );
 
-        byte aux[] = tmp.toByteArray(); // Insere no arquivo binário
+        byte aux[] = tmp.makeByteArray(); // Insere no arquivo binário
         file.write(aux.length); // Add o tamanho de cada vetor antes dos dados
         file.write(aux); // Insere o vetor de bytes
-        System.out.println("obj add no file!");
       }
 
       long last = file.getFilePointer(); // Última posicao do arquivo
