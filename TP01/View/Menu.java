@@ -67,8 +67,11 @@ public class Menu extends Actions {
           Games tmp = new Games();
           System.out.print("\nInsira o ID do game que deseja buscar: ");
           int searchId = sc.nextInt();
-          System.out.println("chamada da função...");
+
+          System.out.println("init read game...");
           tmp = this.readGame(searchId);
+          System.out.println("end read game");
+          
           tmp.toString();
           sc.close();
           this.executeMenu();

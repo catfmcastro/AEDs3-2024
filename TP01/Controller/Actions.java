@@ -118,17 +118,19 @@ public class Actions {
   // Ver game existente
   public Games readGame(int searchId) throws IOException {
     Games tmp = new Games();
-    long pos = 8; // primeira posição do file, pulando os metadados
+    long pos = 0; // primeira posição do file, pulando os metadados
     try {
       file.seek(pos);
       for (int i = 0; i < maxId; i++) {
-        int size = file.readByte(); // lê o tamanho do registro
-
+        int size = file.readInt(); // lê o tamanho do registro
+        System.out.println("size is: " + size );
         byte[] arr = new byte[size];
         file.read(arr); // lê o registro que ocupa o tamanho "size"
 
         if (isGameValid(arr, searchId)) {
+          System.out.println("passou na checagem");
           tmp.fromByteArray(arr);
+          System.out.println("fim fromByteArray");
           return tmp;
         }
         pos += size + 4;

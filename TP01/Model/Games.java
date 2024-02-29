@@ -166,8 +166,9 @@ public class Games {
       this.short_description = dos.readUTF();
       this.genres = dos.readUTF();
       this.publishers = dos.readUTF();
+      String aux = dos.readUTF();
       for (int i = 0; i < 3; i++) {
-        this.supports_linux[i] = dos.readChar();
+        this.supports_linux[i] = aux.charAt(i);
       }
       this.release_date = dos.readInt();
       dos.close();
