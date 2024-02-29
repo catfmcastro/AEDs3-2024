@@ -84,11 +84,30 @@ public class CRUD {
         // Procura pelo ID correto - (2)
         // Compara os tamanhos para ver se vai ou nao de vasco - (3)
         // retorna se foi feito com sucesso ou nao - (4)
+        Games aux = new Games();
+        byte[] tempVet;
+        long pos = 8;
+
+        try {
+            raf.seek(pos);
+            for(int i = 0; i < maxId; i++){
+                int tam = raf.readInt();
+                tempVet = new byte[tam];
+                raf.read(tempVet);
+                if(isID(tempVet, ID)){
+                    aux.readByteArray(tempVet);
+                }
+                pos += tam + 4;
+            }
+        } catch (Exception e) {
+            System.out.println("");
+        }
+
 
     }
 
     // Esqueleto da função para deletar um jogo já recebendo o id dele
-    public void Delete(int ID) {
+    public void delete(int ID) {
         // Posiciona o ponteiro no inicio do arquivo - (1)
         // Procura pelo ID desejado - (2)
         // Ao encontrar atualiza o dado para true - (3)
