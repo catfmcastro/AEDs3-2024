@@ -10,19 +10,22 @@ public class Games {
 
   private int id, steamID, release_date;
   private float price;
-  private String name, short_description, genres, publishers, supports_linux;
+  private String name, short_description, genres, publishers;
+  private char[] supports_linux = new char[3];
   private boolean grave; // Lápide
 
   public Games() {
     this.id = -1;
     this.steamID = -1;
     this.price = -1;
-    this.name = "N";
-    this.short_description = "N";
-    this.genres = "N";
-    this.publishers = "N";
+    this.name = "";
+    this.short_description = "";
+    this.genres = "";
+    this.publishers = "";
     this.release_date = -1;
-    this.supports_linux = "N";
+    for (int i = 0; i < 3; i++) {
+      this.supports_linux[i] = '\0';
+    }
     this.grave = false;
   }
 
@@ -35,7 +38,7 @@ public class Games {
     String short_description,
     String genres,
     String publishers,
-    String supports_linux,
+    char supports_linux[],
     int release_date
   ) {
     this.id = id;
@@ -46,7 +49,9 @@ public class Games {
     this.short_description = short_description;
     this.genres = genres;
     this.publishers = publishers;
-    this.supports_linux = supports_linux;
+    for (int i = 0; i < 3; i++) {
+      this.supports_linux[i] = supports_linux[i];
+    }
     this.release_date = release_date;
   }
 
@@ -62,6 +67,16 @@ public class Games {
     day = Integer.toString(((data % 8760) % 730) / 24);
 
     return day + "/" + month + "/" + year;
+  }
+
+  private String printSupportsLinux() {
+    String str = "";
+
+    for (int i = 0; i < 3; i++) {
+      str += supports_linux[i];
+    }
+
+    return str;
   }
 
   // Formata objeto em String
@@ -95,7 +110,7 @@ public class Games {
       this.grave +
       "\n" +
       "Suporte Linux: " +
-      this.supports_linux +
+      printSupportsLinux() +
       "\n"
     );
   }
@@ -114,7 +129,9 @@ public class Games {
     dos.writeUTF(short_description);
     dos.writeUTF(genres);
     dos.writeUTF(publishers);
-    dos.writeUTF(supports_linux);
+    for (int i = 0; i < 3; i++) {
+      dos.writeChar(supports_linux[i]);
+    }
     dos.writeInt(release_date);
     dos.close();
 
@@ -133,7 +150,9 @@ public class Games {
     this.short_description = dos.readUTF();
     this.genres = dos.readUTF();
     this.publishers = dos.readUTF();
-    this.supports_linux = dos.readUTF();
+    for (int i = 0; i < 3; i++) {
+      this.supports_linux[i] = dos.readChar();
+    }
     this.release_date = dos.readInt();
     dos.close();
   }
