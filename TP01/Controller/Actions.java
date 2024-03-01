@@ -120,20 +120,12 @@ public class Actions {
       file.seek(pos);
       for (int i = 0; i < maxId; i++) {
         int size = file.readInt(); // lê o tamanho do registro
-        System.out.println("\n\nsize is: " + size );
 
         arr = new byte[size];
-        System.out.println("o arr lido é: " + arr);
-
-        System.out.println("lendo registro do .db...");
         file.read(arr); // lê o registro que ocupa o tamanho "size"
-        System.out.println("fim da leitura do registro.");
 
-        System.out.println("checagem de validade");
         if (isGameValid(arr, searchId)) {
-          System.out.println("passou na checagem");
           tmp.fromByteArray(arr);
-          System.out.println("fim fromByteArray");
           return tmp;
         }
         pos += size;
@@ -152,8 +144,6 @@ public class Actions {
     DataInputStream dis = new DataInputStream(by);
 
     try {
-      // System.out.println("boolean lido é: " + dis.readBoolean());
-      // System.out.println("id lido é " + dis.readInt());
       if(!dis.readBoolean() && dis.readInt() == id) {
         resp = true;
       }

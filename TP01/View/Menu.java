@@ -51,32 +51,36 @@ public class Menu extends Actions {
   public void executeOption() throws FileNotFoundException {
     try {
       switch (this.selected) {
+
         case 1:
           this.loadData();
           this.executeMenu();
           break;
         case 2:
+        
           //Games tmp = new Games();
           System.out.println(
             "Essa função está indisponível no momento, tente novamente mais tarde.\n"
           );
           this.executeMenu();
           break;
+
         case 3:
           Scanner sc = new Scanner(System.in);
           Games tmp = new Games();
+
           System.out.print("\nInsira o ID do game que deseja buscar: ");
           int inputId = sc.nextInt();
 
-          System.out.println("init read game...\n");
-          tmp = this.readGame(inputId);
-          System.out.println("\nend read game");
-          
-          // todo fix
+          System.out.println();
+          tmp = this.readGame(inputId);          
           tmp.printGame();
+
           sc.close();
+          
           this.executeMenu();
           break;
+
         case 4:
           // todo edit game
           System.out.println("\nedit\n\n");
