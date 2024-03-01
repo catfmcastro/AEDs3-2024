@@ -57,16 +57,15 @@ public class Menu extends Actions {
           this.executeMenu();
           break;
         case 2:
-        
           //Games tmp = new Games();
           System.out.println(
             "Essa função está indisponível no momento, tente novamente mais tarde.\n"
           );
+
+          sc.nextLine();
           this.executeMenu();
           break;
-
         case 3:
-          Scanner sc = new Scanner(System.in);
           Games tmp = new Games();
 
           System.out.print("\nInsira o ID do game que deseja buscar: ");
@@ -76,24 +75,26 @@ public class Menu extends Actions {
           tmp = this.readGame(inputId);          
           tmp.printGame();
 
-          sc.close();
-          
+          sc.nextLine();
           this.executeMenu();
           break;
-
         case 4:
-          // todo edit game
           System.out.println("\nedit\n\n");
+
+          sc.nextLine();
           this.executeMenu();
           break;
         case 5:
-          // todo delete game
           System.out.println("\ndelete\n\n");
+
+          sc.nextLine();
           this.executeMenu();
           break;
         case 6:
           // todo leave
           System.out.println("\nObrigado por usar nosso Banco de Dados! :)");
+
+          sc.close();
           this.closeFile();
           break;
         default:
