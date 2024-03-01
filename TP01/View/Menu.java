@@ -1,8 +1,8 @@
 package View;
 
 import Controller.Actions;
+import Model.Games;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Menu extends Actions {
@@ -18,7 +18,7 @@ public class Menu extends Actions {
   public void selectOption() {
     System.out.println("\nO que você gostaria de fazer?");
     System.out.println("1) Carregar dados");
-    System.out.println("2) Criar novo game");
+    System.out.println("2) [INDISPONIVEL] Criar novo game");
     System.out.println("3) Ver game existente");
     System.out.println("4) Atualizar game existente");
     System.out.println("5) Deletar game");
@@ -51,37 +51,57 @@ public class Menu extends Actions {
   public void executeOption() throws FileNotFoundException {
     try {
       switch (this.selected) {
+
         case 1:
-          //todo load data
-          System.out.println("\nload data\n\n");
           this.loadData();
+          this.executeMenu();
           break;
         case 2:
-          //todo create game
-          System.out.println("\ncreate\n\n");
+          //Games tmp = new Games();
+          System.out.println(
+            "Essa função está indisponível no momento, tente novamente mais tarde.\n"
+          );
+
+          sc.nextLine();
+          this.executeMenu();
           break;
         case 3:
-          //todo view game
-          System.out.println("\nview\n\n");
+          Games tmp = new Games();
+
+          System.out.print("\nInsira o ID do game que deseja buscar: ");
+          int inputId = sc.nextInt();
+
+          System.out.println();
+          tmp = this.readGame(inputId);          
+          tmp.printGame();
+
+          sc.nextLine();
+          this.executeMenu();
           break;
         case 4:
-          //todo edit game
           System.out.println("\nedit\n\n");
+
+          sc.nextLine();
+          this.executeMenu();
           break;
         case 5:
-          //todo delete game
           System.out.println("\ndelete\n\n");
+
+          sc.nextLine();
+          this.executeMenu();
           break;
         case 6:
-          //todo leave
-          System.out.println("\nleave\n\n");
+          // todo leave
+          System.out.println("\nObrigado por usar nosso Banco de Dados! :)");
+
+          sc.close();
           this.closeFile();
           break;
         default:
           break;
       }
     } catch (Exception e) {
-      System.err.println("Erro ao fechar o arquivo: " + e);
+      System.err.println("Erro na função executeMenu: " + e);
     }
   }
 }
