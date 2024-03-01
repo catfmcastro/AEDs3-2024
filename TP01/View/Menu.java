@@ -84,7 +84,18 @@ public class Menu extends Actions {
           this.executeMenu();
           break;
         case 4:
-          System.out.println("\nedit\n\n");
+          System.out.print("\nInsira o ID do game que deseja editar: ");
+          int inputIdUpdate = sc.nextInt();
+          Games aux = new Games();
+          
+
+          boolean done = this.updateGame(inputIdUpdate, aux);
+
+          if (done) {
+            System.out.println("Game atualizado com sucesso!");
+          } else {
+            System.out.println("Não foi possível atualizar o game. Tente novamente.");
+          }
 
           sc.nextLine();
           this.executeMenu();

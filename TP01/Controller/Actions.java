@@ -43,13 +43,13 @@ public class Actions {
     return year + month + day;
   }
 
+  // !!!!!! PROBLEMA! não está carregando o cabeçalho corretamente
   // Carrega info. do .csv para o .db
   public void loadData() {
     RandomAccessFile csv;
     try {
-      // Acessando o arquivo
       csv = new RandomAccessFile("./TP01/db/games.csv", "r");
-      csv.readLine(); // ! file.seek nao funciona por causa de algum espaço nulo
+      csv.readLine();
 
       System.out.println("Carregando dados para o Banco...");
 
@@ -155,7 +155,47 @@ public class Actions {
   }
 
   // Editar game existente
-  public void updateGame() {}
+  public boolean updateGame(int id, Games insert) {
+    // Posiciona o ponteiro no inicio do arquivo - (1)
+    // Procura pelo ID correto - (2)
+    // Compara os tamanhos para ver se vai ou nao de vasco - (3)
+    // retorna se foi feito com sucesso ou nao - (4)
+
+    Games aux = new Games();
+    byte[] arr;
+    long pos = 8;
+
+    try {
+      file.seek(pos);
+
+      for (int i = 0; i < maxId; i++) {
+        int tam = file.readInt();
+        arr = new byte[tam];
+        file.read(arr);
+
+        if (isGameValid(arr, id)) {
+          if (tam >= insert.byteParse().length) {
+            // Se o game for maior, salva no fim do file
+            file.seek(pos + 4);
+            file.write(insert.byteParse());
+            return true;
+          } else {
+            // Se game o menor, salva no mesmo local que o file
+            file.seek(pos + 4);
+            aux.fromByteArray(arr);
+            aux.setGrave(true);
+            file.write(aux.byteParse());
+            createGame(insert);
+            return true;
+          }
+        }
+      }
+      return false;
+    } catch (Exception e) {
+      System.out.println("Erro na função update: " + e.getMessage());
+      return false;
+    }
+  }
 
   // Deletar logicamente um game
   public Games deleteGame(int id) {

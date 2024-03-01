@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class Games {
+
   private int id, steamID, release_date;
   private double price;
   private String name, short_description, genres, publishers;
@@ -33,16 +34,18 @@ public class Games {
     this.grave = false;
   }
 
-  public void setId (int id){
-    this.id = id;
-  }
-
-  public void setGrave (boolean grave) {
-    this.grave = grave;
-  }
-
-  public Games(boolean grave, int id, int steamID, float price, String name, String short_description, String genres,
-      String publishers, String supports_linux, int release_date) {
+  public Games(
+    boolean grave,
+    int id,
+    int steamID,
+    float price,
+    String name,
+    String short_description,
+    String genres,
+    String publishers,
+    String supports_linux,
+    int release_date
+  ) {
     this.id = id;
     this.grave = grave;
     this.steamID = steamID;
@@ -56,6 +59,86 @@ public class Games {
     //   this.supports_linux[i] = supports_linux.charAt(i);
     // }
     this.release_date = release_date;
+  }
+
+  public int getId() {
+    return this.id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public int getSteamId() {
+    return this.id;
+  }
+
+  public void setSteamId(int steamId) {
+    this.steamID = steamId;
+  }
+
+  public int getReleaseDate() {
+    return this.release_date;
+  }
+
+  public void setReleaseDate(int release_date) {
+    this.release_date = release_date;
+  }
+
+  public double getPrice() {
+    return this.price;
+  }
+
+  public void setPrice(double price) {
+    this.price = price;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getShortDescription() {
+    return this.short_description;
+  }
+
+  public void setShortDescription(String short_description) {
+    this.short_description = short_description;
+  }
+
+  public String getGenres() {
+    return this.genres;
+  }
+
+  public void setGenres(String genres) {
+    this.genres = genres;
+  }
+
+  public String getPublishers() {
+    return this.publishers;
+  }
+
+  public void setPublishers(String publishers) {
+    this.publishers = publishers;
+  }
+
+  public String getSupportsLinux() {
+    return this.supports_linux;
+  }
+
+  public void setSupportsLinux(String supports_linux) {
+    this.supports_linux = supports_linux;
+  }
+
+  public boolean getGrave() {
+    return this.grave;
+  }
+
+  public void setGrave(boolean grave) {
+    this.grave = grave;
   }
 
   // Transforma o valor em horas para data em String
@@ -74,46 +157,48 @@ public class Games {
 
   // private String printSupportsLinux() {
   //   String str = "";
-
   //   for (int i = 0; i < 3; i++) {
   //     str += supports_linux[i];
   //   }
-
   //   return str;
   // }
 
+  // todo format properly
   // Formata objeto em String
   public void printGame() {
-    System.out.println ("Id: " +
-        this.id +
-        " - " +
-        "SteamID: " +
-        this.steamID +
-        " - " +
-        "Preço: " +
-        dt.format(this.price) +
-        "\n" +
-        "Nome: " +
-        this.name +
-        "\n" +
-        "Descrição: " +
-        this.short_description +
-        "\n" +
-        "Gêneros: " +
-        this.genres +
-        "\n" +
-        "Publicador: " +
-        this.publishers +
-        "\n" +
-        "Data de Lançamento: " +
-        hoursToDate(this.release_date) +
-        "\n" +
-        "Grave: " +
-        this.grave +
-        "\n" +
-        "Suporte Linux: " + supports_linux +
-        //printSupportsLinux()
-        "\n");
+    System.out.println(
+      "Id: " +
+      this.id +
+      " - " +
+      "SteamID: " +
+      this.steamID +
+      " - " +
+      "Preço: " +
+      dt.format(this.price) +
+      "\n" +
+      "Nome: " +
+      this.name +
+      "\n" +
+      "Descrição: " +
+      this.short_description +
+      "\n" +
+      "Gêneros: " +
+      this.genres +
+      "\n" +
+      "Publicador: " +
+      this.publishers +
+      "\n" +
+      "Data de Lançamento: " +
+      hoursToDate(this.release_date) +
+      "\n" +
+      "Grave: " +
+      this.grave +
+      "\n" +
+      "Suporte Linux: " +
+      supports_linux +
+      //printSupportsLinux()
+      "\n"
+    );
   }
 
   public Games inputNewGame() {
@@ -136,11 +221,9 @@ public class Games {
     return tmp;
   }
 
-  // Pega so dados já salvos do game e trasnforma em um vetor de bits que é
-  // retornado para ser inserido no arquivo
+  // Transforma objeto em vetor de bytes
   public byte[] byteParse() throws IOException {
-
-    // grave,id,steamID,name,price,short_descritiption,genres,publishers,supports_linux,release_date
+    // grave, id, steamID, name, price, short_descritiption, genres, publishers, supports_linux, release_date
 
     ByteArrayOutputStream by = new ByteArrayOutputStream();
     DataOutputStream dos = new DataOutputStream(by);
