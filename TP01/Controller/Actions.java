@@ -135,9 +135,9 @@ public class Actions {
   // }
 
   public boolean createGame(Games tmp) {
-    gamesCount++;
-    tmp.userInputGame(++maxId);
     try {
+      gamesCount++;
+      tmp.userInputGame(++maxId);
       file.seek(lastPos);
       byte[] aux = tmp.byteParse();
       file.writeInt(aux.length);
