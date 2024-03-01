@@ -51,7 +51,6 @@ public class Menu extends Actions {
   public void executeOption() throws FileNotFoundException {
     try {
       switch (this.selected) {
-
         case 1:
           this.loadData();
           this.executeMenu();
@@ -69,31 +68,52 @@ public class Menu extends Actions {
           Games tmp = new Games();
 
           System.out.print("\nInsira o ID do game que deseja buscar: ");
-          int inputId = sc.nextInt();
+          int inputIdSearch = sc.nextInt();
 
           System.out.println();
-          tmp = this.readGame(inputId);          
-          tmp.printGame();
+          tmp = this.readGame(inputIdSearch);
+
+          if (tmp == null) {
+            System.out.println(
+              "Esse game não existe ou já foi deletado! Tente outro game."
+            );
+          } else {
+            tmp.printGame();
+          }
 
           sc.nextLine();
           this.executeMenu();
           break;
         case 4:
-          System.out.println("\nedit\n\n");
+          System.out.print("\nInsira o ID do game que deseja editar: ");
+          int inputIdUpdate = sc.nextInt();
+          Games aux = new Games();
+          
+          boolean done = this.updateGame(inputIdUpdate, aux);
+
+          if (done) {
+            System.out.println("Game atualizado com sucesso!");
+          } else {
+            System.out.println(
+              "Não foi possível atualizar o game. Tente novamente."
+            );
+          }
 
           sc.nextLine();
           this.executeMenu();
           break;
         case 5:
-          System.out.println("\ndelete\n\n");
+          System.out.print("\nInsira o ID do game que deseja deletar: ");
+          int inputIdDelete = sc.nextInt();
+
+          System.out.println();
+          this.deleteGame(inputIdDelete);
 
           sc.nextLine();
           this.executeMenu();
           break;
         case 6:
-          // todo leave
           System.out.println("\nObrigado por usar nosso Banco de Dados! :)");
-
           sc.close();
           this.closeFile();
           break;
