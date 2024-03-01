@@ -18,7 +18,7 @@ public class Menu extends Actions {
   public void selectOption() {
     System.out.println("\nO que você gostaria de fazer?");
     System.out.println("1) Carregar dados");
-    System.out.println("2) [INDISPONIVEL] Criar novo game");
+    System.out.println("2) Criar novo game");
     System.out.println("3) Ver game existente");
     System.out.println("4) Atualizar game existente");
     System.out.println("5) Deletar game");
@@ -57,9 +57,7 @@ public class Menu extends Actions {
           break;
         case 2:
           //Games tmp = new Games();
-          System.out.println(
-            "Essa função está indisponível no momento, tente novamente mais tarde.\n"
-          );
+          this.createGame(new Games());
 
           sc.nextLine();
           this.executeMenu();
