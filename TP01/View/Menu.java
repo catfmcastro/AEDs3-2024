@@ -69,11 +69,16 @@ public class Menu extends Actions {
           Games tmp = new Games();
 
           System.out.print("\nInsira o ID do game que deseja buscar: ");
-          int inputId = sc.nextInt();
+          int inputIdSearch = sc.nextInt();
 
           System.out.println();
-          tmp = this.readGame(inputId);          
-          tmp.printGame();
+          tmp = this.readGame(inputIdSearch);
+          
+          if (tmp == null) {
+            System.out.println("Esse game não existe ou já foi deletado! Tente outro game.");
+          } else {
+            tmp.printGame();
+          }
 
           sc.nextLine();
           this.executeMenu();
@@ -85,7 +90,11 @@ public class Menu extends Actions {
           this.executeMenu();
           break;
         case 5:
-          System.out.println("\ndelete\n\n");
+          System.out.print("\nInsira o ID do game que deseja deletar: ");
+          int inputIdDelete = sc.nextInt(); 
+
+          System.out.println();
+          this.deleteGame(inputIdDelete);
 
           sc.nextLine();
           this.executeMenu();

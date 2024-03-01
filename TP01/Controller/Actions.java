@@ -14,9 +14,9 @@ public class Actions {
   RandomAccessFile file;
 
   public void openFile() throws IOException {
-      file = new RandomAccessFile("./TP01/out/games.db", "rw");
-      lastPos = file.readLong(); // guarda a da ultima posição do arquivo
-      maxId = 59431;
+    file = new RandomAccessFile("./TP01/out/games.db", "rw");
+    lastPos = file.readLong(); // guarda a da ultima posição do arquivo
+    maxId = 59431;
   }
 
   public void closeFile() throws IOException {
@@ -49,7 +49,7 @@ public class Actions {
     try {
       // Acessando o arquivo
       csv = new RandomAccessFile("./TP01/db/games.csv", "r");
-      csv.readLine(); // ! raf.seek nao funciona por causa de algum espaço nulo
+      csv.readLine(); // ! file.seek nao funciona por causa de algum espaço nulo
 
       System.out.println("Carregando dados para o Banco...");
 
@@ -114,7 +114,7 @@ public class Actions {
   // Ver game existente
   public Games readGame(int searchId) throws IOException {
     Games tmp = new Games();
-    byte [] arr;
+    byte[] arr;
     long pos = 8; // primeira posição do file, pulando os metadados
     try {
       file.seek(pos);
@@ -144,7 +144,7 @@ public class Actions {
     DataInputStream dis = new DataInputStream(by);
 
     try {
-      if(!dis.readBoolean() && dis.readInt() == id) {
+      if (!dis.readBoolean() && dis.readInt() == id) {
         resp = true;
       }
     } catch (Exception e) {
@@ -158,5 +158,35 @@ public class Actions {
   public void updateGame() {}
 
   // Deletar logicamente um game
-  public void deleteGame() {}
+  public Games deleteGame(int id) {
+    // Posiciona o ponteiro no inicio do arquivo - (1)
+    // Procura pelo ID desejado - (2)
+    // Ao encontrar atualiza o dado para true - (3)
+    // Retorna o game removido (4)
+    Games aux = new Games();
+    byte[] temp;
+    long pos = 8;
+
+    try {
+      file.seek(pos);
+      for (int i = 0; i < maxId; i++) {
+        int tam = file.readInt();
+        temp = new byte[tam];
+        file.read(temp);
+        if (isGameValid(temp, id)) {
+          file.seek(pos + 4);
+          aux.fromByteArray(temp);
+          aux.setGrave(true);
+          file.write(aux.byteParse());
+          return aux;
+        }
+      }
+
+      System.out.println("Game deletado com sucesso!\n");
+      return aux;
+    } catch (Exception e) {
+      System.out.println("Erro na função Delete: " + e.getMessage());
+      return aux;
+    }
+  }
 }

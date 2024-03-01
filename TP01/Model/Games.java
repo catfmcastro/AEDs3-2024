@@ -37,6 +37,10 @@ public class Games {
     this.id = id;
   }
 
+  public void setGrave (boolean grave) {
+    this.grave = grave;
+  }
+
   public Games(boolean grave, int id, int steamID, float price, String name, String short_description, String genres,
       String publishers, String supports_linux, int release_date) {
     this.id = id;
