@@ -57,12 +57,15 @@ public class Games {
 
     public void printScreen() {
         if (this.id >= 0) {
-            System.out.println("Id: " + this.id + " - " + "SteamID: " + this.steamID + " - " + "Preço: "
+            if(this.id>= 0){System.out.println("Id: " + this.id + " - " + "SteamID: " + this.steamID + " - " + "Preço: "
                     + dt.format(this.price)
                     + "\n" + "Nome: " + this.name + "\n" + "Descrição: " + this.short_description + "\n" + "Gêneros: "
                     + this.genres + "\n" + "Publicador: " + this.publishers + "\n" + "Data de Lançamento: "
                     + disTransformDate(this.release_date) + "\n" + "Grave: " + this.grave + "\n" + "Suporte Linux: "
                     + this.supports_linux + "\n");
+            } else {
+                System.out.println("Jogo não existe");
+            }
         } else {
             System.out.println("Jogo não existe mais");
         }
