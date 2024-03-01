@@ -66,13 +66,14 @@ public class Menu extends Actions {
           Scanner sc = new Scanner(System.in);
           Games tmp = new Games();
           System.out.print("\nInsira o ID do game que deseja buscar: ");
-          int searchId = sc.nextInt();
+          int inputId = sc.nextInt();
 
-          System.out.println("init read game...");
-          tmp = this.readGame(searchId);
-          System.out.println("end read game");
+          System.out.println("init read game...\n");
+          tmp = this.readGame(inputId);
+          System.out.println("\nend read game");
           
-          tmp.toString();
+          // todo fix
+          tmp.printGame();
           sc.close();
           this.executeMenu();
           break;

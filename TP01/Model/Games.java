@@ -12,7 +12,8 @@ public class Games {
   private int id, steamID, release_date;
   private double price;
   private String name, short_description, genres, publishers;
-  private char[] supports_linux = new char[3];
+  //private char[] supports_linux = new char[3];
+  private String supports_linux;
   private boolean grave; // Lápide
   private DecimalFormat dt = new DecimalFormat("R$ 0.00");
 
@@ -25,9 +26,10 @@ public class Games {
     this.genres = "";
     this.publishers = "";
     this.release_date = -1;
-    for (int i = 0; i < 3; i++) {
-      this.supports_linux[i] = '\0';
-    }
+    this.supports_linux = "";
+    // for (int i = 0; i < 3; i++) {
+    //   this.supports_linux[i] = '\0';
+    // }
     this.grave = false;
   }
 
@@ -45,9 +47,10 @@ public class Games {
     this.short_description = short_description;
     this.genres = genres;
     this.publishers = publishers;
-    for (int i = 0; i < 3; i++) {
-      this.supports_linux[i] = supports_linux.charAt(i);
-    }
+    this.supports_linux = supports_linux;
+    // for (int i = 0; i < 3; i++) {
+    //   this.supports_linux[i] = supports_linux.charAt(i);
+    // }
     this.release_date = release_date;
   }
 
@@ -65,19 +68,19 @@ public class Games {
     return day + "/" + month + "/" + year;
   }
 
-  private String printSupportsLinux() {
-    String str = "";
+  // private String printSupportsLinux() {
+  //   String str = "";
 
-    for (int i = 0; i < 3; i++) {
-      str += supports_linux[i];
-    }
+  //   for (int i = 0; i < 3; i++) {
+  //     str += supports_linux[i];
+  //   }
 
-    return str;
-  }
+  //   return str;
+  // }
 
   // Formata objeto em String
-  public String toString() {
-    return ("Id: " +
+  public void printGame() {
+    System.out.println ("Id: " +
         this.id +
         " - " +
         "SteamID: " +
@@ -104,8 +107,8 @@ public class Games {
         "Grave: " +
         this.grave +
         "\n" +
-        "Suporte Linux: " +
-        printSupportsLinux() +
+        "Suporte Linux: " + supports_linux +
+        //printSupportsLinux()
         "\n");
   }
 
@@ -145,9 +148,10 @@ public class Games {
     dos.writeUTF(short_description);
     dos.writeUTF(genres);
     dos.writeUTF(publishers);
-    for (int i = 0; i < 3; i++) {
-      dos.writeChar(supports_linux[i]);
-    }
+    dos.writeUTF(supports_linux);
+    // for (int i = 0; i < 3; i++) {
+    //   dos.writeChar(supports_linux[i]);
+    // }
     dos.writeInt(release_date);
     dos.close();
 
@@ -166,10 +170,11 @@ public class Games {
       this.short_description = dos.readUTF();
       this.genres = dos.readUTF();
       this.publishers = dos.readUTF();
-      String aux = dos.readUTF();
-      for (int i = 0; i < 3; i++) {
-        this.supports_linux[i] = aux.charAt(i);
-      }
+      this.supports_linux = dos.readUTF();
+      // String aux = dos.readUTF();
+      // for (int i = 0; i < 3; i++) {
+      //   this.supports_linux[i] = aux.charAt(i);
+      // }
       this.release_date = dos.readInt();
       dos.close();
     } catch (Exception e) {

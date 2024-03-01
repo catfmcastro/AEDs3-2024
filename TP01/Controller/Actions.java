@@ -14,13 +14,9 @@ public class Actions {
   RandomAccessFile file;
 
   public void openFile() throws IOException {
-    try {
       file = new RandomAccessFile("./TP01/out/games.db", "rw");
       lastPos = file.readLong(); // guarda a da ultima posição do arquivo
       maxId = 59431;
-    } catch (Exception e) {
-      System.out.println("Erro ao abrir o .db: " + e);
-    }
   }
 
   public void closeFile() throws IOException {
@@ -65,20 +61,20 @@ public class Actions {
         // Leitura do csv
         String vet[] = str.split("./;");
         Games tmp = new Games(
-          false,
-          Integer.parseInt(vet[0]),
-          Integer.parseInt(vet[1]),
-          Float.parseFloat(vet[3]),
-          vet[2],
-          vet[4],
-          vet[5],
-          vet[6],
-          vet[7],
-          dateToHours(vet[8])
+          false, // lápide
+          Integer.parseInt(vet[0]), // id
+          Integer.parseInt(vet[1]), //steamID
+          Float.parseFloat(vet[3]), // price
+          vet[2], // name
+          vet[4], // short_description
+          vet[5], // genres
+          vet[6], // publishers
+          vet[7], // supports_linux
+          dateToHours(vet[8]) // release_date
         );
 
         byte aux[] = tmp.byteParse(); // Insere no arquivo binário
-        file.write(aux.length); // Add o tamanho de cada registro antes dos dados
+        file.writeInt(aux.length); // Add o tamanho de cada registro antes dos dados
         file.write(aux); // Escrita do registro
       }
 
@@ -118,22 +114,29 @@ public class Actions {
   // Ver game existente
   public Games readGame(int searchId) throws IOException {
     Games tmp = new Games();
-    long pos = 0; // primeira posição do file, pulando os metadados
+    byte [] arr;
+    long pos = 8; // primeira posição do file, pulando os metadados
     try {
       file.seek(pos);
       for (int i = 0; i < maxId; i++) {
         int size = file.readInt(); // lê o tamanho do registro
-        System.out.println("size is: " + size );
-        byte[] arr = new byte[size];
-        file.read(arr); // lê o registro que ocupa o tamanho "size"
+        System.out.println("\n\nsize is: " + size );
 
+        arr = new byte[size];
+        System.out.println("o arr lido é: " + arr);
+
+        System.out.println("lendo registro do .db...");
+        file.read(arr); // lê o registro que ocupa o tamanho "size"
+        System.out.println("fim da leitura do registro.");
+
+        System.out.println("checagem de validade");
         if (isGameValid(arr, searchId)) {
           System.out.println("passou na checagem");
           tmp.fromByteArray(arr);
           System.out.println("fim fromByteArray");
           return tmp;
         }
-        pos += size + 4;
+        pos += size;
       }
     } catch (Exception e) {
       System.err.println("Erro na função Read: " + e);
@@ -149,11 +152,11 @@ public class Actions {
     DataInputStream dis = new DataInputStream(by);
 
     try {
-      dis.readBoolean();
-      System.out.println("inciando checagem do game de id " + dis.readInt());
-      // if(!dis.readBoolean() && dis.readInt() == id) {
-      //   resp = true;
-      // }
+      // System.out.println("boolean lido é: " + dis.readBoolean());
+      // System.out.println("id lido é " + dis.readInt());
+      if(!dis.readBoolean() && dis.readInt() == id) {
+        resp = true;
+      }
     } catch (Exception e) {
       System.err.println("Erro na checagem de validade do Game: " + e);
     }
