@@ -51,7 +51,6 @@ public class Menu extends Actions {
   public void executeOption() throws FileNotFoundException {
     try {
       switch (this.selected) {
-
         case 1:
           this.loadData();
           this.executeMenu();
@@ -73,9 +72,11 @@ public class Menu extends Actions {
 
           System.out.println();
           tmp = this.readGame(inputIdSearch);
-          
+
           if (tmp == null) {
-            System.out.println("Esse game não existe ou já foi deletado! Tente outro game.");
+            System.out.println(
+              "Esse game não existe ou já foi deletado! Tente outro game."
+            );
           } else {
             tmp.printGame();
           }
@@ -88,13 +89,14 @@ public class Menu extends Actions {
           int inputIdUpdate = sc.nextInt();
           Games aux = new Games();
           
-
           boolean done = this.updateGame(inputIdUpdate, aux);
 
           if (done) {
             System.out.println("Game atualizado com sucesso!");
           } else {
-            System.out.println("Não foi possível atualizar o game. Tente novamente.");
+            System.out.println(
+              "Não foi possível atualizar o game. Tente novamente."
+            );
           }
 
           sc.nextLine();
@@ -102,7 +104,7 @@ public class Menu extends Actions {
           break;
         case 5:
           System.out.print("\nInsira o ID do game que deseja deletar: ");
-          int inputIdDelete = sc.nextInt(); 
+          int inputIdDelete = sc.nextInt();
 
           System.out.println();
           this.deleteGame(inputIdDelete);
@@ -111,9 +113,7 @@ public class Menu extends Actions {
           this.executeMenu();
           break;
         case 6:
-          // todo leave
           System.out.println("\nObrigado por usar nosso Banco de Dados! :)");
-
           sc.close();
           this.closeFile();
           break;

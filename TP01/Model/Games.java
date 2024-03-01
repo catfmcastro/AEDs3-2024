@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.Actions;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -139,6 +140,53 @@ public class Games {
 
   public void setGrave(boolean grave) {
     this.grave = grave;
+  }
+
+  // Input de usuário para criar um novo game
+  public void userInputGame(int maxId) {
+    Scanner sc = new Scanner(System.in);
+
+    this.id = maxId;
+    this.grave = false;
+
+    System.out.println(
+      "Insira as informações pedidas. Atenção para a formatação!\n\n"
+    );
+
+    System.out.print("\nInsira o nome do Game: ");
+    String nameIn = sc.nextLine();
+    setName(nameIn);
+
+    System.out.print("\nInsira uma descrição curta do Game: ");
+    String shortIn = sc.nextLine();
+    setShortDescription(shortIn);
+
+    System.out.print("\nInsira os gêneros do Game: ");
+    String genresIn = sc.nextLine();
+    setGenres(genresIn);
+
+    System.out.print("\nInsira os publishers do Game: ");
+    String publishersIn = sc.nextLine();
+    setPublishers(publishersIn);
+
+    System.out.print("\nInsira o preço do Game: ");
+    String priceIn = sc.nextLine();
+    setPrice(Float.parseFloat(priceIn));
+
+    System.out.print("\nInsira o SteamID do Game: ");
+    String steamIn = sc.nextLine();
+    setSteamId(Integer.parseInt(steamIn));
+
+    System.out.print("\nO game roda em Linux (Sim ou Nao): ");
+    String linuxIn = sc.nextLine();
+    setSupportsLinux(linuxIn);
+
+    System.out.print("\nInsira a data de lançamento do Game (dd/mm/aaaa): ");
+    String dateIn = sc.nextLine();
+    setReleaseDate(Actions.dateToHours(dateIn));
+
+    System.out.println("\nGame criado com sucesso! Veja seu game: \n");
+    printGame();
   }
 
   // Transforma o valor em horas para data em String

@@ -5,11 +5,13 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Scanner;
 
 public class Actions {
 
   private long lastPos;
   private int maxId; // Ultimo jogo do arquivo, antes do fim
+  private int gamesCount;
   static final int inicialYear = 1900; // Ano inicial para a conversão da data
   RandomAccessFile file;
 
@@ -17,6 +19,7 @@ public class Actions {
     file = new RandomAccessFile("./TP01/out/games.db", "rw");
     lastPos = file.readLong(); // guarda a da ultima posição do arquivo
     maxId = 59431;
+    gamesCount = maxId;
   }
 
   public void closeFile() throws IOException {
@@ -25,22 +28,6 @@ public class Actions {
     } catch (Exception e) {
       System.out.println("Erro ao fechar arquivo .db: " + e);
     }
-  }
-
-  // Transformar data em horas a partir de 1900
-  public static int dateToHours(String data) {
-    // Um ano tem 8766 h
-    // Um mês tem 730 h
-    // Um dia tem 24 h
-
-    String tmp[] = data.split("/");
-    int year, month, day;
-
-    year = (Integer.parseInt(tmp[2]) - inicialYear) * 8760;
-    month = (Integer.parseInt(tmp[1])) * 730;
-    day = Integer.parseInt(tmp[0]) * 24;
-
-    return year + month + day;
   }
 
   // !!!!!! PROBLEMA! não está carregando o cabeçalho corretamente
@@ -89,13 +76,47 @@ public class Actions {
     }
   }
 
-  // Cria game novo, com base no input de user
+  // Transformar data em horas a partir de 1900
+  public static int dateToHours(String data) {
+    // Um ano tem 8766 h
+    // Um mês tem 730 h
+    // Um dia tem 24 h
+
+    String tmp[] = data.split("/");
+    int year, month, day;
+
+    year = (Integer.parseInt(tmp[2]) - inicialYear) * 8760;
+    month = (Integer.parseInt(tmp[1])) * 730;
+    day = Integer.parseInt(tmp[0]) * 24;
+
+    return year + month + day;
+  }
+
+  // Checa se o game é válido ou não, quanto a lápide
+  public boolean isGameValid(byte arr[], int id) {
+    boolean resp = false;
+    ByteArrayInputStream by = new ByteArrayInputStream(arr);
+    DataInputStream dis = new DataInputStream(by);
+
+    try {
+      if (!dis.readBoolean() && dis.readInt() == id) {
+        resp = true;
+      }
+    } catch (Exception e) {
+      System.err.println("Erro na checagem de validade do Game: " + e);
+    }
+
+    return resp;
+  }
+
+  // Cria game novo e registrar no file, com base no input de user
   // todo receber tmp do user, já formatado
   public void createGame(Games tmp) throws IOException {
     try {
-      file.seek(lastPos);
       maxId++;
-      tmp.setId(maxId);
+      gamesCount++;
+      tmp.userInputGame(maxId);
+      file.seek(lastPos);
       byte[] array = tmp.byteParse();
 
       // Escrita no arquivo
@@ -118,7 +139,7 @@ public class Actions {
     long pos = 8; // primeira posição do file, pulando os metadados
     try {
       file.seek(pos);
-      for (int i = 0; i < maxId; i++) {
+      for (int i = 0; i < gamesCount; i++) {
         int size = file.readInt(); // lê o tamanho do registro
 
         arr = new byte[size];
@@ -137,23 +158,6 @@ public class Actions {
     return null;
   }
 
-  // Checa se o game é válido ou não, quanto a lápide
-  public boolean isGameValid(byte arr[], int id) {
-    boolean resp = false;
-    ByteArrayInputStream by = new ByteArrayInputStream(arr);
-    DataInputStream dis = new DataInputStream(by);
-
-    try {
-      if (!dis.readBoolean() && dis.readInt() == id) {
-        resp = true;
-      }
-    } catch (Exception e) {
-      System.err.println("Erro na checagem de validade do Game: " + e);
-    }
-
-    return resp;
-  }
-
   // Editar game existente
   public boolean updateGame(int id, Games insert) {
     // Posiciona o ponteiro no inicio do arquivo - (1)
@@ -161,14 +165,17 @@ public class Actions {
     // Compara os tamanhos para ver se vai ou nao de vasco - (3)
     // retorna se foi feito com sucesso ou nao - (4)
 
+
     Games aux = new Games();
     byte[] arr;
     long pos = 8;
 
+    insert.userInputGame(id);
+
     try {
       file.seek(pos);
 
-      for (int i = 0; i < maxId; i++) {
+      for (int i = 0; i < gamesCount; i++) {
         int tam = file.readInt();
         arr = new byte[tam];
         file.read(arr);
@@ -182,10 +189,11 @@ public class Actions {
           } else {
             // Se game o menor, salva no mesmo local que o file
             file.seek(pos + 4);
-            aux.fromByteArray(arr);
             aux.setGrave(true);
+            aux.fromByteArray(arr);
             file.write(aux.byteParse());
             createGame(insert);
+            gamesCount++;
             return true;
           }
         }
