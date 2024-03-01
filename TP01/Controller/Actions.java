@@ -111,24 +111,42 @@ public class Actions {
 
   // Cria game novo e registrar no file, com base no input de user
   // todo receber tmp do user, já formatado
-  public void createGame(Games tmp) throws IOException {
+  // public boolean createGame(Games tmp) throws IOException {
+  //   try {
+  //     maxId++;
+  //     gamesCount++;
+  //     tmp.userInputGame(maxId);
+  //     file.seek(lastPos);
+  //     byte[] array = tmp.byteParse();
+
+  //     // Escrita no arquivo
+  //     file.writeInt(array.length);
+  //     file.write(array);
+
+  //     // Update última posição
+  //     this.lastPos += (array.length);
+
+  //     System.out.println("\nGame criado com sucesso!");
+  //     return true;
+  //   } catch (Exception e) {
+  //     System.err.println("Erro na função Create: " + e);
+  //     return false;
+  //   }
+  // }
+
+  public boolean createGame(Games tmp) {
+    gamesCount++;
+    tmp.userInputGame(++maxId);
     try {
-      maxId++;
-      gamesCount++;
-      tmp.userInputGame(maxId);
       file.seek(lastPos);
-      byte[] array = tmp.byteParse();
-
-      // Escrita no arquivo
-      file.writeInt(array.length);
-      file.write(array);
-
-      // Update última posição
-      this.lastPos += (array.length);
-
-      System.out.println("\nGame criado com sucesso!");
-    } catch (Exception e) {
-      System.err.println("Erro na função Create: " + e);
+      byte[] aux = tmp.byteParse();
+      file.writeInt(aux.length);
+      file.write(aux);
+      lastPos += aux.length;
+      return true;
+    } catch (IOException e) {
+      System.out.println("Erro create");
+      return false;
     }
   }
 
@@ -165,7 +183,6 @@ public class Actions {
     // Compara os tamanhos para ver se vai ou nao de vasco - (3)
     // retorna se foi feito com sucesso ou nao - (4)
 
-
     Games aux = new Games();
     byte[] arr;
     long pos = 8;
@@ -200,7 +217,7 @@ public class Actions {
       }
       return false;
     } catch (Exception e) {
-      System.out.println("Erro na função update: " + e.getMessage());
+      System.err.println("Erro na função update: " + e);
       return false;
     }
   }
@@ -233,7 +250,7 @@ public class Actions {
       System.out.println("Game deletado com sucesso!\n");
       return aux;
     } catch (Exception e) {
-      System.out.println("Erro na função Delete: " + e.getMessage());
+      System.err.println("Erro na função Delete: " + e);
       return aux;
     }
   }
