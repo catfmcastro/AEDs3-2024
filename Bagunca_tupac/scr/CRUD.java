@@ -19,19 +19,27 @@ public class CRUD {
         maxId = 59431;
     }
 
-    // Esqueleto da função para criar um novo jogo já recebendo o jogo criado
-    public void create(Games tmp) {
+    protected void finalize (){
         try {
-            System.out.println("Posicao antes: " + finalPosition);
+            raf.close();
+        } catch (Exception e) {
+            System.out.println("Erro ao fechar arquivo");
+        }
+    }
+
+    // Esqueleto da função para criar um novo jogo já recebendo o jogo criado
+    public boolean create(Games tmp) {
+        try {
             maxId++;
             raf.seek(finalPosition);
             byte[] aux = tmp.createbyteArray();
             raf.writeInt(aux.length);
             raf.write(aux);
             finalPosition += aux.length;
-            System.out.println("Posicao depois: " + finalPosition);
+            return true;
         } catch (IOException e) {
             System.out.println("Erro create");
+            return false; 
         }
     }
 
@@ -59,6 +67,7 @@ public class CRUD {
         long pos = 8;
 
         try {
+            raf.seek(pos);
             for(int i = 0; i < maxId; i++){
                 int tam = raf.readInt();
                 tempVet = new byte[tam];
@@ -67,7 +76,7 @@ public class CRUD {
                     aux.readByteArray(tempVet);
                     return aux;
                 }
-                pos += tam + 4;
+                pos += tam;
             }
             return aux;
         } catch (Exception e) {
@@ -77,46 +86,74 @@ public class CRUD {
     }
 
     // Esqueleto da função para fazer update de um novo jogo já recebendo o id dele
-    public boolean Update(int ID) {
+    public boolean update(int ID, Games insert) {
 
         // Posiciona o ponteiro no inicio do arquivo - (1)
         // Procura pelo ID correto - (2)
         // Compara os tamanhos para ver se vai ou nao de vasco - (3)
         // retorna se foi feito com sucesso ou nao - (4)
+        Games aux = new Games();
+        byte[] temp;
+        long pos = 8;
 
-        boolean var = false;
         try {
-            var = true;
-        } catch (Exception e) {
-            System.out.println("Erro " + e);
-        }
+            raf.seek(pos);
 
-        return var;
+            for (int i = 0; i < maxId; i++) {
+                int tam = raf.readInt();
+                temp = new byte[tam];
+                raf.read(temp);
+                if (isID(temp, ID)) {
+                    if(tam >= insert.createbyteArray().length){
+                        raf.seek(pos+4);
+                        raf.write(insert.createbyteArray());
+                        return true;
+                    } else {
+                        raf.seek(pos+4);
+                        aux.readByteArray(temp);
+                        aux.setGrave(true);
+                        raf.write(aux.createbyteArray());
+                        create(insert);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            System.out.println("Erro update: " + e.getMessage());
+            return false;
+        }
     }
 
     // Esqueleto da função para deletar um jogo já recebendo o id dele
-    public Games Delete(int ID) {
+    public Games delete(int ID) {
         // Posiciona o ponteiro no inicio do arquivo - (1)
         // Procura pelo ID desejado - (2)
         // Ao encontrar atualiza o dado para true - (3)
         // Retorna o game removido (4)
+        Games aux = new Games();
+        byte[] temp;
+        long pos = 8;
 
-        Games var = new Games();
-        int pos = 8;
         try {
             raf.seek(pos);
-            for (int i = 0; i < ID; i++) {
-                pos += raf.readInt();
-                raf.seek(pos);
+            for (int i = 0; i < maxId; i++) {
+                int tam = raf.readInt();
+                temp = new byte[tam];
+                raf.read(temp);
+                if (isID(temp, ID)) {
+                    raf.seek(pos+4);
+                    aux.readByteArray(temp);
+                    aux.setGrave(true);
+                    raf.write(aux.createbyteArray());
+                    return aux;
+                }
             }
-            raf.readInt(); // ler o tamanho do vetor de byte
-            raf.readInt(); // ler o ID
-            raf.writeBoolean(true); // mudar o boolean, MAS precisa dos IFs pra ver se ele já nao estava deletado
-
+            return aux;
         } catch (Exception e) {
-            System.out.println("Erro " + e);
+            System.out.println("Erro delete: " + e.getMessage());
+            return aux;
         }
 
-        return var; // (4)
     }
 }

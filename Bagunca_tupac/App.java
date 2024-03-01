@@ -5,8 +5,12 @@ public class App {
     public static void main(String[] args) {
         try {
             CRUD crud = new CRUD();
-            Games tmp = crud.read(0);
-            tmp.printScreen();            
+            Games str = new Games(false, 0, 0,0,"ehisso", "ehisso", "ehisso","ehisso", "ehisso",0);
+            // crud.create(str);
+            crud.read(0).printScreen();
+            // crud.read(150).printScreen();
+            // crud.update(0, str);
+            // crud.delete(0);
         } catch (Exception e) {
             System.out.println("Erro: " + e);
         }
