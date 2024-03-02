@@ -17,7 +17,7 @@ public class Actions {
 
   public void openFile() throws IOException {
     file = new RandomAccessFile("./TP01/out/games.db", "rw");
-    lastPos = file.readLong(); // guarda a da ultima posição do arquivo
+    lastPos = file.readLong(); // Guarda a da ultima posição do arquivo
     maxId = 59431;
     gamesCount = maxId;
   }
@@ -30,49 +30,48 @@ public class Actions {
     }
   }
 
-  // !!!!!! PROBLEMA! não está carregando o cabeçalho corretamente
   // Carrega info. do .csv para o .db
   public void loadData() {
-    RandomAccessFile csv;
+    RandomAccessFile csv, write;
+
     try {
       csv = new RandomAccessFile("./TP01/db/games.csv", "r");
+      write = new RandomAccessFile("./TP01/out/games.db", "rw");
       csv.readLine();
-
-      System.out.println("\nCarregando dados para o Banco...");
-
       String str;
-      file.writeLong(10); // Insere a posição final do arquivo no início
 
-      // Preenchimento do arquivo binário
+      write.writeLong(10); // Reserva um espaço no inicio do arquivo para inserir a posição do final do arquivo
+
+      System.out.println("Carregando dados para o arquivo...");
       while ((str = csv.readLine()) != null) {
-        // Leitura do csv
-        String vet[] = str.split("./;");
+        String vet[] = str.split("./;"); // Separando em vetor a string
         Games tmp = new Games(
-          false, // lápide
-          Integer.parseInt(vet[0]), // id
-          Integer.parseInt(vet[1]), //steamID
-          Float.parseFloat(vet[3]), // price
-          vet[2], // name
-          vet[4], // short_description
-          vet[5], // genres
-          vet[6], // publishers
-          vet[7], // supports_linux
-          dateToHours(vet[8]) // release_date
+          false,
+          Integer.parseInt(vet[0]),
+          Integer.parseInt(vet[1]),
+          Float.parseFloat(vet[3]),
+          vet[2],
+          vet[4],
+          vet[5],
+          vet[6],
+          vet[7],
+          dateToHours(vet[8])
         );
 
-        byte aux[] = tmp.byteParse(); // Insere no arquivo binário
-        file.writeInt(aux.length); // Add o tamanho de cada registro antes dos dados
-        file.write(aux); // Escrita do registro
+        byte aux[] = tmp.byteParse(); // Insere registro no arquivo
+        write.writeInt(aux.length); // Tam. do registro antes de cada vetor
+        write.write(aux); // Insere o vetor de dados de byte
       }
 
-      long last = file.getFilePointer(); // Última posicao do arquivo
-      file.seek(0); // Posiciona novamente no inicio do arquivo
-      file.writeLong(last); // Escreve a ultima posicao na frente
+      long last = write.getFilePointer(); // Última posição do arquivo
+      write.seek(0); // Posiciona no início do arquivo
+      write.writeLong(last); // Escreve a ultima posicao no início
 
+      write.close();
       csv.close();
       System.out.println("Dados carregados com sucesso!\n");
     } catch (Exception e) {
-      System.out.println("Erro ao preencher o arquivo binário: " + e);
+      System.err.println("Erro ao carregar dados: " + e);
     }
   }
 
