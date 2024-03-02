@@ -14,8 +14,7 @@ public class Games {
   private int id, steamID, release_date;
   private double price;
   private String name, short_description, genres, publishers;
-  //private char[] supports_linux = new char[3];
-  private String supports_linux;
+  private char[] supports_linux = new char[3];
   private boolean grave; // Lápide
   private DecimalFormat dt = new DecimalFormat("R$ 0.00");
 
@@ -28,10 +27,9 @@ public class Games {
     this.genres = "";
     this.publishers = "";
     this.release_date = -1;
-    this.supports_linux = "";
-    // for (int i = 0; i < 3; i++) {
-    //   this.supports_linux[i] = '\0';
-    // }
+    for (int i = 0; i < 3; i++) {
+      this.supports_linux[i] = '\0';
+    }
     this.grave = false;
   }
 
@@ -55,10 +53,9 @@ public class Games {
     this.short_description = short_description;
     this.genres = genres;
     this.publishers = publishers;
-    this.supports_linux = supports_linux;
-    // for (int i = 0; i < 3; i++) {
-    //   this.supports_linux[i] = supports_linux.charAt(i);
-    // }
+    for (int i = 0; i < 3; i++) {
+      this.supports_linux[i] = supports_linux.charAt(i);
+    }
     this.release_date = release_date;
   }
 
@@ -71,11 +68,11 @@ public class Games {
   }
 
   public int getSteamId() {
-    return this.id;
+    return this.steamID;
   }
 
-  public void setSteamId(int steamId) {
-    this.steamID = steamId;
+  public void setSteamId(int steamID) {
+    this.steamID = steamID;
   }
 
   public int getReleaseDate() {
@@ -127,11 +124,17 @@ public class Games {
   }
 
   public String getSupportsLinux() {
-    return this.supports_linux;
+    String tmp = "";
+    for (int i = 0; i < 3; i++) {
+      tmp += this.supports_linux[i];
+    }
+    return tmp;
   }
 
   public void setSupportsLinux(String supports_linux) {
-    this.supports_linux = supports_linux;
+    for (int i = 0; i < 3; i++) {
+      this.supports_linux[i] = supports_linux.charAt(i);
+    }
   }
 
   public boolean getGrave() {
@@ -142,51 +145,78 @@ public class Games {
     this.grave = grave;
   }
 
-  // Input de usuário para criar um novo game
-  public void userInputGame(int maxId) {
-    Scanner sc = new Scanner(System.in);
+  // Converte uma string variável para o atributo supports_linux (string fixa)
+  public char[] strToSupportsLinux(String str) {
+    for (int i = 0; i < 3; i++) {
+      this.supports_linux[i] = str.charAt(i);
+    }
 
-    this.id = maxId;
-    this.grave = false;
+    return this.supports_linux;
+  }
 
-    System.out.println(
-      "Insira as informações pedidas. Atenção para a formatação!\n\n"
-    );
+  // Converte o atributo supports_linux (string fixa) para uma string variável
+  public String supportsLinuxToString() {
+    String str = "";
+    for (int i = 0; i < 3; i++) {
+      str += this.supports_linux[i];
+    }
+    return str;
+  }
 
-    System.out.print("\nInsira o nome do Game: ");
-    String nameIn = sc.nextLine();
-    setName(nameIn);
+  // Cria novo game com input do usuário
+  public boolean userInputGame(int maxId) {
+    Scanner in = new Scanner(System.in);
 
-    System.out.print("\nInsira uma descrição curta do Game: ");
-    String shortIn = sc.nextLine();
-    setShortDescription(shortIn);
+    try {
+      // Add. Id e lápide
+      this.id = maxId;
+      this.grave = false;
 
-    System.out.print("\nInsira os gêneros do Game: ");
-    String genresIn = sc.nextLine();
-    setGenres(genresIn);
+      System.out.println(
+        "\nInsira as informações pedidas. Atenção para a formatação!\n"
+      );
 
-    System.out.print("\nInsira os publishers do Game: ");
-    String publishersIn = sc.nextLine();
-    setPublishers(publishersIn);
+      System.out.println("Insira o nome do Game: ");
+      String nameIn = in.nextLine();
+      setName(nameIn);
 
-    System.out.print("\nInsira o preço do Game: ");
-    String priceIn = sc.nextLine();
-    setPrice(Float.parseFloat(priceIn));
+      System.out.println("Insira uma descrição curta do Game: ");
+      String shortIn = in.nextLine();
+      setShortDescription(shortIn);
 
-    System.out.print("\nInsira o SteamID do Game: ");
-    String steamIn = sc.nextLine();
-    setSteamId(Integer.parseInt(steamIn));
+      System.out.println("Insira os gêneros do Game: ");
+      String genresIn = in.nextLine();
+      setGenres(genresIn);
 
-    System.out.print("\nO game roda em Linux (Sim ou Nao): ");
-    String linuxIn = sc.nextLine();
-    setSupportsLinux(linuxIn);
+      System.out.println("Insira os publishers do Game: ");
+      String publishersIn = in.nextLine();
+      setPublishers(publishersIn);
 
-    System.out.print("\nInsira a data de lançamento do Game (dd/mm/aaaa): ");
-    String dateIn = sc.nextLine();
-    setReleaseDate(Actions.dateToHours(dateIn));
+      System.out.println("Insira o preço do Game: ");
+      String priceIn = in.nextLine();
+      setPrice(Float.parseFloat(priceIn));
 
-    System.out.println("\nGame criado com sucesso! Veja seu game: \n");
-    printGame();
+      System.out.println("Insira o SteamID do Game: ");
+      String steamIn = in.nextLine();
+      setSteamId(Integer.parseInt(steamIn));
+
+      System.out.println("O game roda em Linux (Sim ou Nao): ");
+      String linuxIn = in.nextLine();
+      setSupportsLinux(linuxIn);
+
+      System.out.println("Insira a data de lançamento do Game (dd/mm/aaaa): ");
+      String dateIn = in.nextLine();
+      setReleaseDate(Actions.dateToHours(dateIn));
+
+      System.out.println("\nVeja seu game: \n");
+      printGame();
+
+      System.out.println("input de game finalizado");
+      return true;
+    } catch (Exception e) {
+      System.err.println("Erro ao inserir game: " + e);
+      return false;
+    }
   }
 
   // Transforma o valor em horas para data em String
@@ -203,16 +233,55 @@ public class Games {
     return day + "/" + month + "/" + year;
   }
 
-  // private String printSupportsLinux() {
-  //   String str = "";
-  //   for (int i = 0; i < 3; i++) {
-  //     str += supports_linux[i];
-  //   }
-  //   return str;
-  // }
+  // Transforma objeto em vetor de bytes
+  public byte[] byteParse() throws IOException {
+    // grave, id, steamID, name, price, short_descritiption, genres, publishers, supports_linux2, release_date
 
-  // todo format properly
-  // Formata objeto em String
+    ByteArrayOutputStream by = new ByteArrayOutputStream();
+    DataOutputStream dos = new DataOutputStream(by);
+    dos.writeBoolean(grave);
+    dos.writeInt(id);
+    dos.writeInt(steamID);
+    dos.writeUTF(name);
+    dos.writeDouble(price);
+    dos.writeUTF(short_description);
+    dos.writeUTF(genres);
+    dos.writeUTF(publishers);
+
+    String tmp = supportsLinuxToString();
+    dos.writeUTF(tmp);
+
+    dos.writeInt(release_date);
+    dos.close();
+
+    return by.toByteArray();
+  }
+
+  // Transforma vetor de bytes em objeto
+  public void fromByteArray(byte by[]) {
+    ByteArrayInputStream vet = new ByteArrayInputStream(by);
+    DataInputStream dos = new DataInputStream(vet);
+    try {
+      this.grave = dos.readBoolean();
+      this.id = dos.readInt();
+      this.steamID = dos.readInt();
+      this.name = dos.readUTF();
+      this.price = dos.readDouble();
+      this.short_description = dos.readUTF();
+      this.publishers = dos.readUTF();
+      this.genres = dos.readUTF();
+
+      String tmp = dos.readUTF();
+      this.supports_linux = strToSupportsLinux(tmp);
+      
+      this.release_date = dos.readInt();
+      dos.close();
+    } catch (Exception e) {
+      System.out.println("Erro readByte: " + e.getMessage());
+    }
+  }
+
+  // Imprime game na saída
   public void printGame() {
     System.out.println(
       "Id: " +
@@ -243,77 +312,8 @@ public class Games {
       this.grave +
       "\n" +
       "Suporte Linux: " +
-      supports_linux +
-      //printSupportsLinux()
+      supportsLinuxToString() +
       "\n"
     );
-  }
-
-  public Games inputNewGame() {
-    Games tmp = new Games();
-    Scanner sc = new Scanner(System.in);
-    // boolean confirm = false;
-
-    System.out.println("Insira as informações solicitadas.");
-
-    System.out.println("\nNome do game: ");
-    String name = sc.next();
-    this.name = name;
-
-    // System.out.println("\nData de lançamento: ");
-    // String release_date = sc.next();
-    // this.release_date = release_date;
-
-    sc.close();
-
-    return tmp;
-  }
-
-  // Transforma objeto em vetor de bytes
-  public byte[] byteParse() throws IOException {
-    // grave, id, steamID, name, price, short_descritiption, genres, publishers, supports_linux, release_date
-
-    ByteArrayOutputStream by = new ByteArrayOutputStream();
-    DataOutputStream dos = new DataOutputStream(by);
-    dos.writeBoolean(grave);
-    dos.writeInt(id);
-    dos.writeInt(steamID);
-    dos.writeUTF(name);
-    dos.writeDouble(price);
-    dos.writeUTF(short_description);
-    dos.writeUTF(genres);
-    dos.writeUTF(publishers);
-    dos.writeUTF(supports_linux);
-    // for (int i = 0; i < 3; i++) {
-    //   dos.writeChar(supports_linux[i]);
-    // }
-    dos.writeInt(release_date);
-    dos.close();
-
-    return by.toByteArray();
-  }
-
-  public void fromByteArray(byte by[]) {
-    ByteArrayInputStream vet = new ByteArrayInputStream(by);
-    DataInputStream dos = new DataInputStream(vet);
-    try {
-      this.grave = dos.readBoolean();
-      this.id = dos.readInt();
-      this.steamID = dos.readInt();
-      this.name = dos.readUTF();
-      this.price = dos.readDouble();
-      this.short_description = dos.readUTF();
-      this.genres = dos.readUTF();
-      this.publishers = dos.readUTF();
-      this.supports_linux = dos.readUTF();
-      // String aux = dos.readUTF();
-      // for (int i = 0; i < 3; i++) {
-      //   this.supports_linux[i] = aux.charAt(i);
-      // }
-      this.release_date = dos.readInt();
-      dos.close();
-    } catch (Exception e) {
-      System.out.println("Erro readByte: " + e.getMessage());
-    }
   }
 }
