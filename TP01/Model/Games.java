@@ -165,7 +165,7 @@ public class Games {
 
   // Cria novo game com input do usuário
   public boolean userInputGame(int maxId) {
-    Scanner sc = new Scanner(System.in);
+    Scanner in = new Scanner(System.in);
 
     try {
       // Add. Id e lápide
@@ -177,45 +177,44 @@ public class Games {
       );
 
       System.out.println("Insira o nome do Game: ");
-      String nameIn = sc.nextLine();
+      String nameIn = in.nextLine();
       setName(nameIn);
 
       System.out.println("Insira uma descrição curta do Game: ");
-      String shortIn = sc.nextLine();
+      String shortIn = in.nextLine();
       setShortDescription(shortIn);
 
       System.out.println("Insira os gêneros do Game: ");
-      String genresIn = sc.nextLine();
+      String genresIn = in.nextLine();
       setGenres(genresIn);
 
       System.out.println("Insira os publishers do Game: ");
-      String publishersIn = sc.nextLine();
+      String publishersIn = in.nextLine();
       setPublishers(publishersIn);
 
       System.out.println("Insira o preço do Game: ");
-      String priceIn = sc.nextLine();
+      String priceIn = in.nextLine();
       setPrice(Float.parseFloat(priceIn));
 
       System.out.println("Insira o SteamID do Game: ");
-      String steamIn = sc.nextLine();
+      String steamIn = in.nextLine();
       setSteamId(Integer.parseInt(steamIn));
 
       System.out.println("O game roda em Linux (Sim ou Nao): ");
-      String linuxIn = sc.nextLine();
+      String linuxIn = in.nextLine();
       setSupportsLinux(linuxIn);
 
       System.out.println("Insira a data de lançamento do Game (dd/mm/aaaa): ");
-      String dateIn = sc.nextLine();
+      String dateIn = in.nextLine();
       setReleaseDate(Actions.dateToHours(dateIn));
 
       System.out.println("\nVeja seu game: \n");
       printGame();
 
-      sc.close();
+      System.out.println("input de game finalizado");
       return true;
     } catch (Exception e) {
       System.err.println("Erro ao inserir game: " + e);
-      sc.close();
       return false;
     }
   }
@@ -251,7 +250,7 @@ public class Games {
 
     String tmp = supportsLinuxToString();
     dos.writeUTF(tmp);
-    
+
     dos.writeInt(release_date);
     dos.close();
 
@@ -269,8 +268,8 @@ public class Games {
       this.name = dos.readUTF();
       this.price = dos.readDouble();
       this.short_description = dos.readUTF();
-      this.genres = dos.readUTF();
       this.publishers = dos.readUTF();
+      this.genres = dos.readUTF();
 
       String tmp = dos.readUTF();
       this.supports_linux = strToSupportsLinux(tmp);

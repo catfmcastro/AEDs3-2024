@@ -30,7 +30,6 @@ public class Menu extends Actions {
       System.out.println(
         "\nOpção inválida inserida, por favor tente novamente:"
       );
-      input = sc.nextInt();
       input = Integer.parseInt(sc.nextLine());
     }
 
@@ -51,21 +50,21 @@ public class Menu extends Actions {
   public void executeOption() throws FileNotFoundException {
     try {
       switch (this.selected) {
-        case 1:
+        case 1: // Carregar dados
           this.loadData();
           this.executeMenu();
           break;
-        case 2:
+        case 2: // Criar novo game
           this.createGame(new Games());
 
-          sc.nextLine();
+          System.out.println("continuando o create...");
           this.executeMenu();
           break;
-        case 3:
+        case 3: // Ver game existente
           Games tmp = new Games();
 
           System.out.print("\nInsira o ID do game que deseja buscar: ");
-          int inputIdSearch = sc.nextInt();
+          int inputIdSearch = Integer.parseInt(sc.nextLine());
 
           System.out.println();
           tmp = this.readGame(inputIdSearch);
@@ -81,9 +80,9 @@ public class Menu extends Actions {
           sc.nextLine();
           this.executeMenu();
           break;
-        case 4:
+        case 4: // Atualizar game existente
           System.out.print("\nInsira o ID do game que deseja editar: ");
-          int inputIdUpdate = sc.nextInt();
+          int inputIdUpdate = Integer.parseInt(sc.nextLine());
           Games aux = new Games();
           
           boolean done = this.updateGame(inputIdUpdate, aux);
@@ -96,12 +95,12 @@ public class Menu extends Actions {
             );
           }
 
-          sc.nextLine();
+          System.out.println("continuando o update...");
           this.executeMenu();
           break;
-        case 5:
+        case 5: // Deletar game
           System.out.print("\nInsira o ID do game que deseja deletar: ");
-          int inputIdDelete = sc.nextInt();
+          int inputIdDelete = Integer.parseInt(sc.nextLine());
 
           System.out.println();
           this.deleteGame(inputIdDelete);
@@ -109,7 +108,7 @@ public class Menu extends Actions {
           sc.nextLine();
           this.executeMenu();
           break;
-        case 6:
+        case 6: // Sair
           System.out.println("\nObrigado por usar nosso Banco de Dados! :)");
           sc.close();
           this.closeFile();
