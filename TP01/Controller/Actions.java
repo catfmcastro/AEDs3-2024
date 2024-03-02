@@ -123,7 +123,8 @@ public class Actions {
   public boolean createGame(Games tmp) {
     try {
       gamesCount++;
-      tmp.userInputGame(++maxId);
+      maxId++;
+      tmp.userInputGame(gamesCount);
       file.seek(lastPos);
 
       // Add. o registro no fim do arquivo

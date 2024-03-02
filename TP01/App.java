@@ -18,12 +18,12 @@ public class App {
 
     try {
       System.out.println(
-        "Olá! Seja bem-vindo(a) ao Banco de Dados da Cat e do Tupac!'"
+        "Olá! Seja bem-vindo(a) ao Banco de Dados da Cat e do Tupac!"
       );
 
       menu.executeMenu();
     } catch (Exception e) {
-      System.out.println("Erro ao abrir/manipular o arquivo binário" + e);
+      System.out.println("Erro ao iniciar a aplicação: " + e);
     }
 
     sc.close();
