@@ -26,7 +26,7 @@ public class Actions {
     try {
       file.close();
     } catch (Exception e) {
-      System.out.println("Erro ao fechar arquivo .db: " + e);
+      System.err.println("Erro ao fechar arquivo .db: " + e);
     }
   }
 
@@ -38,7 +38,7 @@ public class Actions {
       csv = new RandomAccessFile("./TP01/db/games.csv", "r");
       csv.readLine();
 
-      System.out.println("Carregando dados para o Banco...");
+      System.out.println("\nCarregando dados para o Banco...");
 
       String str;
       file.writeLong(10); // Insere a posição final do arquivo no início
@@ -108,31 +108,6 @@ public class Actions {
 
     return resp;
   }
-
-  // Cria game novo e registrar no file, com base no input de user
-  // todo receber tmp do user, já formatado
-  // public boolean createGame(Games tmp) throws IOException {
-  //   try {
-  //     maxId++;
-  //     gamesCount++;
-  //     tmp.userInputGame(maxId);
-  //     file.seek(lastPos);
-  //     byte[] array = tmp.byteParse();
-
-  //     // Escrita no arquivo
-  //     file.writeInt(array.length);
-  //     file.write(array);
-
-  //     // Update última posição
-  //     this.lastPos += (array.length);
-
-  //     System.out.println("\nGame criado com sucesso!");
-  //     return true;
-  //   } catch (Exception e) {
-  //     System.err.println("Erro na função Create: " + e);
-  //     return false;
-  //   }
-  // }
 
   public boolean createGame(Games tmp) {
     try {

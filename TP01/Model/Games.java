@@ -211,7 +211,6 @@ public class Games {
   //   return str;
   // }
 
-  // todo format properly
   // Formata objeto em String
   public void printGame() {
     System.out.println(
