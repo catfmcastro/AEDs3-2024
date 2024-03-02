@@ -148,29 +148,31 @@ public class Actions {
    * 3) Retorna o game (ou null, se não encontrado)
    */
   public Games readGame(int searchId) throws IOException {
-    Games tmp = new Games();
-    byte[] arr;
-    long pos = 8; // Pos. inicial
-    try {
-      file.seek(pos);
-      for (int i = 0; i < gamesCount; i++) {
-        int size = file.readInt(); // Lê o tamanho do registro
+        Games aux = new Games();
+        byte[] tempVet;
+        long pos = 8; // Posição inicial
 
-        arr = new byte[size];
-        file.read(arr); // Lê o registro
+        try {
+            file.seek(pos);
 
-        // Checa a validade do game
-        if (isGameValid(arr, searchId)) {
-          tmp.fromByteArray(arr); // Transforma bytes em objeto
-          return tmp;
+            // Percorre o arquivo
+            for(int i = 0; i < maxId; i++){
+                int tam = file.readInt();
+                tempVet = new byte[tam];
+                file.read(tempVet);
+
+                // Checa se o game é válido
+                if(isGameValid(tempVet, searchId)){
+                    aux.fromByteArray(tempVet);
+                    return aux;
+                }
+                pos += tam;
+            }
+            return null;
+        } catch (Exception e) {
+            System.err.println("Erro na função Read: " + e);
+            return null;
         }
-        pos += size;
-      }
-    } catch (Exception e) {
-      System.err.println("Erro na função Read: " + e);
-    }
-
-    return null;
   }
 
   /*
@@ -231,35 +233,32 @@ public class Actions {
    * Retorna o game removido (4)
    */
   public Games deleteGame(int id) {
-    Games aux = new Games();
-    byte[] temp;
-    long pos = 8;
+        // Posiciona o ponteiro no inicio do arquivo - (1)
+        // Procura pelo ID desejado - (2)
+        // Ao encontrar atualiza o dado para true - (3)
+        // Retorna o game removido (4)
+        Games aux = new Games();
+        byte[] temp;
+        long pos = 8;
 
-    try {
-      file.seek(pos); // Ptr. no início dos registros
-
-      // Percorre o arquivo
-      while (file.getFilePointer() < file.length()) {
-        // Leitura dos registros
-        int tam = file.readInt();
-        temp = new byte[tam];
-        file.read(temp);
-
-        // Checagem de validade do game
-        if (isGameValid(temp, id)) {
-          // Delete propriamente dito
-          file.seek(pos + 4);
-          aux.fromByteArray(temp);
-          aux.setGrave(true);
-          file.write(aux.byteParse());
-          return aux;
+        try {
+            file.seek(pos);
+            for (int i = 0; i < maxId; i++) {
+                int tam = file.readInt();
+                temp = new byte[tam];
+                file.read(temp);
+                if (isGameValid(temp, id)) {
+                    file.seek(pos+4);
+                    aux.fromByteArray(temp);
+                    aux.setGrave(true);
+                    file.write(aux.byteParse());
+                    return aux;
+                }
+            }
+            return aux;
+        } catch (Exception e) {
+            System.err.println("Erro na função delete: " + e);
+            return aux;
         }
-      }
-      System.out.println("Game deletado com sucesso!\n");
-      return aux;
-    } catch (Exception e) {
-      System.err.println("Erro na função Delete: " + e);
-      return aux;
-    }
   }
 }

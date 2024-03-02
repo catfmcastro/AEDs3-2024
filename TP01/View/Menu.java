@@ -60,7 +60,6 @@ public class Menu extends Actions {
         case 2: // Criar novo game
           this.createGame(new Games());
 
-          System.out.println("continuando o create...");
           this.executeMenu();
           break;
         case 3: // Ver game existente
@@ -97,7 +96,6 @@ public class Menu extends Actions {
             );
           }
 
-          System.out.println("continuando o update...");
           this.executeMenu();
           break;
         case 5: // Deletar game
