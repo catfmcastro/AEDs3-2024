@@ -56,7 +56,6 @@ public class Menu extends Actions {
           this.executeMenu();
           break;
         case 2:
-          //Games tmp = new Games();
           this.createGame(new Games());
 
           sc.nextLine();
