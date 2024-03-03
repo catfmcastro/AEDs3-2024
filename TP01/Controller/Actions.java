@@ -78,7 +78,7 @@ public class Actions {
     }
   }
 
-  // Transformar data em horas, a partir de 1900
+  // Transformar string data em horas, a partir de 1900
   public static int dateToHours(String data) {
     // Um ano tem 8766 h
     // Um mês tem 730 h
@@ -233,20 +233,20 @@ public class Actions {
    * Retorna o game removido (4)
    */
   public Games deleteGame(int id) {
-        // Posiciona o ponteiro no inicio do arquivo - (1)
-        // Procura pelo ID desejado - (2)
-        // Ao encontrar atualiza o dado para true - (3)
-        // Retorna o game removido (4)
         Games aux = new Games();
         byte[] temp;
-        long pos = 8;
+        long pos = 8; // Posição inicial
 
         try {
             file.seek(pos);
+
+            // Percorre o arquivo
             for (int i = 0; i < maxId; i++) {
                 int tam = file.readInt();
                 temp = new byte[tam];
                 file.read(temp);
+
+                // Checa se o game é válido
                 if (isGameValid(temp, id)) {
                     file.seek(pos+4);
                     aux.fromByteArray(temp);
