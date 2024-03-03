@@ -184,7 +184,7 @@ public class Games {
       String shortIn = in.nextLine();
       setShortDescription(shortIn);
 
-      System.out.println("Insira os gêneros do Game: ");
+      System.out.println("Insira os gêneros do Game (no formato Gênero X/Gênero Y/ Gênero Z): ");
       String genresIn = in.nextLine();
       setGenres(genresIn);
 
@@ -192,7 +192,7 @@ public class Games {
       String publishersIn = in.nextLine();
       setPublishers(publishersIn);
 
-      System.out.println("Insira o preço do Game: ");
+      System.out.println("Insira o preço do Game (no formato 00.00): ");
       String priceIn = in.nextLine();
       setPrice(Float.parseFloat(priceIn));
 

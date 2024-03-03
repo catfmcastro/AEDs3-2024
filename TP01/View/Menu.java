@@ -15,8 +15,9 @@ public class Menu extends Actions {
     sc = new Scanner(System.in);
   }
 
+  // Interface para seleção de opção pelo usuário
   public void selectOption() {
-    System.out.println("\nO que você gostaria de fazer?");
+    System.out.println("\n----------------- O que você gostaria de fazer? -----------------");
     System.out.println("1) Carregar dados");
     System.out.println("2) Criar novo game");
     System.out.println("3) Ver game existente");
@@ -36,6 +37,7 @@ public class Menu extends Actions {
     selected = input;
   }
 
+  // Execução do menu
   public void executeMenu() {
     try {
       selected = 0;
@@ -47,6 +49,7 @@ public class Menu extends Actions {
     }
   }
 
+  // Execução das opções
   public void executeOption() throws FileNotFoundException {
     try {
       switch (this.selected) {
@@ -57,7 +60,6 @@ public class Menu extends Actions {
         case 2: // Criar novo game
           this.createGame(new Games());
 
-          System.out.println("continuando o create...");
           this.executeMenu();
           break;
         case 3: // Ver game existente
@@ -77,7 +79,6 @@ public class Menu extends Actions {
             tmp.printGame();
           }
 
-          sc.nextLine();
           this.executeMenu();
           break;
         case 4: // Atualizar game existente
@@ -95,7 +96,6 @@ public class Menu extends Actions {
             );
           }
 
-          System.out.println("continuando o update...");
           this.executeMenu();
           break;
         case 5: // Deletar game
@@ -103,9 +103,15 @@ public class Menu extends Actions {
           int inputIdDelete = Integer.parseInt(sc.nextLine());
 
           System.out.println();
-          this.deleteGame(inputIdDelete);
+          Games tmpDel = new Games();
+          tmpDel = deleteGame(inputIdDelete);
 
-          sc.nextLine();
+          if (tmpDel != null) {
+            System.out.println("Game deletado com sucesso!\n");
+          } else {
+            System.out.println("Não foi possível deletar o game. Tente novamente.");
+          }
+          
           this.executeMenu();
           break;
         case 6: // Sair
