@@ -16,7 +16,7 @@ public class Actions {
 
   // Abertura do arquivo .db
   public void openFile() throws IOException {
-    file = new RandomAccessFile("./TP01/out/games.db", "rw");
+    file = new RandomAccessFile("./TP02/DB/games.db", "rw");
     lastPos = file.readLong(); // Guarda a da ultima posição do arquivo
     maxId = 59431;
     gamesCount = maxId;
@@ -36,8 +36,8 @@ public class Actions {
     RandomAccessFile csv, write;
 
     try {
-      csv = new RandomAccessFile("./TP01/db/games.csv", "r");
-      write = new RandomAccessFile("./TP01/out/games.db", "rw");
+      csv = new RandomAccessFile("./TP02/DB/games.csv", "r");
+      write = new RandomAccessFile("./TP02/DB/games.db", "rw");
       csv.readLine();
       String str;
 
