@@ -105,7 +105,7 @@ public class Hash {
 
     try {
       this.hashIndex = new RandomAccessFile("./TP02/DB/hashIndex.db", "rw"); // cria o arquivo de indice
-      this.hashBuckets = new RandomAccessFile("hashBuckets.bin", "rw"); // cria o arquivo de buckets
+      this.hashBuckets = new RandomAccessFile("./TP02/DB/hashBuckets.db", "rw"); // cria o arquivo de buckets
 
       if (hashBuckets.length() == 0 && hashIndex.length() == 0) { // se os arquivos estiverem vazios
         // ponteiros no inicio do file
@@ -134,7 +134,6 @@ public class Hash {
       e.printStackTrace();
     }
   }
-
 
   // * Métodos ----------------------------------------------------------------------------------
 
@@ -178,9 +177,17 @@ public class Hash {
 
     try {
       hashBuckets.seek(posBucket + 4); // posiciona o ponteiro no inicio do bucket certo, pulando o ptrLocal
-      setContReg(hashBuckets.readInt()); // le a contagem de registros do bucket
+      int teste = hashBuckets.readInt(); // le a contagem de registros do bucket
+
+      System.out.println("há " + teste + "registros no bucket");
+
+      setContReg(teste);
 
       for (int i = 0; i < getContReg(); i++) {
+        if (hashBuckets.getFilePointer() == hashBuckets.length()) {
+          i = getContReg(); // sai do loop
+        }
+
         // se o id do registro == ao id procurado
         if (hashBuckets.readInt() == id) {
           setEndReg(hashBuckets.readLong()); // le o endReg
@@ -191,7 +198,6 @@ public class Hash {
       }
       System.out.println("Esse registro não existe ou foi deletado!");
     } catch (Exception e) {
-      System.out.println();
       System.out.println("Erro ao procurar registro: " + e.getMessage());
       e.printStackTrace();
     }
@@ -351,7 +357,9 @@ public class Hash {
       }
     } catch (Exception e) {
       System.out.println();
-      System.out.println("Erro ao aumentar a profundidade do Hash! " + e.getMessage());
+      System.out.println(
+        "Erro ao aumentar a profundidade do Hash! " + e.getMessage()
+      );
       e.printStackTrace();
     }
   }

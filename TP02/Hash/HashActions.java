@@ -1,10 +1,9 @@
 package Hash;
 
-import java.io.RandomAccessFile;
-import java.util.RandomAccess;
-
 import Controller.Actions;
 import Model.Games;
+import java.io.RandomAccessFile;
+import java.util.Scanner;
 
 public class HashActions extends Actions {
 
@@ -32,32 +31,68 @@ public class HashActions extends Actions {
 
   // * Load dados do DB no Hash indexado
   public void loadDataToHash() {
-    try{
-        RandomAccessFile file = new RandomAccessFile("./TP02/DB/games.db", "rw"); // abre arquivo
-        long ultimaPos = file.readLong(); // guarda a ultima posição do arquivo
-        file.seek(8); // posicona o ptr no inicio do arq, pulando o ponteiro global
+    try {
+      RandomAccessFile file = new RandomAccessFile("./TP02/DB/games.db", "rw"); // abre arquivo
+      long ultimaPos = file.readLong(); // guarda a ultima posição do arquivo
+      file.seek(8); // posicona o ptr no inicio do arq, pulando o ponteiro global
 
-        while(file.getFilePointer() < ultimaPos) {
-            int tam = file.readInt(); // lê o tamanho do registro
-            byte[] arr = new byte[tam]; // cria um vetor de bytes do tamanho do registro
-            file.read(arr); // lê o registro
+      while (file.getFilePointer() < ultimaPos) {
+        int tam = file.readInt(); // lê o tamanho do registro
+        System.out.println("tamanho do registro " + tam);
+        byte[] arr = new byte[tam]; // cria um vetor de bytes do tamanho do registro
+        file.read(arr); // lê o registro
 
-            // add objeto novo
-            Games aux = new Games(); // cria um novo game
-            aux.fromByteArray(arr); // converte o vetor de bytes para um game
+        // add objeto novo
+        Games aux = new Games(); // cria um novo game
+        aux.fromByteArray(arr); // converte o vetor de bytes para um game
+        System.out.println("objeto adicionado: id " + aux.getId());
 
-            // insere no hash
-            hash.createHash(aux.getId(), file.getFilePointer());
-        }
+        // insere no hash
+        hash.createHash(aux.getId(), file.getFilePointer());
+        System.out.println("inserido no hash");
+        System.out.println();
+      }
 
-        file.close(); // fecha arquivo
+      file.close(); // fecha arquivo
     } catch (Exception e) {
       System.err.println("Erro ao carregar dados para o Hash: " + e);
     }
   }
 
+  // * Buscar registro usando hash indexado
+    public Games readHash(int id) {
+        try {
+        Scanner sc = new Scanner(System.in);
+        long pos = hash.searchHash(id);
+    
+        if (pos != -1) {
+            RandomAccessFile file = new RandomAccessFile("./TP02/DB/games.db", "rw");
+            file.seek(pos);
+            int tam = file.readInt();
+            byte[] arr = new byte[tam];
+            file.read(arr);
+    
+            Games aux = new Games();
+            aux.fromByteArray(arr);
+            
+            file.close();
+            sc.close();
+
+            return aux;
+        } else {
+            System.out.println("Jogo não encontrado: não existe ou já foi deletado.");
+            sc.close();
+            return null;
+        }
+        } catch (Exception e) {
+        System.err.println("Erro ao buscar registro no Hash: " + e);
+        }
+
+        return null;
+    }
+
   public void getHashInfo() {
-    hash.readCbAndPg();;
+    hash.readCbAndPg();
     setHashPtrGlobal(hash.getPtrGlobal());
     setHashContBuckets(hash.getContBuckets());
   }

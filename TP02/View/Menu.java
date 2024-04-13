@@ -1,9 +1,9 @@
 package View;
 
+import Hash.HashActions;
 import Model.Games;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import Hash.HashActions;
 
 public class Menu extends HashActions {
 
@@ -17,7 +17,9 @@ public class Menu extends HashActions {
 
   // Interface para seleção de opção pelo usuário
   public void selectOption() {
-    System.out.println("\n----------------- O que você gostaria de fazer? -----------------");
+    System.out.println(
+      "\n----------------- O que você gostaria de fazer? -----------------"
+    );
     System.out.println("1) Carregar dados");
     System.out.println("2) Criar novo game");
     System.out.println("3) Ver game existente");
@@ -26,12 +28,13 @@ public class Menu extends HashActions {
     System.out.println();
     System.out.println("HASH -----------");
     System.out.println("6) Carregar dados para o Hash");
+    System.out.println("7) Ver game existente utilizando Hash");
     System.out.println();
-    System.out.println("7) Sair");
+    System.out.println("8) Sair");
 
     int input = Integer.parseInt(sc.nextLine()); // input do usuário
 
-    if (input < 1 || input > 6) {
+    if (input < 1 || input > 8) {
       System.out.println(
         "\nOpção inválida inserida, por favor tente novamente:"
       );
@@ -89,7 +92,7 @@ public class Menu extends HashActions {
           System.out.print("\nInsira o ID do game que deseja editar: ");
           int inputIdUpdate = Integer.parseInt(sc.nextLine());
           Games aux = new Games();
-          
+
           boolean done = this.updateGame(inputIdUpdate, aux);
 
           if (done) {
@@ -113,21 +116,46 @@ public class Menu extends HashActions {
           if (tmpDel != null) {
             System.out.println("Game deletado com sucesso!\n");
           } else {
-            System.out.println("Não foi possível deletar o game. Tente novamente.");
+            System.out.println(
+              "Não foi possível deletar o game. Tente novamente."
+            );
           }
-          
+
           this.executeMenu();
           break;
         case 6: // Carregar dados para o Hash
-
-
+          System.out.println("Carregando dados para Hash...");
           this.loadDataToHash();
 
-          System.out.println("Dados carregados para Hash Indexado com sucesso!");
+          System.out.println(
+            "Dados carregados para Hash Indexado com sucesso!"
+          );
 
           this.executeMenu();
           break;
-        case 7: // Sair
+        case 7: // Ver game existente utilizando Hash
+          Games tmpHashSearch = new Games();
+
+          System.out.print("\nInsira o ID do game que deseja buscar: ");
+          int inputIdSearchHash = Integer.parseInt(sc.nextLine());
+
+          System.out.println();
+          System.out.println("Buscando game...");
+          System.out.println();
+
+          tmpHashSearch = this.readHash(inputIdSearchHash);
+
+          if (tmpHashSearch == null) {
+            System.out.println(
+              "Esse game não existe ou já foi deletado! Tente outro game."
+            );
+          } else {
+            tmpHashSearch.printGame();
+          }
+
+          this.executeMenu();
+          break;
+        case 8: // Sair
           System.out.println("\nObrigado por usar nosso Banco de Dados! :)");
           sc.close();
           this.closeFile();
