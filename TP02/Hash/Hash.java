@@ -135,6 +135,9 @@ public class Hash {
     }
   }
 
+
+  // * Métodos ----------------------------------------------------------------------------------
+
   // le o ptrGlobal e a contagem de buckets do arquivo indexado
   public void readCbAndPg() {
     try {
