@@ -1,11 +1,11 @@
 package View;
 
-import Controller.Actions;
 import Model.Games;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import Hash.HashActions;
 
-public class Menu extends Actions {
+public class Menu extends HashActions {
 
   private int selected;
   private Scanner sc;
@@ -23,7 +23,11 @@ public class Menu extends Actions {
     System.out.println("3) Ver game existente");
     System.out.println("4) Atualizar game existente");
     System.out.println("5) Deletar game");
-    System.out.println("6) Sair");
+    System.out.println();
+    System.out.println("HASH -----------");
+    System.out.println("6) Carregar dados para o Hash");
+    System.out.println();
+    System.out.println("7) Sair");
 
     int input = Integer.parseInt(sc.nextLine()); // input do usuário
 
@@ -114,7 +118,16 @@ public class Menu extends Actions {
           
           this.executeMenu();
           break;
-        case 6: // Sair
+        case 6: // Carregar dados para o Hash
+
+
+          this.loadDataToHash();
+
+          System.out.println("Dados carregados para Hash Indexado com sucesso!");
+
+          this.executeMenu();
+          break;
+        case 7: // Sair
           System.out.println("\nObrigado por usar nosso Banco de Dados! :)");
           sc.close();
           this.closeFile();

@@ -40,6 +40,7 @@ public class Actions {
       write = new RandomAccessFile("./TP02/DB/games.db", "rw");
       csv.readLine();
       String str;
+      int thisId = 0;
 
       write.writeLong(10); // Reserva um espaço no inicio do arquivo para inserir a posição do final do arquivo
 
@@ -60,6 +61,8 @@ public class Actions {
           dateToHours(vet[8])
         );
 
+        thisId = Integer.parseInt(vet[0]);
+
         byte aux[] = tmp.byteParse(); // Insere registro no arquivo
         write.writeInt(aux.length); // Tam. do registro antes de cada vetor
         write.write(aux); // Insere o vetor de dados de byte
@@ -68,6 +71,13 @@ public class Actions {
       long last = write.getFilePointer(); // Última posição do arquivo
       write.seek(0); // Posiciona no início do arquivo
       write.writeLong(last); // Escreve a ultima posicao no início
+
+      if (thisId > 0) {
+        this.maxId = thisId;
+      } else {
+        System.err.println("Erro na contagem do maxId");
+      }
+
 
       write.close();
       csv.close();
