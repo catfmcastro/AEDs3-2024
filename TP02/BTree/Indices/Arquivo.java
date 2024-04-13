@@ -28,8 +28,6 @@ public class Arquivo {
             write.writeLong(10); // Reserva um espaço no inicio do arquivo para inserir a posição do final do
                                  // arquivo
 
-            System.out.println("Carregando dados para o arquivo...");
-
             while ((str = csv.readLine()) != null) {
                 String vet[] = str.split("./;"); // Separando em vetor a string
                 Games tmp = new Games(
@@ -42,7 +40,8 @@ public class Arquivo {
                         vet[5],
                         vet[6],
                         vet[7],
-                        dateToHours(vet[8]));
+                        dateToHours(vet[8])
+                    );
 
                 byte aux[] = tmp.byteParse(); // Insere registro no arquivo
                 write.writeInt(aux.length); // Tam. do registro antes de cada vetor
@@ -97,7 +96,7 @@ public class Arquivo {
             
             index.close();
             readBD.close();
-            
+
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
