@@ -33,7 +33,7 @@ public class CriarBytes {
         try {
             // Acessando o arquivo para poder realizar a leitura e colocar no BD em bytes
             raf = new RandomAccessFile("./Bagunca_tupac/transformar_byte/games_tobyte.csv", "r");
-            write = new RandomAccessFile("./TP01/out/games.db", "rw");
+            write = new RandomAccessFile("./TP02/DB/games.db", "rw");
             raf.readLine(); // Não estou usando raf.seek devido a algum espaço nulo no arquivo que não sei onde está
             String str;
 
