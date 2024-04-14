@@ -29,12 +29,14 @@ public class Menu extends HashActions {
     System.out.println("HASH -----------");
     System.out.println("6) Carregar dados para o Hash");
     System.out.println("7) Ver game existente utilizando Hash");
+    System.out.println("8) Criar game utilizando Hash");
+    System.out.println("9) Deletar game existente utilizando Hash");
     System.out.println();
-    System.out.println("8) Sair");
+    System.out.println("10) Sair");
 
     int input = Integer.parseInt(sc.nextLine()); // input do usuário
 
-    if (input < 1 || input > 8) {
+    if (input < 1 || input > 10) {
       System.out.println(
         "\nOpção inválida inserida, por favor tente novamente:"
       );
@@ -143,7 +145,7 @@ public class Menu extends HashActions {
           System.out.println("Buscando game...");
           System.out.println();
 
-          tmpHashSearch = this.readHash(inputIdSearchHash);
+          tmpHashSearch = this.readHashh(inputIdSearchHash);
 
           if (tmpHashSearch == null) {
             System.out.println(
@@ -155,7 +157,30 @@ public class Menu extends HashActions {
 
           this.executeMenu();
           break;
-        case 8: // Sair
+        case 8: // Criar game utilizando Hash
+          this.createHashh(new Games());
+          
+          this.executeMenu();
+          break;
+        case 9: // Deletar game existente utilizando Hash
+          System.out.print("Insira o ID do game que deseja deletar: ");
+          int inputIdDeleteHash = Integer.parseInt(sc.nextLine());
+
+          System.out.println();
+          Games tmpDelHash = new Games();
+          tmpDelHash = deleteHashh(inputIdDeleteHash);
+
+          if (tmpDelHash != null) {
+            System.out.println("Game deletado com sucesso!\n");
+          } else {
+            System.out.println(
+              "Não foi possível deletar o game. Tente novamente."
+            );
+          }
+
+          this.executeMenu();
+          break;
+        case 10: // Sair
           System.out.println("\nObrigado por usar nosso Banco de Dados! :)");
           sc.close();
           this.closeFile();

@@ -2,6 +2,7 @@ package Hash;
 
 import Controller.Actions;
 import Model.Games;
+
 import java.io.RandomAccessFile;
 
 public class HashActions extends Actions {
@@ -36,6 +37,7 @@ public class HashActions extends Actions {
       file.seek(8); // posicona o ptr no inicio do arq, pulando o ponteiro global
 
       while (file.getFilePointer() < ultimaPos) {
+        long pos = file.getFilePointer(); // guarda a posição do registro
         int tam = file.readInt(); // lê o tamanho do registro
         System.out.println("tamanho do registro " + tam);
         byte[] arr = new byte[tam]; // cria um vetor de bytes do tamanho do registro
@@ -45,11 +47,10 @@ public class HashActions extends Actions {
         Games aux = new Games(); // cria um novo game
         aux.fromByteArray(arr); // converte o vetor de bytes para um game
 
-        aux.printGame(); // imprime o game
         System.out.println("objeto adicionado: id " + aux.getId());
 
         // insere no hash
-        hash.createHash(aux.getId(), file.getFilePointer());
+        hash.createInHash(aux.getId(), pos);
         System.out.println("inserido no hash");
         System.out.println();
       }
@@ -72,6 +73,10 @@ public class HashActions extends Actions {
         file.read(arr);
 
         Games aux = new Games();
+
+        System.out.println("O game encontrado foi: ");
+        aux.printGame();
+
         aux.fromByteArray(arr);
 
         return aux;
@@ -85,6 +90,78 @@ public class HashActions extends Actions {
 
     return null;
   }
+
+  public Games readHashh (int id) {
+    try {
+      Games aux = new Games();
+      aux = this.readGame(id);
+      return aux;
+    } catch (Exception e) {
+      System.err.println("Erro ao buscar registro no Hash: " + e);
+      return null;
+    }
+  }
+
+  // * Deletar registro no Hash indexado
+  public Games deleteHash(int id) {
+    try {
+      long pos = hash.searchHash(id);
+
+      if (pos != -1) {
+        file.seek(pos); // posiciona ptr no end. correto, pulando a lápide
+        file.writeByte(-1); // marca como deletado
+        hash.deleteInHash(id, pos);
+        System.out.println("Registro deletado com sucesso!");
+        return null;
+      } else {
+        System.out.println("Registro não encontrado!");
+        return null;
+      }
+    } catch (Exception e) {
+      System.err.println("Erro ao deletar registro no Hash: " + e);
+      return null;
+    }
+  }
+
+  public Games deleteHashh(int id) {
+    try {
+      Games aux = this.deleteGame(id);
+      return aux;
+    } catch (Exception e) {
+      System.err.println("Erro ao deletar registro no Hash: " + e);
+      return null;
+    }
+  }
+
+  // * Cria registro no Hash indexado
+  public boolean createHash(Games tmp) {
+    try {
+      file.seek(file.length()); // Posiciona o ponteiro no final do arquivo
+      long pos = file.getFilePointer();
+
+      byte[] arr = tmp.byteParse(); // Converte o game para vetor de bytes
+      file.writeInt(arr.length); // Escreve o tamanho do registro
+
+      file.write(arr); // Escreve o registro
+
+      hash.createInHash(tmp.getId(), pos); // Insere no hash
+      return true; // Return true if the hash creation is successful
+    } catch (Exception e) {
+      System.err.println("Erro ao criar registro no Hash: " + e);
+      return false; // Return false if there is an error in hash creation
+    }
+  }
+
+  public boolean createHashh(Games tmp) {
+    try {
+      boolean aux = this.createGame(tmp);
+      return aux;
+    } catch (Exception e) {
+      System.err.println("Erro ao criar registro no Hash: " + e);
+      return false;
+    }
+  }
+
 
   public void getHashInfo() {
     hash.readCbAndPg();

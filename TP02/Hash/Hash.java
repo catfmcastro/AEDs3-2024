@@ -177,13 +177,11 @@ public class Hash {
 
     try {
       hashBuckets.seek(posBucket + 4); // posiciona o ponteiro no inicio do bucket certo, pulando o ptrLocal
-      int teste = hashBuckets.readInt(); // le a contagem de registros do bucket
-
-      System.out.println("há " + teste + " registros no bucket");
-      setContReg(teste);
+      int registrosBucket = hashBuckets.readInt(); // le a contagem de registros do bucket
+      setContReg(registrosBucket);
 
       // percorre o bucket sequencialmente
-      for (int i = 0; i < getContReg(); i++) { 
+      for (int i = 0; i < getContReg(); i++) {
         // se o id do registro == ao id procurado
         if (hashBuckets.readInt() == id) {
           setEndReg(hashBuckets.readLong()); // le o endReg
@@ -200,7 +198,7 @@ public class Hash {
   }
 
   // apaga registro do hash
-  public boolean deleteHash(int id, long endBucket) {
+  public boolean deleteInHash(int id, long endBucket) {
     try {
       hashBuckets.seek(endBucket + 4); // posiciona ptr no bucket certo, pulando o ptrLocal
       setContReg(hashBuckets.readInt()); // le a contagem de registros do bucket
@@ -227,7 +225,7 @@ public class Hash {
   }
 
   // insere registro no Hash
-  public long createHash(int id, long endReg) {
+  public long createInHash(int id, long endReg) {
     long endBucketCheio = -1;
     long aux = -1; // aux para valores tmp
 
@@ -306,29 +304,29 @@ public class Hash {
               setIdReg(hashBuckets.readInt()); // le o idReg
               setEndReg(hashBuckets.readLong()); // le o endReg
               aux = hashBuckets.getFilePointer();
-              deleteHash(getIdReg(), endBucketCheio); // exclui o registro do bucket cheio
-              createHash(getIdReg(), getEndReg());
+              deleteInHash(getIdReg(), endBucketCheio); // exclui o registro do bucket cheio
+              createInHash(getIdReg(), getEndReg());
             } else {
               aux += 12; // pula para o proximo registro
             }
           }
 
           // insere o novo registro
-          createHash(id, endReg);
+          createInHash(id, endReg);
         }
         // * Caso 3: bucket sem espaco e ptrLocal == ptrGlobal
         else if (
           (getContReg() == maxReg) && (getPtrLocal() == getPtrGlobal())
         ) {
           aumentaProfundidade();
-          createHash(id, endReg);
+          createInHash(id, endReg);
           return getEndBucket();
         }
       }
       return -1;
     } catch (Exception e) {
       System.out.println();
-      System.out.println("Erro ao createHash: " + e.getMessage());
+      System.out.println("Erro ao createInHash: " + e.getMessage());
       e.getStackTrace();
       return -1;
     }
