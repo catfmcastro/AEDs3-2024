@@ -3,7 +3,6 @@ package Hash;
 import Controller.Actions;
 import Model.Games;
 import java.io.RandomAccessFile;
-import java.util.Scanner;
 
 public class HashActions extends Actions {
 
@@ -60,36 +59,30 @@ public class HashActions extends Actions {
   }
 
   // * Buscar registro usando hash indexado
-    public Games readHash(int id) {
-        try {
-        Scanner sc = new Scanner(System.in);
-        long pos = hash.searchHash(id);
-    
-        if (pos != -1) {
-            RandomAccessFile file = new RandomAccessFile("./TP02/DB/games.db", "rw");
-            file.seek(pos);
-            int tam = file.readInt();
-            byte[] arr = new byte[tam];
-            file.read(arr);
-    
-            Games aux = new Games();
-            aux.fromByteArray(arr);
-            
-            file.close();
-            sc.close();
+  public Games readHash(int id) {
+    try {
+      long pos = hash.searchHash(id);
 
-            return aux;
-        } else {
-            System.out.println("Jogo não encontrado: não existe ou já foi deletado.");
-            sc.close();
-            return null;
-        }
-        } catch (Exception e) {
-        System.err.println("Erro ao buscar registro no Hash: " + e);
-        }
+      if (pos != -1) {
+        file.seek(pos + 1); // posiciona ptr no end. correto, pulando a lápide
+        int tam = file.readInt(); // tamanho do registro
+        byte[] arr = new byte[tam];
+        file.read(arr);
 
+        Games aux = new Games();
+        aux.fromByteArray(arr);
+
+        return aux;
+      } else {
+        // jogo não encontrado
         return null;
+      }
+    } catch (Exception e) {
+      System.err.println("Erro ao buscar registro no Hash: " + e);
     }
+
+    return null;
+  }
 
   public void getHashInfo() {
     hash.readCbAndPg();

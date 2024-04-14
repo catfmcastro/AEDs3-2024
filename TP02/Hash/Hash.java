@@ -179,8 +179,6 @@ public class Hash {
       hashBuckets.seek(posBucket + 4); // posiciona o ponteiro no inicio do bucket certo, pulando o ptrLocal
       int teste = hashBuckets.readInt(); // le a contagem de registros do bucket
 
-      System.out.println("há " + teste + "registros no bucket");
-
       setContReg(teste);
 
       for (int i = 0; i < getContReg(); i++) {
@@ -196,7 +194,6 @@ public class Hash {
           hashBuckets.skipBytes(8); // pula para o proximo registro
         }
       }
-      System.out.println("Esse registro não existe ou foi deletado!");
     } catch (Exception e) {
       System.out.println("Erro ao procurar registro: " + e.getMessage());
       e.printStackTrace();

@@ -164,7 +164,7 @@ public class Menu extends HashActions {
           break;
       }
     } catch (Exception e) {
-      System.err.println("Erro na função executeMenu: " + e);
+      System.err.println("Erro na função executeOption: " + e);
     }
   }
 }
