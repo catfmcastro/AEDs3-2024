@@ -44,6 +44,8 @@ public class HashActions extends Actions {
         // add objeto novo
         Games aux = new Games(); // cria um novo game
         aux.fromByteArray(arr); // converte o vetor de bytes para um game
+
+        aux.printGame(); // imprime o game
         System.out.println("objeto adicionado: id " + aux.getId());
 
         // insere no hash

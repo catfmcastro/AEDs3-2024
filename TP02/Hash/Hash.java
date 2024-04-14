@@ -11,7 +11,7 @@ public class Hash {
   // Buckets
   private int ptrLocal;
   private int contReg; // contagem de registros escritos no bucket
-  private int maxReg = 2972; // 440 registros por bucket
+  private int maxReg = 2972; // 2972 registros por bucket (5% da BD)
   // Registros
   private int tamReg = 12; // 12 bytes (1 int e 1 long)
   private int idReg; // id do registro
@@ -97,7 +97,7 @@ public class Hash {
     // Buckets
     this.ptrLocal = 1;
     this.contReg = 0;
-    this.maxReg = 440;
+    this.maxReg = 2972;
     // Registros
     this.tamReg = 12;
     this.idReg = -1;
@@ -118,7 +118,7 @@ public class Hash {
         for (int i = 0; i < 2; i++) { // cria os 2 primeiros buckets
           hashIndex.writeLong(hashBuckets.getFilePointer()); // escreve o endBucket
           hashBuckets.writeInt(1); // escreve o ptrLocal (inicia em 1)
-          hashBuckets.writeInt(0); // escreve a qtd de registros (bucket inicia vazio)
+          hashBuckets.writeInt(0); // escreve a cont de registros (bucket inicia vazio)
           for (int j = 0; j < maxReg; j++) { // escreve os registros vazios
             hashBuckets.writeInt(-1); // escreve o idReg
             hashBuckets.writeLong(-1); // escreve o endReg
@@ -179,13 +179,11 @@ public class Hash {
       hashBuckets.seek(posBucket + 4); // posiciona o ponteiro no inicio do bucket certo, pulando o ptrLocal
       int teste = hashBuckets.readInt(); // le a contagem de registros do bucket
 
+      System.out.println("há " + teste + " registros no bucket");
       setContReg(teste);
 
-      for (int i = 0; i < getContReg(); i++) {
-        if (hashBuckets.getFilePointer() == hashBuckets.length()) {
-          i = getContReg(); // sai do loop
-        }
-
+      // percorre o bucket sequencialmente
+      for (int i = 0; i < getContReg(); i++) { 
         // se o id do registro == ao id procurado
         if (hashBuckets.readInt() == id) {
           setEndReg(hashBuckets.readLong()); // le o endReg
