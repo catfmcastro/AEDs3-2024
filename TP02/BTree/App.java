@@ -3,6 +3,7 @@ package BTree;
 import java.util.Scanner;
 
 import BTree.Model.ArvoreB;
+
 public class App {
 
     public static void main(String[] args) {
@@ -19,17 +20,20 @@ public class App {
             switch (value) {
                 case 1:
                     arvore.insereINDICES();
-                break;
+                    break;
                 case 2:
-                    arvore.createGame(ID, ponteiro);       
-                break;
+                    ID = scanner.nextInt();
+                    arvore.createGame(ID, ponteiro);
+                    break;
                 case 3:
+                    ID = scanner.nextInt();
                     arvore.delete(ID);
-                break;
+                    break;
                 case 4:
+                    ID = scanner.nextInt();
                     arvore.seachGame(ID);
-                break;
-            
+                    break;
+
                 default:
                     break;
             }
