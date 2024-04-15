@@ -12,7 +12,7 @@ public class Actions {
   private int maxId; // Ultimo jogo do arquivo, antes do fim
   private int gamesCount;
   static final int inicialYear = 1900; // Ano inicial para a conversão da data
-  RandomAccessFile file;
+  protected RandomAccessFile file;
 
   // Abertura do arquivo .db
   public void openFile() throws IOException {
@@ -40,6 +40,7 @@ public class Actions {
       write = new RandomAccessFile("./TP02/DB/games.db", "rw");
       csv.readLine();
       String str;
+      int thisId = 0;
 
       write.writeLong(10); // Reserva um espaço no inicio do arquivo para inserir a posição do final do arquivo
 
@@ -60,6 +61,8 @@ public class Actions {
           dateToHours(vet[8])
         );
 
+        thisId = Integer.parseInt(vet[0]);
+
         byte aux[] = tmp.byteParse(); // Insere registro no arquivo
         write.writeInt(aux.length); // Tam. do registro antes de cada vetor
         write.write(aux); // Insere o vetor de dados de byte
@@ -68,6 +71,12 @@ public class Actions {
       long last = write.getFilePointer(); // Última posição do arquivo
       write.seek(0); // Posiciona no início do arquivo
       write.writeLong(last); // Escreve a ultima posicao no início
+
+      if (thisId > 0) {
+        this.maxId = thisId;
+      } else {
+        System.err.println("Erro na contagem do maxId");
+      }
 
       write.close();
       csv.close();
@@ -148,31 +157,31 @@ public class Actions {
    * 3) Retorna o game (ou null, se não encontrado)
    */
   public Games readGame(int searchId) throws IOException {
-        Games aux = new Games();
-        byte[] tempVet;
-        long pos = 8; // Posição inicial
+    Games aux = new Games();
+    byte[] tempVet;
+    long pos = 8; // Posição inicial
 
-        try {
-            file.seek(pos);
+    try {
+      file.seek(pos);
 
-            // Percorre o arquivo
-            for(int i = 0; i < maxId; i++){
-                int tam = file.readInt();
-                tempVet = new byte[tam];
-                file.read(tempVet);
+      // Percorre o arquivo
+      for (int i = 0; i < maxId; i++) {
+        int tam = file.readInt();
+        tempVet = new byte[tam];
+        file.read(tempVet);
 
-                // Checa se o game é válido
-                if(isGameValid(tempVet, searchId)){
-                    aux.fromByteArray(tempVet);
-                    return aux;
-                }
-                pos += tam;
-            }
-            return null;
-        } catch (Exception e) {
-            System.err.println("Erro na função Read: " + e);
-            return null;
+        // Checa se o game é válido
+        if (isGameValid(tempVet, searchId)) {
+          aux.fromByteArray(tempVet);
+          return aux;
         }
+        pos += tam;
+      }
+      return null;
+    } catch (Exception e) {
+      System.err.println("Erro na função Read: " + e);
+      return null;
+    }
   }
 
   /*
@@ -233,32 +242,32 @@ public class Actions {
    * Retorna o game removido (4)
    */
   public Games deleteGame(int id) {
-        Games aux = new Games();
-        byte[] temp;
-        long pos = 8; // Posição inicial
+    Games aux = new Games();
+    byte[] temp;
+    long pos = 8; // Posição inicial
 
-        try {
-            file.seek(pos);
+    try {
+      file.seek(pos);
 
-            // Percorre o arquivo
-            for (int i = 0; i < maxId; i++) {
-                int tam = file.readInt();
-                temp = new byte[tam];
-                file.read(temp);
+      // Percorre o arquivo
+      for (int i = 0; i < maxId; i++) {
+        int tam = file.readInt();
+        temp = new byte[tam];
+        file.read(temp);
 
-                // Checa se o game é válido
-                if (isGameValid(temp, id)) {
-                    file.seek(pos+4);
-                    aux.fromByteArray(temp);
-                    aux.setGrave(true);
-                    file.write(aux.byteParse());
-                    return aux;
-                }
-            }
-            return aux;
-        } catch (Exception e) {
-            System.err.println("Erro na função delete: " + e);
-            return aux;
+        // Checa se o game é válido
+        if (isGameValid(temp, id)) {
+          file.seek(pos + 4);
+          aux.fromByteArray(temp);
+          aux.setGrave(true);
+          file.write(aux.byteParse());
+          return aux;
         }
+      }
+      return aux;
+    } catch (Exception e) {
+      System.err.println("Erro na função delete: " + e);
+      return aux;
+    }
   }
 }
