@@ -271,8 +271,8 @@ public class Page {
         return false;
     }
 
-    public boolean updade (int number, long pos) {
-        insereID(number, pos);
+    public boolean updade (int number) {
+        insereID(number, cadeRaiz());
         return true;
     }
 

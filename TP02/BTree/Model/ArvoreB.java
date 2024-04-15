@@ -68,4 +68,13 @@ public class ArvoreB {
         }
     }
 
+    public boolean update (int number){
+        try {
+            return pagina.updade(number);
+        } catch (Exception e) {
+            System.out.println("Erro delete: " + e.getMessage());
+            return false;
+        }
+    }
+
 }
