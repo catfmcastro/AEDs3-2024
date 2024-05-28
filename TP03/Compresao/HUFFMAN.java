@@ -1,3 +1,8 @@
-public class HUFFMAN {
+
+class Node {
+
+}
+
+public class Huffman {
     
 }

@@ -1,5 +1,5 @@
 import java.io.RandomAccessFile;
-import scr.Games;
+import Model.Games;
 
 public class CriarBytes {
 
@@ -29,21 +29,30 @@ public class CriarBytes {
         RandomAccessFile raf, write;
 
         try {
-            // Acessando o arquivo para poder realizar a leitura e colocar no BD em bytes
-            raf = new RandomAccessFile("./Bagunca_tupac/transformar_byte/games_tobyte.csv", "r");
-            write = new RandomAccessFile("./TP02/DB/games.db", "rw");
-            raf.readLine(); // Não estou usando raf.seek devido a algum espaço nulo no arquivo que não sei onde está
+
+            raf = new RandomAccessFile("./CSV/games.csv", "r");
+            write = new RandomAccessFile("./BD/games.db", "rw");
+            raf.readLine();
+
             String str;
 
-            write.writeLong(10); // Reserva um espaço no inicio do arquivo como um long int para inserir a posição do final do arquivo
+            write.writeLong(10);
 
             System.out.println("iniciando load...");
+            
+            // id./;steamID./;name./;price./;short_descritiption./;genres./;publishers./;roda_linux./;release_date
+
             while ((str = raf.readLine()) != null) {
+
                 String vet[] = str.split("./;"); // Separando em vetor a string
-                Games tmp = new Games(false, Integer.parseInt(vet[0]), Integer.parseInt(vet[1]), Float.parseFloat(vet[3]), vet[2], vet[4], vet[5], vet[6], vet[7], trasnformDate(vet[8])); // Salva o valor em um game temporario
-                byte aux[] = tmp.createbyteArray(); // Insere no arquivo DB
-                write.writeInt(aux.length); // Coloca o tamanho antes do vetor de dados de byte
-                write.write(aux); // Insere o vetor de dados de byte
+                
+                Games tmp = new Games(Integer.parseInt(vet[0]), Integer.parseInt(vet[1]), vet[2], Float.parseFloat(vet[3]), vet[4], vet[5], vet[6], vet[7], trasnformDate(vet[8]), false);
+                
+                byte aux[] = tmp.getBytes();
+                
+                write.writeInt(aux.length);
+                
+                write.write(aux);
             }
 
             long pointer = write.getFilePointer(); // Pega a ultima posicao do arquivo
@@ -52,9 +61,12 @@ public class CriarBytes {
             
             write.close(); 
             raf.close();
+
             System.out.println("load finalizado com sucesso");
+
         } catch (Exception e) {
-            System.out.println(e);
+
+            System.out.println("Erro nos arquivos" + e.getMessage());
         }
     }
 }
