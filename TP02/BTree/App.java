@@ -15,7 +15,7 @@ public class App {
 
         while (value != 5) {
             System.out.println("O que deseja fazer:");
-            System.out.println("1-CarregaIndices\n 2-CriaGame\n 3-Delete game\n 4-Procura Jogo\n 5-Sair");
+            System.out.println("1 - CarregaIndices\n 2 - CriaGame\n 3 - Delete game\n 4 - Procura Jogo\n 5 - Sair");
             value = scanner.nextInt();
             switch (value) {
                 case 1:
