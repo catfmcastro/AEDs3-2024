@@ -11,7 +11,7 @@ public class CRUD {
         Games temp = new Games();
 
         try {
-            raf = new RandomAccessFile("./BD/games.db", "rw");
+            raf = new RandomAccessFile("./TP03/BD/games.db", "rw");
             long position = raf.readLong();
 
             do {
@@ -36,7 +36,7 @@ public class CRUD {
         Games temp = new Games();
         
         try {
-            raf = new RandomAccessFile("./BD/games.db", "rw");
+            raf = new RandomAccessFile("./TP03/BD/games.db", "rw");
             long pointerEnd = raf.readLong();
 
             do {
@@ -65,7 +65,7 @@ public class CRUD {
         Games temp = new Games();
         
         try {
-            raf = new RandomAccessFile("./BD/games.db", "rw");
+            raf = new RandomAccessFile("./TP03/BD/games.db", "rw");
             long pointerEnd = raf.readLong();
 
             do {
@@ -94,7 +94,7 @@ public class CRUD {
     public boolean create (Games novo){
 
         try {
-            raf = new RandomAccessFile("./BD/games.db", "rw");
+            raf = new RandomAccessFile("./TP03/BD/games.db", "rw");
             long position = raf.readLong();
             raf.seek(position);
             byte[] temp = novo.getBytes();

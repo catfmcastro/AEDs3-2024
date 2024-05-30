@@ -1,4 +1,4 @@
-
+package Compresao;
 class Node {
 
 }
