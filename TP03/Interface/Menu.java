@@ -23,7 +23,9 @@ public class Menu {
     System.out.println("2) Ver game existente");
     System.out.println("3) Atualizar game existente");
     System.out.println("4) Deletar game");
-    System.out.println("5) Sair");
+    System.out.println("5) Comprimir dados com LZW");
+    System.out.println("6) Descomprimir dados com LZW");
+    System.out.println("7) Sair");
 
     int input = Integer.parseInt(sc.nextLine()); // input do usuário
 
@@ -61,14 +63,23 @@ public class Menu {
           this.executeMenu();
           break;
         case 3: // Atualizar game existente
-          Actions.updateGame(sc);
+          //Actions.updateGame(sc);
+          System.out.println("EM CONSTRUÇÃO");
           this.executeMenu();
           break;
         case 4: // Deletar game
           Actions.deleteGame(sc);
           this.executeMenu();
           break;
-        case 5: // Sair
+        case 5: // Compressão de dados com  LZW
+          Actions.compressLzw();
+          this.executeMenu();
+          break;
+        case 6: // Descomprimir dados com LZW
+          Actions.decompressLzw();
+          this.executeMenu();
+          break;
+        case 7: // Sair
           System.out.println("\nObrigado por usar nosso Banco de Dados! :)");
           sc.close();
           break;
