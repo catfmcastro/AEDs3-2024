@@ -4,8 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.util.Scanner;
 
-public class Games {   
+public class Games {
     private int id, steamID, release_date;
     private float price;
     private String name, short_description;
@@ -27,7 +28,8 @@ public class Games {
 
     // id./;steamID./;name./;price./;short_descritiption./;genres./;publishers./;roda_linux./;release_date
 
-    public Games(int id, int steamID, String name, float price, String short_description, String genres, String publishers, String run_linux, int release_date, boolean grave) {
+    public Games(int id, int steamID, String name, float price, String short_description, String genres,
+            String publishers, String run_linux, int release_date, boolean grave) {
         this.id = id;
         this.steamID = steamID;
         this.release_date = release_date;
@@ -44,7 +46,7 @@ public class Games {
         return id;
     }
 
-    public void setGrave(){
+    public void setGrave() {
         this.grave = true;
     }
 
@@ -55,16 +57,16 @@ public class Games {
     public boolean isGrave() {
         return grave;
     }
-    
-    public boolean isGame (byte[] vet, int searchID){
-        
+
+    public boolean isGame(byte[] vet, int searchID) {
+
         try {
             ByteArrayInputStream bai = new ByteArrayInputStream(vet);
             DataInputStream dis = new DataInputStream(bai);
             this.grave = dis.readBoolean();
             this.id = dis.readInt();
-            
-            if(!grave && searchID == id){
+
+            if (!grave && searchID == id) {
                 return true;
             } else {
                 return false;
@@ -132,37 +134,157 @@ public class Games {
         return day + "/" + month + "/" + year;
     }
 
-    public String toString (){
-        return  "Id: " +
-        this.id +
-        " - " +
-        "SteamID: " +
-        this.steamID +
-        " - " +
-        "Preço: " +
-        this.price +
-        "\n" +
-        "Nome: " +
-        this.name +
-        "\n" +
-        "Descrição: " +
-        this.short_description +
-        "\n" +
-        "Gêneros: " +
-        this.genres +
-        "\n" +
-        "Publicador: " +
-        this.publishers +
-        "\n" +
-        "Data de Lançamento: " +
-        convertDate(this.release_date) +
-        "\n" +
-        "Grave: " +
-        this.grave +
-        "\n" +
-        "Suporte Linux: " +
-        this.run_linux +
-        "\n";
+    public int trasnformDate(String data) {
+
+        // Um ano tem 8766 h
+        // Um mês tem 730 h
+        // Um dia tem 24 h
+
+        String tmp[] = data.split("/");
+        int year, month, day;
+
+        year = (Integer.parseInt(tmp[2]) - 1900) * 8760;
+        month = (Integer.parseInt(tmp[1])) * 730;
+        day = Integer.parseInt(tmp[0]) * 24;
+
+        return year + month + day;
+    }
+
+    public String toString() {
+        return "Id: " +
+                this.id +
+                " - " +
+                "SteamID: " +
+                this.steamID +
+                " - " +
+                "Preço: " +
+                this.price +
+                "\n" +
+                "Nome: " +
+                this.name +
+                "\n" +
+                "Descrição: " +
+                this.short_description +
+                "\n" +
+                "Gêneros: " +
+                this.genres +
+                "\n" +
+                "Publicador: " +
+                this.publishers +
+                "\n" +
+                "Data de Lançamento: " +
+                convertDate(this.release_date) +
+                "\n" +
+                "Grave: " +
+                this.grave +
+                "\n" +
+                "Suporte Linux: " +
+                this.run_linux +
+                "\n";
+    }
+
+    public boolean userInputGame(int maxId) {
+        Scanner in = new Scanner(System.in);
+
+        try {
+            // Add. Id e lápide
+            this.id = maxId;
+            this.grave = false;
+
+            System.out.println(
+                    "\nInsira as informações pedidas. Atenção para a formatação!\n");
+
+            System.out.println("Insira o nome do Game: ");
+            String nameIn = in.nextLine();
+            this.name = nameIn;
+
+            System.out.println("Insira uma descrição curta do Game: ");
+            String shortIn = in.nextLine();
+            this.short_description = shortIn;
+
+            System.out.println("Insira os gêneros do Game (no formato Gênero X/Gênero Y/ Gênero Z): ");
+            String genresIn = in.nextLine();
+            this.genres = genresIn;
+
+            System.out.println("Insira os publishers do Game: ");
+            String publishersIn = in.nextLine();
+            this.publishers = publishersIn;
+
+            System.out.println("Insira o preço do Game (no formato 00.00): ");
+            String priceIn = in.nextLine();
+            this.price = Float.parseFloat(priceIn);
+
+            System.out.println("Insira o SteamID do Game: ");
+            String steamIn = in.nextLine();
+            this.steamID = Integer.parseInt(steamIn);
+
+            System.out.println("O game roda em Linux (Sim ou Nao): ");
+            String linuxIn = in.nextLine();
+            this.run_linux = linuxIn;
+
+            System.out.println("Insira a data de lançamento do Game (dd/mm/aaaa): ");
+            String dateIn = in.nextLine();
+            this.release_date = trasnformDate(dateIn);
+
+            System.out.println("input de game finalizado");
+            in.close();
+            return true;
+        } catch (Exception e) {
+            System.err.println("Erro ao inserir game: " + e);
+            return false;
+        }
+
+    }
+
+    public boolean atualiza() {
+        Scanner in = new Scanner(System.in);
+
+        try {
+            this.grave = false;
+
+            System.out.println(
+                    "\nInsira as informações pedidas. Atenção para a formatação!\n");
+
+            System.out.println("Insira o nome do Game: ");
+            String nameIn = in.nextLine();
+            this.name = nameIn;
+
+            System.out.println("Insira uma descrição curta do Game: ");
+            String shortIn = in.nextLine();
+            this.short_description = shortIn;
+
+            System.out.println("Insira os gêneros do Game (no formato Gênero X/Gênero Y/ Gênero Z): ");
+            String genresIn = in.nextLine();
+            this.genres = genresIn;
+
+            System.out.println("Insira os publishers do Game: ");
+            String publishersIn = in.nextLine();
+            this.publishers = publishersIn;
+
+            System.out.println("Insira o preço do Game (no formato 00.00): ");
+            String priceIn = in.nextLine();
+            this.price = Float.parseFloat(priceIn);
+
+            System.out.println("Insira o SteamID do Game: ");
+            String steamIn = in.nextLine();
+            this.steamID = Integer.parseInt(steamIn);
+
+            System.out.println("O game roda em Linux (Sim ou Nao): ");
+            String linuxIn = in.nextLine();
+            this.run_linux = linuxIn;
+
+            System.out.println("Insira a data de lançamento do Game (dd/mm/aaaa): ");
+            String dateIn = in.nextLine();
+            this.release_date = trasnformDate(dateIn);
+
+            System.out.println("input de game finalizado");
+            in.close();
+            return true;
+        } catch (Exception e) {
+            System.err.println("Erro ao atualizar game: " + e);
+            return false;
+        }
+
     }
 
 }

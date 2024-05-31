@@ -79,7 +79,6 @@ public class HuffmanFuncional {
             HuffmanNode left = priorityQueue.poll();
             HuffmanNode right = priorityQueue.poll();
             HuffmanNode parent = new HuffmanNode(left.frequency + right.frequency, left, right);
-            System.out.println("Combinando nós: " + left + " e " + right + " para formar: " + parent);
             priorityQueue.add(parent);
         }
 
@@ -152,27 +151,29 @@ public class HuffmanFuncional {
         }
     }
 
-    public static void main(String[] args) {
-        HuffmanFuncional huff = new HuffmanFuncional();
-        HuffmanNode root = huff.buildHuffmanTree();
+    public void createCompressed (){
+        HuffmanNode root = buildHuffmanTree();
         Map<Byte, String> huffmanCodes = new HashMap<>();
-        huff.printCodes(root, "", huffmanCodes);
+        printCodes(root, "", huffmanCodes);
 
-        byte[] originalBytes = huff.readArchiveBytes();
+        byte[] originalBytes = readArchiveBytes();
 
         if (originalBytes != null) {
-            huff.writeCompressedFile("./TP03/BD/compressed_games_huffman.db", huffmanCodes, originalBytes);
+            writeCompressedFile("./TP03/Compressed/compressed_games.db", huffmanCodes, originalBytes);
             System.out.println("Arquivo comprimido com sucesso!");
         }
+    }
+
+    public void createDecompressed(){
+        HuffmanNode root = buildHuffmanTree();
+        Map<Byte, String> huffmanCodes = new HashMap<>();
+        printCodes(root, "", huffmanCodes);
+
+        byte[] originalBytes = readArchiveBytes();
 
         if (originalBytes != null) {
-            huff.writeCompressedFile("./TP03/BD/compressed_games_huffman.db", huffmanCodes, originalBytes);
-            System.out.println("Arquivo comprimido com sucesso!");
-
-            huff.decompressFile("./TP03/BD/frequencies.dat", "./TP03/BD/compressed_games_huffman.db",
-                    "./TP03/BD/decompressed_games_huffman.db");
+            decompressFile("./TP03/BD/frequencies.dat", "./TP03/Compressed/compressed_games.db", "./TP03/BD/decompressed_games.db");
             System.out.println("Arquivo descompactado com sucesso!");
         }
-
     }
 }

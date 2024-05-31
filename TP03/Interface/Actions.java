@@ -1,12 +1,14 @@
 package Interface;
 
 import CRUD.CRUD;
+import Compresao.HuffmanFuncional;
 import Compresao.LZW;
 import Model.Games;
 import java.io.RandomAccessFile;
 import java.util.Scanner;
 
 public class Actions {
+  private static HuffmanFuncional huff = new HuffmanFuncional();
 
   public static void searchGame(Scanner sc) {
     System.out.print("Insira o ID do game que quer buscar: ");
@@ -47,18 +49,17 @@ public class Actions {
     }
   }
 
-  // !! mudança na lógica da classe Games
   public static void updateGame(Scanner sc) {
     System.out.print("Insira o ID do game que quer atualizar: ");
     int id = Integer.parseInt(sc.nextLine());
 
-    Games aux = new Games();
+    Games aux = null;
     CRUD crud = new CRUD();
 
-    // !! CRIAR A FUNÇÃO USER INPUT TO OBJECT
-    //aux.userInputGame();
-
+    aux = crud.search(id);
+    aux.atualiza();
     boolean done = crud.update(id, aux);
+
 
     if (done) {
       System.out.println("Game atualizado com sucesso!");
@@ -67,10 +68,19 @@ public class Actions {
     }
   }
 
-  // !! mudança na lógica da classe Games
-  public static void createGame(Scanner sc) {}
 
-  // comprimir dados com LZW
+  public static void createGame(int maxID) {
+    Games aux = new Games();
+    aux.userInputGame(maxID);
+    CRUD crud = new CRUD();
+    if(crud.create(aux)){
+      System.out.println("Criado com sucesso");
+    } else{
+      System.out.println("Erro ao criar");
+    }
+  }
+
+
   public static void compressLzw() {
     try {
       RandomAccessFile raf = new RandomAccessFile("./TP03/BD/games.db", "rw");
@@ -141,4 +151,13 @@ public class Actions {
     compressedRaf.close();
     decompressedRaf.close();
   }
+
+  public static void CompressHuffman (){
+    huff.createCompressed();
+  }
+
+  public static void DecompressHuffman (){
+    huff.createDecompressed();
+  }
+
 }

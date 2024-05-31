@@ -1,6 +1,5 @@
 package Compresao;
 
-import java.io.ByteArrayInputStream;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.HashMap;
