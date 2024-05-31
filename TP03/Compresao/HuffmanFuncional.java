@@ -35,7 +35,7 @@ class HuffmanNode {
     }
 }
 
-public class HuffmanGPTFuncional {
+public class HuffmanFuncional {
 
     private RandomAccessFile raf = null;
 
@@ -153,7 +153,7 @@ public class HuffmanGPTFuncional {
     }
 
     public static void main(String[] args) {
-        HuffmanGPTFuncional huff = new HuffmanGPTFuncional();
+        HuffmanFuncional huff = new HuffmanFuncional();
         HuffmanNode root = huff.buildHuffmanTree();
         Map<Byte, String> huffmanCodes = new HashMap<>();
         huff.printCodes(root, "", huffmanCodes);

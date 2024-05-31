@@ -103,7 +103,7 @@ public class LZW {
 
       return result;
     } catch (Exception e) {
-      System.err.println("Erro na descompressão com LZW: " + e.getMessage();
+      System.err.println("Erro na descompressão com LZW: " + e.getMessage());
       return null;
     }
   }
