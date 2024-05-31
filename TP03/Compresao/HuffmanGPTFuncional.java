@@ -169,7 +169,8 @@ public class HuffmanGPTFuncional {
             huff.writeCompressedFile("./TP03/BD/compressed_games_huffman.db", huffmanCodes, originalBytes);
             System.out.println("Arquivo comprimido com sucesso!");
 
-            huff.decompressFile("./TP03/BD/frequencies.dat", "./TP03/BD/compressed_games_huffman.db", "./TP03/BD/decompressed_games_huffman.db");
+            huff.decompressFile("./TP03/BD/frequencies.dat", "./TP03/BD/compressed_games_huffman.db",
+                    "./TP03/BD/decompressed_games_huffman.db");
             System.out.println("Arquivo descompactado com sucesso!");
         }
 
