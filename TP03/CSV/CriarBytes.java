@@ -5,10 +5,10 @@ public class CriarBytes {
 
     // Constante para manipulação de data a partir de 1900, pois o dado mais recente
     // do BD é de 1999
-    static final int inicialYear = 1900;
+    private static final int inicialYear = 1900;
 
     // Transformar uma data em horas a partir de 1900
-    public static int trasnformDate(String data) {
+    public int trasnformDate(String data) {
 
         // Um ano tem 8766 h
         // Um mês tem 730 h
@@ -24,7 +24,7 @@ public class CriarBytes {
         return year + month + day;
     }
     
-    public static void main(String[] args) {
+    public int carreagrBase() {
 
         RandomAccessFile raf, write;
 
@@ -33,7 +33,7 @@ public class CriarBytes {
             raf = new RandomAccessFile("./CSV/games.csv", "r");
             write = new RandomAccessFile("./BD/games.db", "rw");
             raf.readLine();
-
+            int maxtam = 0;
             String str;
 
             write.writeLong(10);
@@ -53,6 +53,10 @@ public class CriarBytes {
                 write.writeInt(aux.length);
                 
                 write.write(aux);
+
+                if(Integer.parseInt(vet[0]) > maxtam){
+                    maxtam = Integer.parseInt(vet[0]);
+                }
             }
 
             long pointer = write.getFilePointer(); // Pega a ultima posicao do arquivo
@@ -63,10 +67,11 @@ public class CriarBytes {
             raf.close();
 
             System.out.println("load finalizado com sucesso");
-
+            return maxtam;
         } catch (Exception e) {
 
             System.out.println("Erro nos arquivos" + e.getMessage());
+            return 0;
         }
     }
 }

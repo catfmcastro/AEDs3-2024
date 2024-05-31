@@ -77,7 +77,6 @@ public class HuffmanGPTFuncional {
             HuffmanNode left = priorityQueue.poll();
             HuffmanNode right = priorityQueue.poll();
             HuffmanNode parent = new HuffmanNode(left.frequency + right.frequency, left, right);
-            System.out.println("Combinando nós: " + left + " e " + right + " para formar: " + parent);
             priorityQueue.add(parent);
         }
 
@@ -150,6 +149,32 @@ public class HuffmanGPTFuncional {
         }
     }
 
+    public void createCompressed (){
+        HuffmanNode root = buildHuffmanTree();
+        Map<Byte, String> huffmanCodes = new HashMap<>();
+        printCodes(root, "", huffmanCodes);
+
+        byte[] originalBytes = readArchiveBytes();
+
+        if (originalBytes != null) {
+            writeCompressedFile("./Compressed/compressed_games.db", huffmanCodes, originalBytes);
+            System.out.println("Arquivo comprimido com sucesso!");
+        }
+    }
+
+    public void createDecompressed(){
+        HuffmanNode root = buildHuffmanTree();
+        Map<Byte, String> huffmanCodes = new HashMap<>();
+        printCodes(root, "", huffmanCodes);
+
+        byte[] originalBytes = readArchiveBytes();
+
+        if (originalBytes != null) {
+            decompressFile("./BD/frequencies.dat", "./Compressed/compressed_games.db", "./BD/decompressed_games.db");
+            System.out.println("Arquivo descompactado com sucesso!");
+        }
+    }
+
     public static void main(String[] args) {
         HuffmanGPTFuncional huff = new HuffmanGPTFuncional();
         HuffmanNode root = huff.buildHuffmanTree();
@@ -159,15 +184,10 @@ public class HuffmanGPTFuncional {
         byte[] originalBytes = huff.readArchiveBytes();
 
         if (originalBytes != null) {
-            huff.writeCompressedFile("./BD/compressed_games.db", huffmanCodes, originalBytes);
-            System.out.println("Arquivo comprimido com sucesso!");
-        }
-
-        if (originalBytes != null) {
-            huff.writeCompressedFile("./BD/compressed_games.db", huffmanCodes, originalBytes);
+            huff.writeCompressedFile("./Compressed/compressed_games.db", huffmanCodes, originalBytes);
             System.out.println("Arquivo comprimido com sucesso!");
 
-            huff.decompressFile("./BD/frequencies.dat", "./BD/compressed_games.db", "./BD/decompressed_games.db");
+            huff.decompressFile("./BD/frequencies.dat", "./Compressed/compressed_games.db", "./BD/decompressed_games.db");
             System.out.println("Arquivo descompactado com sucesso!");
         }
 

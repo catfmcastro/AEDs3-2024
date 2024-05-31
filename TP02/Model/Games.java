@@ -212,6 +212,7 @@ public class Games {
       printGame();
 
       System.out.println("input de game finalizado");
+      in.close();
       return true;
     } catch (Exception e) {
       System.err.println("Erro ao inserir game: " + e);
