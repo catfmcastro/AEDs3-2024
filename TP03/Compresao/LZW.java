@@ -21,17 +21,18 @@ public class LZW {
 
   public String compressLZW(byte[] input) throws Exception {
     try {
-      String out = "";
-      String s = "";
+      String out = ""; // saída
+      String s = ""; // strings para adicionar no dictionary
 
       // criação do dicionário
       HashMap<String, Integer> dictionary = new HashMap<String, Integer>();
-      for (int i = 0; i < 256; i++) {
+      for (int i = 0; i < 256; i++) { // todos os caracteres ASCII
         dictionary.put("" + (char) i, i);
       }
+
       int code = 256;
       for (int i = 0; i < input.length; i++) {
-        char c = (char) (input[i] & 0xff);
+        char c = (char) (input[i] & 0xff); // bytes convertidos em char
         String sc = s + c;
         if (dictionary.containsKey(sc)) {
           s = sc;
@@ -42,13 +43,15 @@ public class LZW {
           s = "" + c;
         }
       }
+      
+      // se s não estiver vazia, adiciona a out
       if (!s.equals("")) {
         out += dictionary.get(s) + " ";
       }
 
       return out;
     } catch (Exception e) {
-      e.printStackTrace();
+      System.err.println("Erro na compressão com LZW: " + e.getMessage());
       return null;
     }
   }
@@ -59,11 +62,11 @@ public class LZW {
 
       // criação do dicionário
       HashMap<Integer, String> dictionary = new HashMap<Integer, String>();
-      for (int i = 0; i < 256; i++) {
+      for (int i = 0; i < 256; i++) { // todos os caracteres ASCII
         dictionary.put(i, "" + (char) i);
       }
 
-      String[] arr = input.split(" ");
+      String[] arr = input.split(" "); // dados codificados separados por espaço
       int code = 256;
       String s = "" + (char) (Integer.parseInt(arr[0]));
       out.add((byte) Integer.parseInt(arr[0]));
@@ -71,27 +74,36 @@ public class LZW {
       for (int i = 1; i < arr.length; i++) {
         int k = Integer.parseInt(arr[i]);
         String entry = "";
-        if (dictionary.containsKey(k)) {
+
+        // descompressão propriamente dita
+        if (dictionary.containsKey(k)) { // se k está no dicionário, decodifica
           entry = dictionary.get(k);
-        } else if (k == code) {
+        } else if (k == code) { // se k é igual ao código, adiciona s + s[0] ao dicionário
           entry = s + s.charAt(0);
         } else {
-          throw new Exception("Bad compressed k: " + k);
+          throw new Exception("Erro na compressão: " + k);
         }
+
+        // update saída
         for (int j = 0; j < entry.length(); j++) {
           out.add((byte) entry.charAt(j));
         }
+
+        // update dicionário
         dictionary.put(code, s + entry.charAt(0));
         code++;
         s = entry;
       }
+
+      // convere resultado em um array de bytes
       byte[] result = new byte[out.size()];
       for (int i = 0; i < out.size(); i++) {
         result[i] = out.get(i);
       }
+
       return result;
     } catch (Exception e) {
-      e.printStackTrace();
+      System.err.println("Erro na descompressão com LZW: " + e.getMessage();
       return null;
     }
   }
