@@ -3,8 +3,8 @@ package CRUD;
 import java.io.RandomAccessFile;
 import Model.Games;
 
-public class Crud {
-    RandomAccessFile raf;
+public class CRUD {
+    private RandomAccessFile raf;
 
     public Games search (int id){
 

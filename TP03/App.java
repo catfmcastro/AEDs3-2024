@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-import CRUD.Crud;
+import CRUD.CRUD;
 import Model.Games;
 
 public class App {
@@ -11,8 +11,8 @@ public class App {
         CriarBytes createBD = new CriarBytes();
         int maxtam = createBD.carreagrBase();
         Scanner sc = new Scanner(System.in);
-        HuffmanGPTFuncional huff = new HuffmanGPTFuncional();
-        Crud crud = new Crud();
+        HuffmanFuncional huff = new HuffmanFuncional();
+        CRUD crud = new CRUD();
         Games aux = new Games();
         int opcao = 0;
 
