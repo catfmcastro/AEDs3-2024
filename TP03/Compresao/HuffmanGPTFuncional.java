@@ -41,7 +41,7 @@ public class HuffmanGPTFuncional {
 
     private byte[] readArchiveBytes() {
         try {
-            raf = new RandomAccessFile("./BD/games.db", "rw");
+            raf = new RandomAccessFile("./TP03/BD/games.db", "rw");
             long tam = raf.length();
             byte[] vet = new byte[(int) tam];
             raf.read(vet);
@@ -161,15 +161,15 @@ public class HuffmanGPTFuncional {
         byte[] originalBytes = huff.readArchiveBytes();
 
         if (originalBytes != null) {
-            huff.writeCompressedFile("./BD/compressed_games.db", huffmanCodes, originalBytes);
+            huff.writeCompressedFile("./TP03/BD/compressed_games_huffman.db", huffmanCodes, originalBytes);
             System.out.println("Arquivo comprimido com sucesso!");
         }
 
         if (originalBytes != null) {
-            huff.writeCompressedFile("./BD/compressed_games.db", huffmanCodes, originalBytes);
+            huff.writeCompressedFile("./TP03/BD/compressed_games_huffman.db", huffmanCodes, originalBytes);
             System.out.println("Arquivo comprimido com sucesso!");
 
-            huff.decompressFile("./BD/frequencies.dat", "./BD/compressed_games.db", "./BD/decompressed_games.db");
+            huff.decompressFile("./TP03/BD/frequencies.dat", "./TP03/BD/compressed_games_huffman.db", "./TP03/BD/decompressed_games_huffman.db");
             System.out.println("Arquivo descompactado com sucesso!");
         }
 
