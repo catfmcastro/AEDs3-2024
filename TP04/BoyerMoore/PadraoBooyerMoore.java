@@ -22,7 +22,7 @@ public class PadraoBooyerMoore {
     }
 
     public PadraoBooyerMoore(String padrao) {
-        this.padrao = padrao;
+        this.padrao = padrao.toLowerCase();
         bom = new int[padrao.length()];
         criarRuim();
         criarBom();
@@ -45,110 +45,86 @@ public class PadraoBooyerMoore {
             ruim[lastCharIndex] = new Node(aux[lastCharPos], -1);
         }
 
-        for (Node node : ruim) {
-            if (node != null) {
-                System.out.println(node);
-            }
-        }
+        // for (Node node : ruim) {
+        //     if (node != null) {
+        //         System.out.println(node);
+        //     }
+        // }
     }
 
     public void criarBom() {
-        int tam = padrao.length() - 1;
-        this.bom[tam] = 1;
-        int posicao = padrao.length();
-
-        for (int i = tam; i > 0; i--) {
-            boolean var = false;
-            int j = i - 1;
-
-            for (; j >= 0; j--) {
-
-                if (padrao.charAt(i) == padrao.charAt(j)) {
-                    posicao = j;
-
-                    if (j > 0 && padrao.charAt(i - 1) != padrao.charAt(j - 1)) {
-                        int temp = j + 1;
-                        var = true;
-                        for (int k = i + 1; k < tam; k++, temp++) {
-                            if (padrao.charAt(k) != padrao.charAt(temp)) {
-                                var = false;
-                                break;
-                            }
-                        }
-
-                        if (var) {
-                            bom[i - 1] = i - posicao;
-                            break;
-                        }
-
+        int tam = padrao.length();
+        bom = new int[tam];
+        int[] suff = new int[tam];
+    
+        suff[tam - 1] = tam;
+        int g = tam - 1, f = 0;
+        for (int i = tam - 2; i >= 0; --i) {
+            if (i > g && suff[i + tam - 1 - f] < i - g) {
+                suff[i] = suff[i + tam - 1 - f];
+            } else {
+                if (i < g) g = i;
+                f = i;
+                while (g >= 0 && padrao.charAt(g) == padrao.charAt(g + tam - 1 - f)) {
+                    --g;
+                }
+                suff[i] = f - g;
+            }
+        }
+    
+        for (int i = 0; i < tam; ++i) {
+            bom[i] = tam;
+        }
+    
+        int j = 0;
+        for (int i = tam - 1; i >= -1; --i) {
+            if (i == -1 || suff[i] == i + 1) {
+                for (; j < tam - 1 - i; ++j) {
+                    if (bom[j] == tam) {
+                        bom[j] = tam - 1 - i;
                     }
-                    
-                    if(!var){
-                        for (int k = i; k < tam; k++) {
-                            if (padrao.charAt(k) == padrao.charAt(0)) {
-                                int temp = 1;
-                                var = true;
-                                for (int k2 = k + 1; k < tam; k2++, temp++) {
-                                    if (padrao.charAt(k2) != padrao.charAt(temp)) {
-                                        var = false;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                        
-                        if (var) {
-                            bom[i - 1] = i;
-                            break;
-                        }
-                    }
-
                 }
             }
-            if (!var) {
-                bom[i - 1] = tam + 1;
-            }
         }
-
-        // int m = padrao.length();
-        // bom = new int[m];
-        // int[] suffix = new int[m];
-
-        // // Passo 1: Inicializa a tabela `suffix`
-        // for (int i = 0; i < m; i++) {
-        // suffix[i] = -1;
-        // }
-
-        // // Passo 2: Preenche a tabela `suffix`
-        // for (int i = 0; i < m - 1; i++) {
-        // int j = i;
-        // int k = 0; // Tamanho do sufixo correspondente
-        // while (j >= 0 && padrao.charAt(j) == padrao.charAt(m - 1 - k)) {
-        // j--;
-        // k++;
-        // suffix[k] = j + 1;
-        // }
-        // }
-
-        // // Passo 3: Inicializa a tabela `bom`
-        // for (int i = 0; i < m; i++) {
-        // bom[i] = m; // Valor padrão: comprimento do padrão
-        // }
-
-        // // Passo 4: Preenche a tabela `bom` baseada nos sufixos
-        // int j = 0;
-        // for (int k = 0; k < m - 1; k++) {
-        // if (suffix[k] != -1) {
-        // bom[m - 1 - k] = m - 1 - suffix[k];
-        // } else {
-        // bom[m - 1 - k] = m - k;
-        // }
-        // }
-
-        for (int i = 0; i < bom.length; i++) {
-            System.out.println("Posição: " + i + " Valor: " + bom[i]);
+    
+        for (int i = 0; i <= tam - 2; ++i) {
+            bom[tam - 1 - suff[i]] = tam - 1 - i;
         }
+        
+
+        // for (int i = 0; i < bom.length; i++) {
+        //     System.out.println("Posição: " + i + " Valor: " + bom[i]);
+        // }
 
     }
+
+    public boolean buscarPadrao(String texto) {
+        texto = texto.toLowerCase();
+        int m = padrao.length();
+        int n = texto.length();
+
+        int s = 0; 
+        while (s <= (n - m)) {
+            int j = m - 1;
+
+            while (j >= 0 && padrao.charAt(j) == texto.charAt(s + j)) {
+                j--;
+            }
+
+            if (j < 0) {
+                return true;
+                
+
+            } else {
+                char badChar = texto.charAt(s + j);
+                int ruimIndex = badChar % mod;
+                int badCharShift = ruim[ruimIndex] == null ? j + 1 : Math.max(1, j - ruim[ruimIndex].posicao);
+                int goodSuffixShift = bom[j];
+                s += Math.max(badCharShift, goodSuffixShift);
+            }
+        }
+        return false;
+    }
+
 
 }
