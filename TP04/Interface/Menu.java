@@ -75,25 +75,13 @@ public class Menu {
           Actions.deleteGame(sc);
           this.executeMenu();
           break;
-        case 5: // Compressão de dados com LZW
-          Actions.compressLzw();
+        case 5: // Criptografia dos dados
+          
           this.executeMenu();
           break;
-        case 6: // Descomprimir dados com LZW
-          Actions.decompressLzw();
+        case 6: // Reconhecer padrões por nome
+          
           this.executeMenu();
-          break;
-        case 7: // Compressão Huffman
-          Actions.CompressHuffman();
-          this.executeMenu();
-          break;
-        case 8: // Descomprimir Huffman
-          Actions.DecompressHuffman();
-          this.executeMenu();
-          break;
-        case 9: // Sair
-          System.out.println("\nObrigado por usar nosso Banco de Dados! :)");
-          sc.close();
           break;
 
         default:
