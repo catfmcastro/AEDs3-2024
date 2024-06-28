@@ -2,6 +2,7 @@ package CSV;
 
 import java.io.RandomAccessFile;
 import Model.Games;
+import RSA.RSA;
 
 public class CriarBytes {
 
@@ -26,14 +27,14 @@ public class CriarBytes {
         return year + month + day;
     }
     
-    public int carregarBase() {
+    public int carregarBase(RSA rsa) {
 
         RandomAccessFile raf, write;
 
         try {
 
-            raf = new RandomAccessFile("./TP03/CSV/games.csv", "r");
-            write = new RandomAccessFile("./TP03/BD/games.db", "rw");
+            raf = new RandomAccessFile("./TP04/CSV/games.csv", "r");
+            write = new RandomAccessFile("./TP04/BD/games.db", "rw");
             raf.readLine();
             int maxtam = 0;
             String str;
@@ -48,10 +49,10 @@ public class CriarBytes {
 
                 String vet[] = str.split("./;"); // Separando em vetor a string
                 
-                Games tmp = new Games(Integer.parseInt(vet[0]), Integer.parseInt(vet[1]), vet[2], Float.parseFloat(vet[3]), vet[4], vet[5], vet[6], vet[7], trasnformDate(vet[8]), false);
+                Games tmp = new Games(Integer.parseInt(vet[0]), Integer.parseInt(vet[1]), rsa.encrypt(vet[2]), Float.parseFloat(vet[3]), rsa.encrypt(vet[4]), rsa.encrypt(vet[5]), rsa.encrypt(vet[6]), rsa.encrypt(vet[7]), trasnformDate(vet[8]), false);
                 
                 byte aux[] = tmp.getBytes();
-                
+
                 write.writeInt(aux.length);
                 
                 write.write(aux);

@@ -4,17 +4,19 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import CSV.CriarBytes;
+import RSA.RSA;
 
 public class Menu {
 
   private int selected;
   private int maxID;
   private Scanner sc;
+  private RSA rsa = new RSA();
 
   public Menu() {
     this.selected = 0;
     CriarBytes createbase = new CriarBytes();
-    this.maxID = createbase.carregarBase();
+    this.maxID = createbase.carregarBase(rsa);
     sc = new Scanner(System.in);
   }
 
@@ -27,11 +29,8 @@ public class Menu {
     System.out.println("2) Ver game existente");
     System.out.println("3) Atualizar game existente");
     System.out.println("4) Deletar game");
-    System.out.println("5) Comprimir dados com LZW");
-    System.out.println("6) Descomprimir dados com LZW");
-    System.out.println("7) Comprimir dados com HUFFMAN");
-    System.out.println("8) Descomprimir dados com HUFFMAN");
-    System.out.println("9) Sair");
+    System.out.println("5) Busca pelo nome com Booyer Moore");
+    System.out.println("6) Sair");
 
     int input = Integer.parseInt(sc.nextLine()); // input do usuário
 
@@ -64,7 +63,7 @@ public class Menu {
           this.executeMenu();
           break;
         case 2: // Ver game existente
-          Actions.searchGame(sc);
+          Actions.searchGame(sc, rsa);
           this.executeMenu();
           break;
         case 3: // Atualizar game existente
@@ -72,18 +71,18 @@ public class Menu {
           this.executeMenu();
           break;
         case 4: // Deletar game
-          Actions.deleteGame(sc);
+          Actions.deleteGame(sc, rsa);
           this.executeMenu();
           break;
-        case 5: // Criptografia dos dados
+        case 5: // Reconhecer padrões por nome
+          Actions.searchByName(sc, rsa);
+          this.executeMenu();
+          break;
+        case 6: // Sair
+          System.out.println("\nObrigado por usar nosso Banco de Dados! :)");
+          sc.close();
+          break;
           
-          this.executeMenu();
-          break;
-        case 6: // Reconhecer padrões por nome
-          
-          this.executeMenu();
-          break;
-
         default:
           break;
       }

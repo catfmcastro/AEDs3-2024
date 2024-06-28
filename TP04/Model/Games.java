@@ -6,6 +6,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.util.Scanner;
 
+import RSA.RSA;
+
 public class Games {
     private int id, steamID, release_date;
     private float price;
@@ -44,6 +46,10 @@ public class Games {
 
     public int getId() {
         return id;
+    }
+
+    public String getName (RSA rsa){
+        return rsa.decrypt(this.name);
     }
 
     public void setGrave() {
@@ -150,7 +156,7 @@ public class Games {
         return year + month + day;
     }
 
-    public String toString() {
+    public String toString(RSA rsa) {
         return "Id: " +
                 this.id +
                 " - " +
@@ -161,16 +167,16 @@ public class Games {
                 this.price +
                 "\n" +
                 "Nome: " +
-                this.name +
+                rsa.decrypt(this.name) +
                 "\n" +
                 "Descrição: " +
-                this.short_description +
+                rsa.decrypt(this.short_description) +
                 "\n" +
                 "Gêneros: " +
-                this.genres +
+                rsa.decrypt(this.genres) +
                 "\n" +
                 "Publicador: " +
-                this.publishers +
+                rsa.decrypt(this.publishers) +
                 "\n" +
                 "Data de Lançamento: " +
                 convertDate(this.release_date) +
@@ -179,7 +185,7 @@ public class Games {
                 this.grave +
                 "\n" +
                 "Suporte Linux: " +
-                this.run_linux +
+                rsa.decrypt(this.run_linux) +
                 "\n";
     }
 

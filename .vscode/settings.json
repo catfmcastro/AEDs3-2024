@@ -1,8 +1,9 @@
 {
     "java.debug.settings.onBuildFailureProceed": true,
     "java.project.sourcePaths": [
+        "TP03",
         "TP02",
         "Bagunca_tupac",
-        "TP03"
+        "TP04"
     ]
 }

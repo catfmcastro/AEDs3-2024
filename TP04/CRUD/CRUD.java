@@ -1,7 +1,12 @@
 package CRUD;
 
 import Model.Games;
+import RSA.RSA;
+
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+
+import BoyerMoore.PadraoBooyerMoore;
 
 public class CRUD {
 
@@ -11,7 +16,7 @@ public class CRUD {
     Games temp = new Games();
 
     try {
-      raf = new RandomAccessFile("./TP03/BD/games.db", "rw");
+      raf = new RandomAccessFile("./TP04/BD/games.db", "rw");
       long position = raf.readLong();
 
       do {
@@ -35,7 +40,7 @@ public class CRUD {
     Games temp = new Games();
 
     try {
-      raf = new RandomAccessFile("./TP03/BD/games.db", "rw");
+      raf = new RandomAccessFile("./TP04/BD/games.db", "rw");
       long pointerEnd = raf.readLong();
 
       do {
@@ -62,7 +67,7 @@ public class CRUD {
     Games temp = new Games();
 
     try {
-      raf = new RandomAccessFile("./TP03/BD/games.db", "rw");
+      raf = new RandomAccessFile("./TP04/BD/games.db", "rw");
       long pointerEnd = raf.readLong();
 
       do {
@@ -88,7 +93,7 @@ public class CRUD {
 
   public boolean create(Games novo) {
     try {
-      raf = new RandomAccessFile("./TP03/BD/games.db", "rw");
+      raf = new RandomAccessFile("./TP04/BD/games.db", "rw");
       long position = raf.readLong();
       raf.seek(position);
       byte[] temp = novo.getBytes();
@@ -104,4 +109,32 @@ public class CRUD {
 
     return false;
   }
+
+  public ArrayList<Games> searchByName(String str, RSA rsa) {
+    ArrayList<Games> games = new ArrayList<Games>();
+    
+    try {
+      raf = new RandomAccessFile("./TP04/BD/games.db", "rw");
+      long position = raf.readLong();
+      PadraoBooyerMoore pdm = new PadraoBooyerMoore(str);
+      
+      do {
+        byte[] vet = new byte[raf.readInt()];
+        raf.read(vet);
+        
+        Games temp = new Games();
+        temp.setBytes(vet);
+
+        if(pdm.buscarPadrao(temp.getName(rsa))){
+          games.add(temp);
+        }
+      } while (raf.getFilePointer() != position);
+
+    } catch (Exception e) {
+      System.err.println("Erro ao pesquisar game: " + e.getMessage());
+    }
+
+    return games;
+  }
+
 }

@@ -2,11 +2,14 @@ package Interface;
 
 import CRUD.CRUD;
 import Model.Games;
+import RSA.RSA;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Actions {
 
-  public static void searchGame(Scanner sc) {
+  public static void searchGame(Scanner sc, RSA rsa) {
     System.out.print("Insira o ID do game que quer buscar: ");
     int id = Integer.parseInt(sc.nextLine());
 
@@ -21,11 +24,11 @@ public class Actions {
     if (tmp == null) {
       System.out.println("Game não encontrado.");
     } else {
-      System.out.println(tmp.toString());
+      System.out.println(tmp.toString(rsa));
     }
   }
 
-  public static void deleteGame(Scanner sc) {
+  public static void deleteGame(Scanner sc, RSA rsa) {
     System.out.print("Insira o ID do game que quer deletar: ");
     int id = Integer.parseInt(sc.nextLine());
 
@@ -40,7 +43,7 @@ public class Actions {
     if (tmp == null) {
       System.out.println("Game não encontrado.");
     } else {
-      System.out.println(tmp.toString());
+      System.out.println(tmp.toString(rsa));
       System.out.println("Game deletado com sucesso!");
     }
   }
@@ -72,6 +75,16 @@ public class Actions {
       System.out.println("Criado com sucesso");
     } else{
       System.out.println("Erro ao criar");
+    }
+  }
+
+  public static void searchByName (Scanner sc, RSA rsa){
+    System.out.println("Insira o padrao que se deseja buscar:");
+    String str = sc.nextLine();
+    CRUD crud = new CRUD();
+    ArrayList<Games> games = crud.searchByName(str, rsa);
+    for (Games game : games) {
+      System.out.println(game.toString(rsa));
     }
   }
 
